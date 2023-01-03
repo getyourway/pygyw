@@ -1,0 +1,2 @@
+bleak==0.15.1
+setuptools==65.6.3
