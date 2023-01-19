@@ -1,0 +1,6 @@
+0.1.0 :
+    - Bluetooth scan + device storage
+    - Bluetooth connection
+    - Drawing library
+    - Display templates
+    - Support for Linux, MAC & Windows

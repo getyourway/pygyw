@@ -1,0 +1,229 @@
+// GYW Layout automated tests - Displays
+// Test 0 - Title - Title
+{"type": "text", "x_start": 250, "y_start": 84, "data": "This is a title", "title": 1}
+
+// Test 1 - Big title - Title
+{"type": "text", "x_start": 1, "y_start": 64, "data": "This is a big title", "title": 3}
+
+// Test 2 - Short paragraph - Paragraph
+{"type": "text", "x_start": 30, "y_start": 180, "data": "This is a short paragraph", "title": 0}
+
+// Test 3 - Long paragraph - Paragraph
+{"type": "text", "x_start": 30, "y_start": 180, "data": "This is a very very very very very very long", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 224, "data": "paragraph                                   ", "title": 0}
+
+// Test 4 - Long paragraph with bigger typo - Paragraph
+{"type": "text", "x_start": 30, "y_start": 180, "data": "This is a very very very", "title": 2}
+{"type": "text", "x_start": 30, "y_start": 274, "data": "very   very   very  long", "title": 2}
+{"type": "text", "x_start": 30, "y_start": 368, "data": "paragraph               ", "title": 2}
+
+// Test 5 - Paragraph with offsets - Paragraph
+{"type": "text", "x_start": 70, "y_start": 240, "data": "This is a short paragraph", "title": 0}
+
+// Test 6 - Text line basic - One line text
+{"type": "text", "x_start": 302, "y_start": 279, "data": "This is a line", "title": 0}
+
+// Test 7 - Text line big typo - One line text
+{"type": "text", "x_start": 197, "y_start": 266, "data": "This is a line", "title": 2}
+
+// Test 8 - Text line to the left - One line text
+{"type": "text", "x_start": 30, "y_start": 279, "data": "This line is aligned to the left", "title": 0}
+
+// Test 9 - Text line to the right - One line text
+{"type": "text", "x_start": 308, "y_start": 279, "data": "This line is aligned to the right", "title": 0}
+
+// Test 10 - Text line to the top - One line text
+{"type": "text", "x_start": 183, "y_start": 120, "data": "This line is aligned to the top", "title": 0}
+
+// Test 11 - Text line to the bottom - One line text
+{"type": "text", "x_start": 162, "y_start": 438, "data": "This line is aligned to the bottom", "title": 0}
+
+// Test 12 - Text line with offsets - One line text
+{"type": "text", "x_start": 202, "y_start": 339, "data": "This line is aligned to the bottom", "title": 0}
+
+// Test 13 - Text list with 1 line - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 0}
+
+// Test 14 - Text list with 3 lines - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "line 3", "title": 0}
+
+// Test 15 - Text list with 6 lines - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "line 3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 252, "data": "line 4", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 296, "data": "line 5", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 340, "data": "line 6", "title": 0}
+
+// Test 16 - Text list big typo - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 2}
+{"type": "text", "x_start": 30, "y_start": 214, "data": "line 2", "title": 2}
+{"type": "text", "x_start": 30, "y_start": 308, "data": "line 3", "title": 2}
+
+// Test 17 - Text list to the left - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "line 3", "title": 0}
+
+// Test 18 - Text list to the right - Text list
+{"type": "text", "x_start": 686, "y_start": 120, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 164, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 208, "data": "line 3", "title": 0}
+
+// Test 19 - Text list to the top - Text list
+{"type": "text", "x_start": 30, "y_start": 120, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "line 3", "title": 0}
+
+// Test 20 - Text list to the bottom - Text list
+{"type": "text", "x_start": 30, "y_start": 350, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 394, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 438, "data": "line 3", "title": 0}
+
+// Test 21 - Text list with offsets - Text list
+{"type": "text", "x_start": 70, "y_start": 180, "data": "line 1", "title": 0}
+{"type": "text", "x_start": 70, "y_start": 224, "data": "line 2", "title": 0}
+{"type": "text", "x_start": 70, "y_start": 268, "data": "line 3", "title": 0}
+
+// Test 22 - Text grid 1 x 1 - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+
+// Test 23 - Text grid 2 x 2 - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 164, "data": "2.2", "title": 0}
+
+// Test 24 - Text grid 3 x 3 - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 120, "data": "1.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 164, "data": "2.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 164, "data": "2.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "3.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 208, "data": "3.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 208, "data": "3.3", "title": 0}
+
+// Test 25 - Text grid 4 x 3 - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 120, "data": "1.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 164, "data": "2.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 164, "data": "2.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "3.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 208, "data": "3.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 208, "data": "3.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 252, "data": "4.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 252, "data": "4.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 252, "data": "4.3", "title": 0}
+
+// Test 26 - Text grid several length of lines - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 120, "data": "1.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "3.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 208, "data": "3.2", "title": 0}
+
+// Test 27 - Text grid empty line - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 276, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 522, "y_start": 120, "data": "1.3", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 208, "data": "3.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 208, "data": "3.2", "title": 0}
+
+// Test 28 - Text grid big typo - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 2}
+{"type": "text", "x_start": 400, "y_start": 120, "data": "1.2", "title": 2}
+{"type": "text", "x_start": 30, "y_start": 214, "data": "2.1", "title": 2}
+{"type": "text", "x_start": 400, "y_start": 214, "data": "2.2", "title": 2}
+
+// Test 29 - Text grid to the top - Text Grid
+{"type": "text", "x_start": 30, "y_start": 120, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 120, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 164, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 164, "data": "2.2", "title": 0}
+
+// Test 30 - Text grid to the bottom - Text Grid
+{"type": "text", "x_start": 30, "y_start": 394, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 394, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 30, "y_start": 438, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 400, "y_start": 438, "data": "2.2", "title": 0}
+
+// Test 31 - Text grid with offsets - Text Grid
+{"type": "text", "x_start": 70, "y_start": 180, "data": "1.1", "title": 0}
+{"type": "text", "x_start": 420, "y_start": 180, "data": "1.2", "title": 0}
+{"type": "text", "x_start": 70, "y_start": 224, "data": "2.1", "title": 0}
+{"type": "text", "x_start": 420, "y_start": 224, "data": "2.2", "title": 0}
+
+// Test 32 - 3 texts basic - Line of three
+{"type": "text", "x_start": 30, "y_start": 120, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 358, "y_start": 120, "data": "Text 2", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 120, "data": "Text 3", "title": 0}
+
+// Test 33 - 3 texts big typo - Line of three
+{"type": "text", "x_start": 30, "y_start": 120, "data": "Text 1", "title": 2}
+{"type": "text", "x_start": 313, "y_start": 120, "data": "Text 2", "title": 2}
+{"type": "text", "x_start": 596, "y_start": 120, "data": "Text 3", "title": 2}
+
+// Test 34 - 3 texts to the top - Line of three
+{"type": "text", "x_start": 30, "y_start": 279, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 358, "y_start": 279, "data": "Text 2", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 279, "data": "Text 3", "title": 0}
+
+// Test 35 - 3 texts to the bottom - Line of three
+{"type": "text", "x_start": 30, "y_start": 438, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 358, "y_start": 438, "data": "Text 2", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 438, "data": "Text 3", "title": 0}
+
+// Test 36 - 3 texts with offsets - Line of three
+{"type": "text", "x_start": 70, "y_start": 160, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 398, "y_start": 160, "data": "Text 2", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 160, "data": "Text 3", "title": 0}
+
+// Test 37 - 2 texts basic - Line of two
+{"type": "text", "x_start": 30, "y_start": 120, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 120, "data": "Text 2", "title": 0}
+
+// Test 38 - 2 texts big typo - Line of two
+{"type": "text", "x_start": 30, "y_start": 120, "data": "Text 1", "title": 2}
+{"type": "text", "x_start": 596, "y_start": 120, "data": "Text 2", "title": 2}
+
+// Test 39 - 2 texts to the top - Line of two
+{"type": "text", "x_start": 30, "y_start": 279, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 279, "data": "Text 2", "title": 0}
+
+// Test 40 - 2 texts to the bottom - Line of two
+{"type": "text", "x_start": 30, "y_start": 438, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 438, "data": "Text 2", "title": 0}
+
+// Test 41 - 2 texts with offsets - Line of two
+{"type": "text", "x_start": 70, "y_start": 180, "data": "Text 1", "title": 0}
+{"type": "text", "x_start": 686, "y_start": 180, "data": "Text 2", "title": 0}
+
+// Test 42 - icon left - Appbar icon left
+{"type": "memory", "x_start": 20, "y_start": 30, "data": "IconAwesomeArrowLeft", "x_size": 80, "y_size": 80}
+
+// Test 43 - icon left with offsets - Appbar icon left
+{"type": "memory", "x_start": 20, "y_start": 30, "data": "IconAwesomeArrowLeft", "x_size": 80, "y_size": 80}
+
+// Test 44 - icon right - Appbar icon right
+{"type": "memory", "x_start": 700, "y_start": 30, "data": "IconAwesomeArrowRight", "x_size": 80, "y_size": 80}
+
+// Test 45 - icon right with offsets - Appbar icon right
+{"type": "memory", "x_start": 700, "y_start": 30, "data": "IconAwesomeArrowRight", "x_size": 80, "y_size": 80}
+
+// Test 46 - Full app bar - Full appbar
+{"type": "memory", "x_start": 20, "y_start": 30, "data": "IconAwesomeArrowLeft", "x_size": 80, "y_size": 80}
+{"type": "memory", "x_start": 700, "y_start": 30, "data": "IconAwesomeArrowRight", "x_size": 80, "y_size": 80}
+{"type": "text", "x_start": 350, "y_start": 84, "data": "Title", "title": 1}
+
+// Test 47 - Full app bar - Full appbar
+{"type": "memory", "x_start": 20, "y_start": 30, "data": "IconAwesomeArrowLeft", "x_size": 80, "y_size": 80}
+{"type": "memory", "x_start": 700, "y_start": 30, "data": "IconAwesomeArrowRight", "x_size": 80, "y_size": 80}
+{"type": "text", "x_start": 169, "y_start": 64, "data": "Large title", "title": 3}
+
