@@ -1,3 +1,6 @@
+0.1.1 :
+    - Layout library working in MicroPython
+
 0.1.0 :
     - Bluetooth scan + device storage
     - Bluetooth connection

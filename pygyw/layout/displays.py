@@ -1,20 +1,18 @@
-import enum
 import math
-
 from .drawings import Drawing, DrawingPosition, TextDrawing, IconDrawing
 from . import fonts
 from . import helpers
 from . import settings
 
 
-class TextVerticalAlign(enum.Enum):
+class TextVerticalAlign:
     TOP = "top"
     CENTER = "center"
     BOTTOM = "bottom"
     NONE = "none"
 
 
-class TextAlign(enum.Enum):
+class TextAlign:
     LEFT = "left"
     CENTER = "center"
     RIGHT = "right"

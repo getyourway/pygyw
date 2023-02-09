@@ -40,10 +40,9 @@ class Drawing:
         return self.__str__()
 
     def to_json(self) -> dict:
-        return {
-            "type": self.type,
-            **self.position.to_json()
-        }
+        data = self.position.to_json()
+        data["type"] = self.type
+        return data
 
 
 class WhiteScreen(Drawing):
@@ -65,12 +64,11 @@ class TextDrawing(Drawing):
         self.font = font
 
     def to_json(self) -> dict():
-        return {
-            "data": self.text,
-            **self.font.to_json(),
-            **super().to_json(),
-            "x_size": settings.screenWidth,
-        }
+        data = super().to_json()
+        data["data"] = self.text
+        data["x_size"] = settings.screenWidth
+        data.update(self.font.to_json())
+        return data
 
 
 class IconDrawing(Drawing):
@@ -85,9 +83,8 @@ class IconDrawing(Drawing):
         self.y_size = y_size
 
     def to_json(self) -> dict():
-        return {
-            **super().to_json(),
-            "data": self.icon,
-            "x_size": self.x_size,
-            "y_size": self.y_size,
-        }
+        data = super().to_json()
+        data["data"] = self.icon
+        data["x_size"] = self.x_size
+        data["y_size"] = self.y_size
+        return data

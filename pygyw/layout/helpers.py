@@ -1,5 +1,3 @@
-import textwrap
-
 from . import settings
 from . import fonts
 
@@ -54,46 +52,53 @@ def left_justify(words: "list[str]", width: int):
     Given an iterable of words, return a string consisting of the words
     left-justified in a line of the given width.
 
-    >>> left_justify(["hello", "world"], 16)
-    'hello world     '
-
+    Ex.
+     In : left_justify(["hello", "world"], 16)
+     Out : 'hello world     '
     """
-    return ' '.join(words).ljust(width)
+    text = ' '.join(words)
+    spaces_to_add = width - len(text)
+    text += ' ' * spaces_to_add
+    return text
 
 def justify(text: str, width: int):
     """
-    Divide words (an iterable of strings) into lines of the given
-    width, and generate them. The lines are fully justified, except
-    for the last line, and lines with a single word, which are
-    left-justified.
+    Given a string made of words, split them into lines of a given
+    fixed width. The lines are fully justified, except for the last
+    line, and lines with a single word, which are left-justified.
 
-    >>> words = "This is an example of text justification.".split()
-    >>> list(justify(words, 16))
-    ['This    is    an', 'example  of text', 'justification.  ']
+    Ex.
+     In : words = "This is an example of text justification.".split()
+          list(justify(words, 16))
+     Out : ['This    is    an', 'example  of text', 'justification.  ']
     """
-    width = len(max(textwrap.fill(text, width).split("\n"), key=len))
-    words = text.split()
-    line = []             # List of words in current line.
-    col = 0               # Starting column of next word added to line.
     lines = []
-    for word in words:
-        if line and col + len(word) > width:
+    line = []
+    line_length = 0
+    for word in text.split():
+        if line_length + len(word) + len(line) <= width:
+            line.append(word)
+            line_length += len(word)
+        else:
             if len(line) == 1:
-                lines.append(left_justify(line, width))
+                lines.append(line[0] + ' ' * (width - len(line[0])))
             else:
-                # After n + 1 spaces are placed between each pair of
-                # words, there are r spaces left over; these result in
-                # wider spaces at the left.
-                n, r = divmod(width - col + 1, len(line) - 1)
-                narrow = ' ' * (n + 1)
-                if r == 0:
-                    lines.append(narrow.join(line))
-                else:
-                    wide = ' ' * (n + 2)
-                    lines.append((wide.join(line[:r] + [narrow.join(line[r:])])))
-            line, col = [], 0
-        line.append(word)
-        col += len(word) + 1
+                spaces_to_insert = width - line_length
+                spaces_per_gap = spaces_to_insert // (len(line) - 1)
+                extra_spaces = spaces_to_insert % (len(line) - 1)
+                for i in range(len(line) - 1):
+                    if extra_spaces:
+                        line[i] += ' '
+                        extra_spaces -= 1
+                    line[i] += ' ' * spaces_per_gap
+                lines.append(''.join(line))
+            line = [word]
+            line_length = len(word)
+
     if line:
-        lines.append(left_justify(line, width))
+        if len(line) == 1:
+            lines.append(line[0] + ' ' * (width - len(line[0])))
+        else:
+            lines.append(' '.join(line))
+
     return lines
