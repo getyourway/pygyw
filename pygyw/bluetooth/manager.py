@@ -10,11 +10,11 @@ from . import settings
 
 system = platform.system()
 if os.name == "linux" or system == "Linux":
-    device_local_storage = os.path.join(os.path.expanduser('~'), ".local/pygyw/devices")
+    device_local_storage = os.path.join(os.path.expanduser('~'), ".local", "pygyw", "devices")
 elif os.name == "windows" or system == "Windows":
-    device_local_storage = os.path.join(os.getenv("LOCALAPPDATA"), "pygyw/devices")
+    device_local_storage = os.path.join(os.getenv("LOCALAPPDATA"), "pygyw", "devices")
 elif os.name == "mac" or platform.system() == "Darwin":
-    device_local_storage = os.path.join(os.path.expanduser("~"), "~/Library/Application Support/pygyw/devices")
+    device_local_storage = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "pygyw", "devices")
 else:
     raise BTException("OS not supported")
 

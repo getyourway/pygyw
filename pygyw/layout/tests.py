@@ -1,3 +1,10 @@
+"""
+This test script is used to check that every display can be converted to drawings.
+The results are written in **test_displays.json**.
+By following versions on this file, it is easy to see what has changed in a 
+display in terms of drawings content
+"""
+
 from io import TextIOWrapper
 import json
 
@@ -30,31 +37,31 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index)
 
     # Title with different font
-    drawing = displays.Title("This is a big title", font=fonts.Fonts.BIG_TITLE)
+    drawing = displays.Title("This is a big title", font=fonts.Fonts.HUGE)
     index = _unit_test(drawing, f, index=index, name="Big title")
 
     # Paragraph short
-    drawing = displays.Paragraph("This is a short paragraph", font=fonts.Fonts.BASIC)
+    drawing = displays.Paragraph("This is a short paragraph", font=fonts.Fonts.SMALL)
     index = _unit_test(drawing, f, index=index, name="Short paragraph")
 
     # Paragraph long
-    drawing = displays.Paragraph("This is a very very very very very very long paragraph", font=fonts.Fonts.BASIC)
+    drawing = displays.Paragraph("This is a very very very very very very long paragraph", font=fonts.Fonts.SMALL)
     index = _unit_test(drawing, f, index=index, name="Long paragraph")
 
     # Paragraph long with big typo
-    drawing = displays.Paragraph("This is a very very very very very very long paragraph", font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.Paragraph("This is a very very very very very very long paragraph", font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="Long paragraph with bigger typo")
 
     # Paragraph short with offset
-    drawing = displays.Paragraph("This is a short paragraph", font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.Paragraph("This is a short paragraph", font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="Paragraph with offsets")
 
     # TextLine
     drawing = displays.TextLine("This is a line")
-    index = _unit_test(drawing, f, index=index, name="Text line basic")
+    index = _unit_test(drawing, f, index=index, name="Text line SMALL")
 
     # TextLine with big typo
-    drawing = displays.TextLine("This is a line", font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.TextLine("This is a line", font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="Text line big typo")
 
     # TextLine with left align
@@ -74,7 +81,7 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Text line to the bottom")
 
     # TextLine with offset
-    drawing = displays.TextLine("This line is aligned to the bottom", font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.TextLine("This line is aligned to the bottom", font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="Text line with offsets")
 
     # TextList 1 line
@@ -90,7 +97,7 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Text list with 6 lines")
 
     # TextList with big typo
-    drawing = displays.TextList(["line 1", "line 2", "line 3"], font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.TextList(["line 1", "line 2", "line 3"], font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="Text list big typo")
 
     # TextList with left align
@@ -110,7 +117,7 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Text list to the bottom")
 
     # TextList with offset
-    drawing = displays.TextList(["line 1", "line 2", "line 3"], font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.TextList(["line 1", "line 2", "line 3"], font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="Text list with offsets")
 
     # TextGrid 1 x 1
@@ -138,7 +145,7 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Text grid empty line")
 
     # TextGrid with big typo
-    drawing = displays.TextGrid([["1.1", "1.2"], ["2.1", "2.2"]], font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.TextGrid([["1.1", "1.2"], ["2.1", "2.2"]], font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="Text grid big typo")
 
     # TextGrid with top align
@@ -150,15 +157,15 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Text grid to the bottom")
 
     # TextGrid with offset
-    drawing = displays.TextGrid([["1.1", "1.2"], ["2.1", "2.2"]], font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.TextGrid([["1.1", "1.2"], ["2.1", "2.2"]], font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="Text grid with offsets")
 
     # Line of 3
     drawing = displays.LineOfThree(["Text 1", "Text 2", "Text 3"])
-    index = _unit_test(drawing, f, index=index, name="3 texts basic")
+    index = _unit_test(drawing, f, index=index, name="3 texts SMALL")
 
     # Line of 3 with big typo
-    drawing = displays.LineOfThree(["Text 1", "Text 2", "Text 3"], font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.LineOfThree(["Text 1", "Text 2", "Text 3"], font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="3 texts big typo")
 
     # Line of 3 with center align
@@ -170,15 +177,15 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="3 texts to the bottom")
 
     # Line of 3 with offset
-    drawing = displays.LineOfThree(["Text 1", "Text 2", "Text 3"], font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.LineOfThree(["Text 1", "Text 2", "Text 3"], font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="3 texts with offsets")
 
     # Line of 2
     drawing = displays.LineOfTwo(["Text 1", "Text 2"])
-    index = _unit_test(drawing, f, index=index, name="2 texts basic")
+    index = _unit_test(drawing, f, index=index, name="2 texts SMALL")
 
     # Line of 2 with big typo
-    drawing = displays.LineOfTwo(["Text 1", "Text 2"], font=fonts.Fonts.BIG_BASIC)
+    drawing = displays.LineOfTwo(["Text 1", "Text 2"], font=fonts.Fonts.LARGE)
     index = _unit_test(drawing, f, index=index, name="2 texts big typo")
 
     # Line of 2 with center align
@@ -190,7 +197,7 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="2 texts to the bottom")
 
     # Line of 2 with offset
-    drawing = displays.LineOfTwo(["Text 1", "Text 2"], font=fonts.Fonts.BASIC, x_offset=40, y_offset=60)
+    drawing = displays.LineOfTwo(["Text 1", "Text 2"], font=fonts.Fonts.SMALL, x_offset=40, y_offset=60)
     index = _unit_test(drawing, f, index=index, name="2 texts with offsets")
 
     # Icon left
@@ -214,5 +221,5 @@ with open("test_displays.json", "w") as f:
     index = _unit_test(drawing, f, index=index, name="Full app bar")
 
     # Full appbar with big typo
-    drawing = displays.FullAppBar(title="Large title", left="IconAwesomeArrowLeft", right="IconAwesomeArrowRight", title_font=fonts.Fonts.BIG_TITLE)
+    drawing = displays.FullAppBar(title="Large title", left="IconAwesomeArrowLeft", right="IconAwesomeArrowRight", title_font=fonts.Fonts.HUGE)
     index = _unit_test(drawing, f, index=index, name="Full app bar")

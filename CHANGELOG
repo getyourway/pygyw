@@ -1,3 +1,7 @@
+1.0.0 :
+    - Migration to aRdent 1 communication protocol
+    - Use of aRdent 1 fonts
+
 0.1.1 :
     - Layout library working in MicroPython
 

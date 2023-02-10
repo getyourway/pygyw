@@ -1,6 +1,8 @@
 from . import fonts
 from . import settings
 
+from ..bluetooth import commands
+
 class DrawingPosition:
     '''
     Position of a drawing on the screen
@@ -44,6 +46,9 @@ class Drawing:
         data["type"] = self.type
         return data
 
+    def to_commands(self) -> "list[commands.BTCommand]":
+        return []
+
 
 class WhiteScreen(Drawing):
     '''
@@ -53,12 +58,20 @@ class WhiteScreen(Drawing):
         # The position is not important but needed by the library
         super().__init__(type="white_screen", position=DrawingPosition(0, 0))
 
+    def to_commands(self) -> "list[commands.BTCommand]":
+        return super().to_commands() + [
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.CLEAR]),
+            )
+        ]
+
 
 class TextDrawing(Drawing):
     '''
     Text displayed on the screen
     '''
-    def __init__(self, text: str, position: DrawingPosition, font=fonts.Fonts.BASIC):
+    def __init__(self, text: str, position: DrawingPosition, font=fonts.Fonts.SMALL):
         super().__init__(type="text", position=position)
         self.text = text
         self.font = font
@@ -69,6 +82,36 @@ class TextDrawing(Drawing):
         data["x_size"] = settings.screenWidth
         data.update(self.font.to_json())
         return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":        
+        operations = super().to_commands() + [
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(self.font.prefix, 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_FONT]),
+            ),
+        ]
+
+        N = 20
+        blocks = [self.text[i:i + N] for i in range(0, len(self.text), N)]
+        for i, block in enumerate(blocks):
+            print(block)
+            ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + (self.position.pos_x + self.font.width * N * i).to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
+            operations.extend([
+                commands.BTCommand(
+                    commands.GYWCharacteristics.DISPLAY_DATA,
+                    bytes(block, 'utf-8'),
+                ),
+                commands.BTCommand(
+                    commands.GYWCharacteristics.DISPLAY_COMMAND,
+                    ctrl_data,
+                ),
+            ])
+
+        return operations
 
 
 class IconDrawing(Drawing):
@@ -88,3 +131,17 @@ class IconDrawing(Drawing):
         data["x_size"] = self.x_size
         data["y_size"] = self.y_size
         return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.position.pos_x.to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
+
+        return super().to_commands() + [
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(self.icon, 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        ]

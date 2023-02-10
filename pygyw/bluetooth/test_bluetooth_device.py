@@ -2,6 +2,7 @@ import asyncio
 
 from pygyw.bluetooth.manager import BTManager, BTDevice
 from pygyw.bluetooth import exceptions
+from pygyw.layout import drawings, displays, fonts
 
 
 async def _connect_previous(loop) -> BTDevice or None:
@@ -68,6 +69,7 @@ async def run(loop):
             f.write(f"{device} connected\n")
         else:
             f.write("Connection with a pulled device failed")
+        await device.disconnect()
 
         # Connect to scanned device
         device = await _connect_scanned(loop)
@@ -76,23 +78,44 @@ async def run(loop):
         else:
             f.write("Connection with a scanned device failed")
 
-        # Send one json data
-        await device.send_jsons([
-            {"type": "text", "data": "Data 1", "x_start": 100, "y_start": 100, "x_size": 800},
-        ])
+        try:
+            # Start display
+            await device.start_display()
 
-        # Send two jsons data
-        await device.send_jsons([
-            {"type": "text", "data": "Data 2", "x_start": 100, "y_start": 200, "x_size": 800},
-            {"type": "text", "data": "Data 3", "x_start": 100, "y_start": 300, "x_size": 800},
-        ])
+            # Send white screen
+            await device.send_drawing(
+                drawings.WhiteScreen()
+            )
 
-        # Send white screen + text jsons data
-        await device.send_jsons([
-            {"type": "white_screen"},
-            {"type": "text", "data": "Data 4", "x_start": 100, "y_start": 400, "x_size": 800},
-        ])
+            # Send text drawing
+            await device.send_drawing(
+                drawings.TextDrawing("Texte", position=drawings.DrawingPosition(100, 100))
+            )
 
+            # Send icon drawing
+            await device.send_drawing(
+                drawings.IconDrawing("done.png", position=drawings.DrawingPosition(100, 200))
+            )
+
+            # Send multiple texts through a paragraph
+            await device.send_drawings(
+                displays.Paragraph(
+                    "Ceci est un paragraphe, un peu long certes, mais il permet de tester un ecran sur plusieurs lignes",
+                    line_height=1.5,
+                    font=fonts.Fonts.LARGE,
+                ).get_drawings(),
+            )
+
+            # Send a text and some icons
+            await device.send_drawings(
+                displays.FullAppBar(
+                    title="Mon titre",
+                    left="up.png",
+                    right="right.png",
+                ).get_drawings(),
+            )
+        finally:
+            await device.disconnect()
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run(loop))

@@ -1,9 +1,9 @@
 screenWidth = 800
 screenHeight = 420
 
-iconImageSize = 80
+iconImageSize = 48
 
-appBarHeight = 120
+appBarHeight = 80
 appBarFontSize = 40
 appBarTopPadding = 20
 appBarHorizontalPadding = 20

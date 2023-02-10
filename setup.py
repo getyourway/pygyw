@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pygyw',
-    version='0.1.0',
+    version='1.0.0',
     description='A Python package to communicate with Get Your Way devices',
     url='https://github.com/getyourway/pygyw',
     author='Antoine Malherbe',

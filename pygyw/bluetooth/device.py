@@ -1,10 +1,8 @@
 import asyncio
 from bleak.backends.device import BLEDevice
 from bleak import BleakClient
-import json
 
-from . import exceptions
-from . import settings
+from . import commands
 from ..layout import drawings
 
 
@@ -60,33 +58,19 @@ class BTDevice:
 
         return disconnected
 
-    async def __send_pseudo_json(self, data: str):
-        if not self.client:
-            raise exceptions.BTException("Device is not connected")
-
-        data_bytes = data.encode('UTF-8')
-        i = 0
-        while i < len(data_bytes):
-            try:
-                await self.client.write_gatt_char(settings.display_characteristic, data_bytes[i:i + 20], False)
-                i = i + 20
-            except Exception as e:
-                raise exceptions.BTException(f"Error while sending the data : {e}")
-
-    async def __send_jsons(self, data: "list[dict]", sleep_time=0.1):
-        if not self.client:
-            raise exceptions.BTException("Device is not connected")
-
-        print(f"Sending data: {data}")
-        for d in data:
-            await self.__send_pseudo_json(json.dumps(d) + "{END}")
+    async def __execute_commands(self, commands: 'list[commands.BTCommand]', sleep_time: float = 0.15):
+        for command in commands:
+            await self.client.write_gatt_char(command.characterisctic, command.data)
             await asyncio.sleep(sleep_time)
-        print("Data sent")
 
-    def send_drawing(self, drawing: drawings.Drawing):
-        return self.__send_jsons([drawing.to_json()])
+    async def send_drawing(self, drawing: drawings.Drawing):
+        return await self.__execute_commands(drawing.to_commands())
 
-    def send_drawings(self, drawings: "list[drawings.Drawing]", sleep_time: float = 0.1):
-        return self.__send_jsons([
-            drawing.to_json() for drawing in drawings
-        ], sleep_time=sleep_time)
+    async def send_drawings(self, drawings: "list[drawings.Drawing]", sleep_time: float = 0.1):
+        for drawing in drawings:
+            await self.send_drawing(drawing)
+            await asyncio.sleep(sleep_time)
+
+    async def start_display(self, sleep_time: float = 1):
+        await self.__execute_commands([commands.start_screen])
+        await asyncio.sleep(sleep_time)

@@ -55,7 +55,7 @@ class Title(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, text, font: fonts.Font = fonts.Fonts.TITLE):
+    def __init__(self, text, font: fonts.Font = fonts.Fonts.MEDIUM):
         super().__init__(name="Title")
         self.text = text
         self.font = font
@@ -85,7 +85,7 @@ class Paragraph(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
                  line_height=2.0, x_offset=0, y_offset=0):
         super().__init__(name="Paragraph")
         self.text = text
@@ -125,7 +125,7 @@ class TextLine(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
                  x_offset=0, y_offset=0, align=TextAlign.CENTER,
                  vertical_align=TextVerticalAlign.CENTER):
         super().__init__(name="One line text")
@@ -175,7 +175,7 @@ class TextList(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, items: "list[str]", font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, items: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
                  line_height=2.0, x_offset=0, y_offset=0, align=TextAlign.LEFT,
                  vertical_align=TextVerticalAlign.TOP):
         super().__init__(name="Text list")
@@ -232,7 +232,7 @@ class TextGrid(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, lines, font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, lines, font: fonts.Font = fonts.Fonts.SMALL,
                  line_height=2.0, x_offset=0, y_offset=0,
                  vertical_align=TextVerticalAlign.TOP):
         super().__init__(name="Text Grid")
@@ -291,7 +291,7 @@ class LineOfThree(DrawingTemplate):
         |                              |
         ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
         '''
-    def __init__(self, texts: "list[str]", font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, texts: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
                  x_offset=0, y_offset=0, vertical_align=TextVerticalAlign.TOP):
         super().__init__(name="Line of three")
 
@@ -331,7 +331,7 @@ class LineOfTwo(DrawingTemplate):
     |                              |
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
-    def __init__(self, texts, font: fonts.Font = fonts.Fonts.BASIC,
+    def __init__(self, texts, font: fonts.Font = fonts.Fonts.SMALL,
                  x_offset: int = 0, y_offset: int = 0,
                  vertical_align=TextVerticalAlign.TOP):
         super().__init__(name="Line of two")
@@ -492,7 +492,7 @@ class FullAppBar(DrawingTemplate):
     ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
     '''
     def __init__(self, title: str = None, left: str = None, right: str = None,
-                 title_font: fonts.Font = fonts.Fonts.TITLE):
+                 title_font: fonts.Font = fonts.Fonts.MEDIUM):
         super().__init__(name="Full appbar")
         self.title = title
         self.left = left
