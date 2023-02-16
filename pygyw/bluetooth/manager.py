@@ -16,7 +16,6 @@ class BTManager:
         self.devices: "list[BTDevice]" = []
         self.is_scanning: bool = False
 
-
     def __get_device_local_storage():
         system = platform.system()
         if os.name == "linux" or system == "Linux":

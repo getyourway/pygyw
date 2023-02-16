@@ -26,7 +26,6 @@ class BTDevice:
         self.device = device
         self.client: BleakClient = None
 
-
     def __str__(self) -> str:
         return self.device.name
 
