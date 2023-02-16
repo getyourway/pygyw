@@ -11,7 +11,7 @@ class Font:
         width (int): Width of a character in pixels.
         bold (bool): Whether the font is in bold or not.
     """
-    
+
     def __init__(
         self, name: str, index: int, prefix: str, size: float, height: int, width: int, bold: bool = False
     ) -> None:
@@ -48,6 +48,7 @@ class Font:
         return {
             "title": self.index,
         }
+
 
 class Fonts:
     """

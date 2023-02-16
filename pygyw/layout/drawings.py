@@ -3,6 +3,7 @@ from . import settings
 
 from ..bluetooth import commands
 
+
 class DrawingPosition:
     """
     Represents the position of a drawing on the screen.

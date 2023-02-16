@@ -19,6 +19,7 @@ def center_text(text: str, font: fonts.Font) -> int:
 
     return int((settings.screenWidth - len(text) * font.width) / 2)
 
+
 def left_align_text(text: str, font: fonts.Font) -> int:
     """
     Return the horizontal position of a text that should be aligned to the left.
@@ -32,6 +33,7 @@ def left_align_text(text: str, font: fonts.Font) -> int:
     """
 
     return int(settings.contentHorizontalPadding)
+
 
 def right_align_text(text: str, font: fonts.Font) -> int:
     """
@@ -47,6 +49,7 @@ def right_align_text(text: str, font: fonts.Font) -> int:
 
     return int(settings.screenWidth - settings.contentHorizontalPadding - len(text) * font.width)
 
+
 def top_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     """
     Return the vertical position of a text that should be aligned to the top.
@@ -61,6 +64,7 @@ def top_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     """
 
     return int(settings.appBarHeight + settings.contentVerticalPadding)
+
 
 def vcenter_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     """
@@ -78,6 +82,7 @@ def vcenter_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     lines_count = len(lines)
     return int(settings.appBarHeight + (settings.contentVerticalSpace - line_height * (lines_count - 1) * font.height) / 2)
 
+
 def bottom_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     """
     Return the vertical position of a text that should be aligned to the bottom.
@@ -93,7 +98,6 @@ def bottom_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
 
     lines_count = len(lines)
     return int(settings.screenHeight - settings.contentVerticalPadding - line_height * (lines_count - 1) * font.height)
-
 
 
 ##############################################

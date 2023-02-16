@@ -26,7 +26,7 @@ class TextAlign:
 class DrawingTemplate:
     """
     Abstract view of a template that defines everything show on a screen.
-    
+
     Attributes:
         name (str): Name of the template
 
@@ -35,7 +35,7 @@ class DrawingTemplate:
     def __init__(self, name):
         """
         Initialize a DrawingTemplate object.
-        
+
         Args:
             name (str): Name of the template
 
@@ -52,7 +52,7 @@ class DrawingTemplate:
     def get_drawings(self) -> "list[Drawing]":
         """
         Generate a list of drawings that describes the content of the screen.
-        
+
         Returns:
             list[Drawing]: A list of drawings
 
@@ -398,7 +398,7 @@ class TextGrid(DrawingTemplate):
 
     def __init__(
         self, lines, font: fonts.Font = fonts.Fonts.SMALL,
-        line_height: int = 2.0, x_offset: int = 0, y_offset : int = 0,
+        line_height: int = 2.0, x_offset: int = 0, y_offset: int = 0,
         vertical_align=TextVerticalAlign.TOP,
     ):
         """
@@ -493,7 +493,7 @@ class LineOfThree(DrawingTemplate):
 
     def __init__(
         self, texts: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
-        x_offset : int = 0, y_offset : int = 0, vertical_align = TextVerticalAlign.TOP
+        x_offset: int = 0, y_offset: int = 0, vertical_align=TextVerticalAlign.TOP,
     ):
         """
         Initialize a LineOfTwo object.
@@ -663,7 +663,7 @@ class IconAppBarLeft(DrawingTemplate):
     def get_drawings(self) -> "list[Drawing]":
         """
         Generate a list of drawings that describes the icon on the screen.
-        
+
         Returns:
             list[Drawing]: A list of drawings
 
@@ -721,7 +721,7 @@ class IconCenter(DrawingTemplate):
     def get_drawings(self) -> "list[Drawing]":
         """
         Generate a list of drawings that describes the icon on the screen.
-        
+
         Returns:
             list[Drawing]: A list of drawings
 
@@ -779,7 +779,7 @@ class IconAppBarRight(DrawingTemplate):
     def get_drawings(self) -> "list[Drawing]":
         """
         Generate a list of drawings that describes the icon on the screen.
-        
+
         Returns:
             list[Drawing]: A list of drawings
 
@@ -848,7 +848,7 @@ class FullAppBar(DrawingTemplate):
     def get_drawings(self) -> "list[Drawing]":
         """
         Generate a list of drawings that describes the display.
-        
+
         Returns:
             list[Drawing]: A list of drawings
 
