@@ -75,6 +75,11 @@ class BTDevice:
             await self.send_drawing(drawing)
             await asyncio.sleep(sleep_time)
 
-    async def start_display(self, sleep_time: float = 1):
-        await self.__execute_commands([commands.start_screen])
+    async def start_display(self, sleep_time: float = 0.5):
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.START_DISPLAY]),
+            ),
+        ])
         await asyncio.sleep(sleep_time)

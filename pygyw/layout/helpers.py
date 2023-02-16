@@ -11,11 +11,13 @@ def center_text(text: str, font: fonts.Font) -> int:
     """
     return int((settings.screenWidth - len(text) * font.width) / 2)
 
+
 def left_align_text(text: str, font: fonts.Font) -> int:
     """
     Returns the horizontal position of a text that should be aligned to the left
     """
     return int(settings.contentHorizontalPadding)
+
 
 def right_align_text(text: str, font: fonts.Font) -> int:
     """
@@ -23,11 +25,13 @@ def right_align_text(text: str, font: fonts.Font) -> int:
     """
     return int(settings.screenWidth - settings.contentHorizontalPadding - len(text) * font.width)
 
+
 def top_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
     """
     Returns the vertical position of a text that should be aligned to the top
     """
     return int(settings.appBarHeight + settings.contentVerticalPadding)
+
 
 def vcenter_text(lines: list, font: fonts.Font, line_height=2.0):
     """
@@ -35,6 +39,7 @@ def vcenter_text(lines: list, font: fonts.Font, line_height=2.0):
     """
     lines_count = len(lines)
     return int(settings.appBarHeight + (settings.contentVerticalSpace - line_height * (lines_count - 1) * font.height) / 2)
+
 
 def bottom_text(lines: list, font: fonts.Font, line_height=2.0):
     """
@@ -60,6 +65,7 @@ def left_justify(words: "list[str]", width: int):
     spaces_to_add = width - len(text)
     text += ' ' * spaces_to_add
     return text
+
 
 def justify(text: str, width: int):
     """

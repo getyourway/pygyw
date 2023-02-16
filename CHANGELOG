@@ -1,6 +1,7 @@
 1.1.1 :
     - Fixed a bug related to control codes
     - Simplified text sending
+    - Fix typography detected by pycodestyle
 
 1.0.0 :
     - Migration to aRdent 1 communication protocol

@@ -3,11 +3,11 @@ from . import settings
 
 from ..bluetooth import commands
 
+
 class DrawingPosition:
     '''
     Position of a drawing on the screen
     '''
-
     def __init__(self, pos_x, pos_y):
         # Horizontal offset
         self.pos_x = int(pos_x)
@@ -93,14 +93,15 @@ class TextDrawing(Drawing):
         # Set font
         if font:
             operations.extend([
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(self.font.prefix, 'utf-8'),
-            ),
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.SET_FONT]),
-            ),])
+                commands.BTCommand(
+                    commands.GYWCharacteristics.DISPLAY_DATA,
+                    bytes(self.font.prefix, 'utf-8'),
+                ),
+                commands.BTCommand(
+                    commands.GYWCharacteristics.DISPLAY_COMMAND,
+                    bytearray([commands.ControlCodes.SET_FONT]),
+                ),
+            ])
 
         # Send text data
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.position.pos_x.to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
@@ -116,6 +117,7 @@ class TextDrawing(Drawing):
         ])
 
         return operations
+
 
 class IconDrawing(Drawing):
     '''
