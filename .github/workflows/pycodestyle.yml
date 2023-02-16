@@ -1,8 +1,6 @@
 name: Check code style with pycodestyle
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
@@ -21,4 +19,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install pycodestyle
       - name: Run pycodestyle
-        run: pycodestyle --ignore=E501 pygyw
+        run: pycodestyle --ignore=E501 --count pygyw
