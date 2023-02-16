@@ -6,6 +6,8 @@ from . import settings
 
 
 class TextVerticalAlign:
+    """A collection of vertical alignement for the displays."""
+
     TOP = "top"
     CENTER = "center"
     BOTTOM = "bottom"
@@ -13,6 +15,8 @@ class TextVerticalAlign:
 
 
 class TextAlign:
+    """A collection of horizontal alignement for the displays."""
+
     LEFT = "left"
     CENTER = "center"
     RIGHT = "right"
@@ -21,9 +25,22 @@ class TextAlign:
 
 class DrawingTemplate:
     """
-    Abstract view of a template that defines everything show on a screen
+    Abstract view of a template that defines everything show on a screen.
+    
+    Attributes:
+        name (str): Name of the template
+
     """
+
     def __init__(self, name):
+        """
+        Initialize a DrawingTemplate object.
+        
+        Args:
+            name (str): Name of the template
+
+        """
+
         self.name = name
 
     def __str__(self) -> str:
@@ -34,7 +51,11 @@ class DrawingTemplate:
 
     def get_drawings(self) -> "list[Drawing]":
         """
-        Returns a list of drawings that describe the content of the screen
+        Generate a list of drawings that describes the content of the screen.
+        
+        Returns:
+            list[Drawing]: A list of drawings
+
         """
         pass
 
@@ -43,24 +64,49 @@ class DrawingTemplate:
 #   Templates with text only
 ##############################################
 class Title(DrawingTemplate):
-    '''
-    Display an appbar title
-    ________________________________
+    """
+    Display a title in the appbar area.
+
+    Attributes:
+        text (str): Text to put as a title
+        font (Font, optional): Font used to write the text. Defaults to MEDIUM
+
+    Example:
+    --------------------------------
     |   Lorem Ipsum, lorem Ipsum   |
-    ________________________________
+    --------------------------------
     |                              |
     |                              |
     |                              |
     |                              |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
+    --------------------------------
+
+    """
+
     def __init__(self, text, font: fonts.Font = fonts.Fonts.MEDIUM):
+        """
+        Initialize the Title object.
+
+        Args:
+            text (str): Text to put as a title
+            font (Font, optional): Font used to write the text. Defaults to MEDIUM
+
+        """
+
         super().__init__(name="Title")
         self.text = text
         self.font = font
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return [
             TextDrawing(
                 text=self.text,
@@ -73,20 +119,45 @@ class Title(DrawingTemplate):
 
 
 class Paragraph(DrawingTemplate):
-    '''
-    Display several lines of text
-    ________________________________
+    """
+    A class for displaying several lines of text.
+
+    Attributes:
+        text (str): The text to display.
+        font (Font): The font to use for the text.
+        line_height (float): The vertical spacing between lines of text.
+        x_offset (int): The horizontal offset for the text.
+        y_offset (int): The vertical offset for the text.
+
+    Example:
+    --------------------------------
     |                              |
-    ________________________________
+    --------------------------------
     |                              |
     |  Lorem Ipsum, lorem Ipsum    |
     |  Lorem Ipsum, lorem Ipsum    |
     |  Lorem Ipsum, lorem Ipsum    |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
-                 line_height=2.0, x_offset=0, y_offset=0):
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
+        line_height: float = 2.0, x_offset: int = 0, y_offset: int = 0
+    ):
+        """
+        Initialize a Paragraph display.
+
+        Args:
+            text (str): The text to display
+            font (Font, optional): The font used for the text. Defaults to SMALL.
+            line_height (float, optional): _The vertical spacing between lines of text. Defaults to 2.0.
+            x_offset (int, optional): The horizontal offset for the text. Defaults to 0.
+            y_offset (int, optional): The vertical offset for the text. Defaults to 0.
+
+        """
+
         super().__init__(name="Paragraph")
         self.text = text
         self.font = font
@@ -95,6 +166,14 @@ class Paragraph(DrawingTemplate):
         self.y_offset = y_offset
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         text_max_length = math.ceil(settings.contentHorizontalSpace / self.font.width)
         informations = helpers.justify(self.text, text_max_length)
 
@@ -113,21 +192,48 @@ class Paragraph(DrawingTemplate):
 
 
 class TextLine(DrawingTemplate):
-    '''
-    Display a line of text
-    ________________________________
+    """
+    A class for displaying a line of text.
+
+    Attributes:
+        text (str): The text to display.
+        font (Font): The font to use for the text.
+        x_offset (int): The horizontal offset for the text.
+        y_offset (int): The vertical offset for the text.
+        align (TextAlign): The horizontal alignment of the text.
+        vertical_align (TextVerticalAlign): The vertical alignment of the text.
+
+    Example:
+    --------------------------------
     |                              |
-    ________________________________
+    --------------------------------
     |                              |
     |   Lorem Ipsum, lorem Ipsum   |
     |                              |
     |                              |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
-                 x_offset=0, y_offset=0, align=TextAlign.CENTER,
-                 vertical_align=TextVerticalAlign.CENTER):
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, text: str, font: fonts.Font = fonts.Fonts.SMALL,
+        x_offset: int = 0, y_offset: int = 0, align=TextAlign.CENTER,
+        vertical_align=TextVerticalAlign.CENTER,
+    ):
+        """
+        Initialize a TextLine object.
+
+        Args:
+            text (str): The text to display.
+            font (Font, optional): The font to use for the text. Defaults to SMALL.
+            x_offset (int, optional): The horizontal offset for the text. Defaults to 0.
+            y_offset (int, optional): The vertical offset for the text. Defaults to 0.
+            align (TextAlign, optional): The horizontal alignment of the text. Defaults to CENTER.
+            vertical_align (TextVerticalAlign, optional): The vertical alignment of the text. Defaults to CENTER.
+
+        """
+
         super().__init__(name="One line text")
         self.text = text
         self.font = font
@@ -137,6 +243,14 @@ class TextLine(DrawingTemplate):
         self.vertical_align = vertical_align
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         # Vertical align management
         if self.vertical_align == TextVerticalAlign.TOP:
             pos_y = self.y_offset + helpers.top_text([self.text], font=self.font)
@@ -163,21 +277,50 @@ class TextLine(DrawingTemplate):
 
 
 class TextList(DrawingTemplate):
-    '''
-    Display a list of texts
-    ________________________________
+    """
+    Display a list of text items.
+
+    Attributes:
+        items (list[str]): A list of texts
+        font (Font): The font used to display the text.
+        line_height (float): The height of each line of text.
+        x_offset (int): The horizontal offset for the texts.
+        y_offset (int): The vertical offset for the texts.
+        align (TextAlign): The horizontal alignment for the texts.
+        vertical_align (TextVerticalAlign): The vertical alignment for the text within the texts.
+
+    Example:
+    --------------------------------
     |                              |
-    ________________________________
+    --------------------------------
     |                              |
     |  • Ipsum                     |
     |  • Ipsum                     |
     |  • Ipsum                     |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, items: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
-                 line_height=2.0, x_offset=0, y_offset=0, align=TextAlign.LEFT,
-                 vertical_align=TextVerticalAlign.TOP):
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, items: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
+        line_height=2.0, x_offset=0, y_offset=0, align=TextAlign.LEFT,
+        vertical_align=TextVerticalAlign.TOP,
+    ):
+        """
+        Initialize a TextList object.
+
+        Args:
+            items (list[str]): A list of texts
+            font (Font, optional): The font used to display the text.
+            line_height (float, optional): The height of each line of text. Defaults to 2.0.
+            x_offset (int, optional): The horizontal offset for the texts. Defaults to 0.
+            y_offset (int, optional): The vertical offset for the texts. Defaults to 0.
+            align (TextAlign, optional): The horizontal alignment for the texts. Defaults to LEFT.
+            vertical_align (TextVerticalAlign, optional): The vertical alignment for the text within the texts. Defaults to TOP.
+
+        """
+
         super().__init__(name="Text list")
         self.items = items
         self.font = font
@@ -188,6 +331,13 @@ class TextList(DrawingTemplate):
         self.vertical_align = vertical_align
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
         if self.vertical_align == TextVerticalAlign.TOP:
             pos_y = self.y_offset + helpers.top_text(
                 self.items, font=self.font, line_height=self.line_height)
@@ -219,22 +369,51 @@ class TextList(DrawingTemplate):
 
 
 class TextGrid(DrawingTemplate):
-    '''
-    Display a grid of texts
-    :note: Lines must not have the same length
-    ________________________________
+    """
+    A class for displaying a grid of texts.
+
+    Attributes:
+        lines (List[List[str]]): A list of strings where each inner list represents a row in the grid.
+        font (Font): The font used to display the text.
+        line_height (float): The height of each line of text.
+        x_offset (int): The horizontal offset for the grid.
+        y_offset (int): The vertical offset for the grid.
+        vertical_align (TextVerticalAlign): The vertical alignment for the text within the grid.
+
+    Note:
+        Lines must not have the same length.
+
+    Example:
+    --------------------------------
     |                              |
-    ________________________________
+    --------------------------------
     |                              |
     |  • Ipsum   • Ipsum           |
     |                              |
     |  • Ipsum   • Ipsum           |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, lines, font: fonts.Font = fonts.Fonts.SMALL,
-                 line_height=2.0, x_offset=0, y_offset=0,
-                 vertical_align=TextVerticalAlign.TOP):
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, lines, font: fonts.Font = fonts.Fonts.SMALL,
+        line_height: int = 2.0, x_offset: int = 0, y_offset : int = 0,
+        vertical_align=TextVerticalAlign.TOP,
+    ):
+        """
+        Initialize the TextGrid object.
+
+        Args:
+            lines (List[List[str]]): A list of strings where each inner list represents a row in the grid.
+            font (Font, optional): The font used to display the text. Defaults to SMALL.
+            line_height (float, optional): The height of each line of text. Defaults to 2.0.
+            x_offset (int, optional): The horizontal offset for the grid. Defaults to 0.
+            y_offset (int, optional): The vertical offset for the grid. Defaults to 0.
+            vertical_align (TextVerticalAlign, optional): The vertical alignment for the text within the grid. Defaults to TOP.
+
+        """
+
         super().__init__(name="Text Grid")
         self.lines = lines
         self.font = font
@@ -244,6 +423,13 @@ class TextGrid(DrawingTemplate):
         self.vertical_align = vertical_align
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
         out = []
 
         if self.vertical_align == TextVerticalAlign.TOP:
@@ -279,20 +465,51 @@ class TextGrid(DrawingTemplate):
 
 
 class LineOfThree(DrawingTemplate):
-    '''
-        Display three texts on the same line
-        ________________________________
-        |                              |
-        ________________________________
-        |                              |
-        | Left      Center       Right |
-        |                              |
-        |                              |
-        |                              |
-        ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-        '''
-    def __init__(self, texts: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
-                 x_offset=0, y_offset=0, vertical_align=TextVerticalAlign.TOP):
+    """
+    Display three texts on the same line.
+
+    Attributes:
+        texts (tuple): A list containing two strings to be displayed.
+        font (Font): The font to use for the text.
+        x_offset (int): The horizontal offset from the left edge of the screen.
+        y_offset (int): The vertical offset from the top edge of the screen.
+        vertical_align (TextVerticalAlign): The vertical alignment of the text.
+
+    Raises:
+        AssertionError: If the `texts` parameter does not contain exactly two strings.
+
+    Example:
+    --------------------------------
+    |                              |
+    --------------------------------
+    |                              |
+    | Left      Center       Right |
+    |                              |
+    |                              |
+    |                              |
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, texts: "list[str]", font: fonts.Font = fonts.Fonts.SMALL,
+        x_offset : int = 0, y_offset : int = 0, vertical_align = TextVerticalAlign.TOP
+    ):
+        """
+        Initialize a LineOfTwo object.
+
+        Attributes:
+            texts (tuple): A list containing the strings to be displayed.
+            font (Font, optional): The font to use for the text. Defaults to SMALL.
+            x_offset (int, optional): The horizontal offset from the left edge of the screen. Defaults to 0.
+            y_offset (int, optional): The vertical offset from the top edge of the screen. Defaults to 0.
+            vertical_align (TextVerticalAlign, optional): The vertical alignment of the text. Defaults to TOP.
+
+        Raises:
+            AssertionError: If the `texts` parameter does not contain exactly three strings.
+
+        """
+
         super().__init__(name="Line of three")
 
         assert len(texts) == 3
@@ -303,6 +520,14 @@ class LineOfThree(DrawingTemplate):
         self.vertical_align = vertical_align
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return TextLine(
             text=self.texts[0], font=self.font, align=TextAlign.LEFT,
             x_offset=self.x_offset, y_offset=self.x_offset,
@@ -319,21 +544,52 @@ class LineOfThree(DrawingTemplate):
 
 
 class LineOfTwo(DrawingTemplate):
-    '''
-    Display two texts on the same line
-    ________________________________
+    """
+    Display two texts on the same line.
+
+    Attributes:
+        texts (tuple): A list containing two strings to be displayed.
+        font (Font): The font to use for the text.
+        x_offset (int): The horizontal offset from the left edge of the screen.
+        y_offset (int): The vertical offset from the top edge of the screen.
+        vertical_align (TextVerticalAlign): The vertical alignment of the text.
+
+    Raises:
+        AssertionError: If the `texts` parameter does not contain exactly two strings.
+
+    Example:
+    --------------------------------
     |                              |
-    ________________________________
+    --------------------------------
     |                              |
     | Left                   Right |
     |                              |
     |                              |
     |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, texts, font: fonts.Font = fonts.Fonts.SMALL,
-                 x_offset: int = 0, y_offset: int = 0,
-                 vertical_align=TextVerticalAlign.TOP):
+    --------------------------------
+
+    """
+
+    def __init__(
+        self, texts, font: fonts.Font = fonts.Fonts.SMALL,
+        x_offset: int = 0, y_offset: int = 0,
+        vertical_align=TextVerticalAlign.TOP,
+    ):
+        """
+        Initialize a LineOfTwo object.
+
+        Args:
+            texts (tuple): A tuple containing two strings to be displayed.
+            font (Font, optional): The font to use for the text. Defaults to SMALL.
+            x_offset (int, optional): The horizontal offset from the left edge of the screen. Defaults to 0.
+            y_offset (int, optional): The vertical offset from the top edge of the screen. Defaults to 0.
+            vertical_align (TextVerticalAlign, optional): The vertical alignment of the text. Defaults to TOP.
+
+        Raises:
+            AssertionError: If the `texts` parameter does not contain exactly two strings.
+
+        """
+
         super().__init__(name="Line of two")
 
         assert len(texts) == 2
@@ -344,6 +600,14 @@ class LineOfTwo(DrawingTemplate):
         self.vertical_align = vertical_align
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return TextLine(
             text=self.texts[0], font=self.font, align=TextAlign.LEFT,
             x_offset=self.x_offset, y_offset=self.y_offset,
@@ -359,30 +623,55 @@ class LineOfTwo(DrawingTemplate):
 #   Templates with icons only
 ##############################################
 class IconAppBarLeft(DrawingTemplate):
-    '''
-    Display an icon on the left side of the appbar
-    ________________________________
-    | XX                           |
-    ________________________________
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
+    """
+    Display an icon on the left side of the appbar.
+
+    Attributes:
+        icon (str): The filename of the icon to display.
+        x_offset (int): The horizontal offset from the left edge of the screen.
+        y_offset (int): The vertical offset from the top edge of the screen.
+
+    Example:
+        --------------------------------
+        | XX                           |
+        --------------------------------
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        --------------------------------
+
+    """
+
     def __init__(self, icon: str, x_offset=0, y_offset=0):
+        """
+        Initialize an IconAppBarLeft object.
+
+        Args:
+            icon (str): The filename of the icon to display.
+            x_offset (int, optional): The horizontal offset. Defaults to 0.
+            y_offset (int, optional): The vertical offset. Defaults to 0.
+
+        """
+
         super().__init__(name="Appbar icon left")
         self.icon = icon
         self.x_offset = x_offset
         self.y_offset = y_offset
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the icon on the screen.
+        
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return [
             IconDrawing(
                 icon=self.icon,
-                x_size=settings.iconImageSize,
-                y_size=settings.iconImageSize,
                 position=DrawingPosition(
                     pos_x=settings.appBarHorizontalPadding,
                     pos_y=settings.appBarTopPadding + (settings.appBarHeight - settings.iconImageSize) / 2
@@ -392,30 +681,55 @@ class IconAppBarLeft(DrawingTemplate):
 
 
 class IconCenter(DrawingTemplate):
-    '''
-    Display an icon at the center of the screen
-    ________________________________
-    |                              |
-    |                              |
-    |                              |
-    |              XX              |
-    |                              |
-    |                              |
-    |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
+    """
+    Display an icon at the center of the screen.
+
+    Attributes:
+        icon (str): The filename of the icon to display.
+        x_offset (int): The horizontal offset from the left edge of the screen.
+        y_offset (int): The vertical offset from the top edge of the screen.
+
+    Example:
+        --------------------------------
+        |                              |
+        |                              |
+        |                              |
+        |              XX              |
+        |                              |
+        |                              |
+        |                              |
+        --------------------------------
+
+    """
+
     def __init__(self, icon: str, x_offset=0, y_offset=0):
+        """
+        Initialize the IconAppBarRight object.
+
+        Args:
+            icon (str): The filename of the icon to display.
+            x_offset (int, optional): The horizontal offset. Defaults to 0.
+            y_offset (int, optional): The vertical offset. Defaults to 0.
+
+        """
+
         super().__init__(name="icon center")
         self.icon = icon
         self.x_offset = x_offset
         self.y_offset = y_offset
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the icon on the screen.
+        
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return [
             IconDrawing(
                 icon=self.icon,
-                x_size=settings.iconImageSize,
-                y_size=settings.iconImageSize,
                 position=DrawingPosition(
                     pos_x=self.x_offset + (settings.screenWidth - settings.iconImageSize) / 2,
                     pos_y=self.y_offset + (settings.screenHeight - settings.iconImageSize) / 2,
@@ -425,52 +739,59 @@ class IconCenter(DrawingTemplate):
 
 
 class IconAppBarRight(DrawingTemplate):
-    '''
-    Display an icon on the right side of the appbar
-    ________________________________
-    |                           XX |
-    ________________________________
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
+    """
+    Display an icon on the right side of the appbar.
+
+    Attributes:
+        icon (str): The filename of the icon to display.
+        x_offset (int): The horizontal offset from the right edge of the screen.
+        y_offset (int): The vertical offset from the top edge of the screen.
+
+    Example:
+        --------------------------------
+        |                           XX |
+        --------------------------------
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        --------------------------------
+
+    """
+
     def __init__(self, icon: str, x_offset=0, y_offset=0):
+        """
+        Initialize the IconAppBarRight object.
+
+        Args:
+            icon (str): The filename of the icon to display.
+            x_offset (int, optional): The horizontal offset. Defaults to 0.
+            y_offset (int, optional): The vertical offset. Defaults to 0.
+
+        """
+
         super().__init__(name="Appbar icon right")
         self.icon = icon
         self.x_offset = x_offset
         self.y_offset = y_offset
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the icon on the screen.
+        
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         return [
             IconDrawing(
                 icon=self.icon,
-                x_size=settings.iconImageSize,
-                y_size=settings.iconImageSize,
                 position=DrawingPosition(
-                    pos_x=settings.screenWidth - settings.iconImageSize - settings.appBarHorizontalPadding,
-                    pos_y=settings.appBarTopPadding + (settings.appBarHeight - settings.iconImageSize) / 2
+                    pos_x=settings.screenWidth - settings.iconImageSize - settings.appBarHorizontalPadding - self.x_offset,
+                    pos_y=self.y_offset + settings.appBarTopPadding + (settings.appBarHeight - settings.iconImageSize) / 2
                 )
-            )
-        ]
-
-
-class GYWLogo(DrawingTemplate):
-    '''
-    Display Get Your Way logo on full screen
-    '''
-    def __init__(self):
-        super().__init__(name="GYW Logo")
-
-    def get_drawings(self) -> "list[Drawing]":
-        return [
-            IconDrawing(
-                icon="gyw",
-                position=DrawingPosition(0, 0),
-                x_size=800,
-                y_size=450,
             )
         ]
 
@@ -479,20 +800,45 @@ class GYWLogo(DrawingTemplate):
 #   Templates with icons and text
 ##############################################
 class FullAppBar(DrawingTemplate):
-    '''
-    Display a screen that contains an appbar with a title and two icons
-    ________________________________
-    | LEFT       TITLE       RIGHT |
-    ________________________________
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    |                              |
-    ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-    '''
-    def __init__(self, title: str = None, left: str = None, right: str = None,
-                 title_font: fonts.Font = fonts.Fonts.MEDIUM):
+    """
+    Display a screen that contains an appbar with a title and two icons.
+
+    Every element on this template is optional
+
+    Args:
+        title (str): The text to display as the appbar title.
+        left (str): The filename of the icon to display on the left side of the appbar.
+        right (str): The filename of the icon to display on the right side of the appbar.
+        title_font (Font): The font to use for the appbar title.
+
+    Example:
+        --------------------------------
+        | LEFT       TITLE       RIGHT |
+        --------------------------------
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        --------------------------------
+
+    """
+
+    def __init__(
+        self, title: str = None, left: str = None, right: str = None,
+        title_font: fonts.Font = fonts.Fonts.MEDIUM,
+    ):
+        """
+        Initialize a FullAppBar object.
+
+        Args:
+            title (str, optional): The text to display as the appbar title. Defaults to None.
+            left (str, optional): The filename of the icon to display on the left side of the appbar. Defaults to None.
+            right (str, optional): The filename of the icon to display on the right side of the appbar. Defaults to None.
+            title_font (Font, optional): The font to use for the appbar title. Defaults to MEDIUM.
+
+        """
+
         super().__init__(name="Full appbar")
         self.title = title
         self.left = left
@@ -500,6 +846,14 @@ class FullAppBar(DrawingTemplate):
         self.title_font = title_font
 
     def get_drawings(self) -> "list[Drawing]":
+        """
+        Generate a list of drawings that describes the display.
+        
+        Returns:
+            list[Drawing]: A list of drawings
+
+        """
+
         out = []
         if self.left:
             out.extend(IconAppBarLeft(icon=self.left).get_drawings())

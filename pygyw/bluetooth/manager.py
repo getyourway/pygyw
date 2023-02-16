@@ -10,9 +10,17 @@ from . import settings
 
 class BTManager:
     """
-    Object that manages BLE devices to which it is possible to connect
+    A class to manage Bluetooth Low Energy (BLE) devices and their connections.
+
+    Attributes:
+        devices (list): A list of BTDevice objects representing devices that have been discovered.
+        is_scanning (bool): A flag indicating whether a scan is currently in progress.
+
     """
+
     def __init__(self):
+        """Initialize a new instance of the BTManager class."""
+
         self.devices: "list[BTDevice]" = []
         self.is_scanning: bool = False
 
@@ -28,6 +36,18 @@ class BTManager:
             raise BTException("OS not supported")
 
     async def scan_devices(self, filter=True, store=True):
+        """
+        Scan for BLE devices and saves the information of newly discovered devices.
+
+        Args:
+            filter (bool): A flag indicating whether to filter discovered devices by their names.
+            store (bool): A flag indicating whether to store information about newly discovered devices on the local file system.
+
+        Raises:
+            BTException: If a scan is already in progress or no GYW devices are discovered.
+
+        """
+
         if self.is_scanning:
             raise BTException("A scan is already in progress")
 
@@ -58,6 +78,8 @@ class BTManager:
             self.is_scanning = False
 
     async def pull_devices(self):
+        """Load previously saved device information from the local file system."""
+
         print("Pulling devices...")
         self.devices = []
 

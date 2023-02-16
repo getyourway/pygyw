@@ -1,5 +1,6 @@
 """
-This test script is used to check that every display can be converted to drawings.
+Test script used to check that every display can be converted to drawings.
+
 The results are written in **test_displays.json**.
 By following versions on this file, it is easy to see what has changed in a
 display in terms of drawings content

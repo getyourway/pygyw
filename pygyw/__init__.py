@@ -1,7 +1,7 @@
 """
-pyGYW
+pyGYW.
 
-A library to communicate with Get Your Way's devices
+A library to communicate with Get Your Way's devices.
 """
 
 __version__ = "1.0.0"

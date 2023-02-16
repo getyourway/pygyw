@@ -5,6 +5,7 @@ class GYWCharacteristics:
     Attributes:
         DISPLAY_COMMAND (str): The UUID of the characteristic used to send commands to the display device.
         DISPLAY_DATA (str): The UUID of the characteristic used to send data (such as image name or text) to the display device.
+
     """
 
     DISPLAY_COMMAND = "00004c31-0000-1000-8000-00805f9b34fb"
@@ -21,6 +22,7 @@ class ControlCodes:
         DISPLAY_TEXT (int): Send text to the display.
         CLEAR (int): Clear the screen.
         SET_FONT (int): Set the font used to display text.
+
     """
 
     START_DISPLAY = 0x01
@@ -37,6 +39,7 @@ class BTCommand:
     Attributes:
         characteristic: The UUID of the BLE characteristic to which the command will be sent.
         data: The data to be sent as part of the command.
+
     """
 
     def __init__(self, characteristic, data):
@@ -46,6 +49,7 @@ class BTCommand:
         Args:
             characteristic (str): The UUID of the BLE characteristic to which the command will be sent.
             data (bytes): The data to be sent as part of the command.
+
         """
         self.characteristic = characteristic
         self.data = data
