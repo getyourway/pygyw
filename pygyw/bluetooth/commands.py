@@ -4,7 +4,7 @@ class GYWCharacteristics:
 
 
 class ControlCodes:
-  START_DISPLAY = 0x00
+  START_DISPLAY = 0x01
   DISPLAY_IMAGE = 0x02
   DISPLAY_TEXT = 0x03
   CLEAR = 0x05
@@ -12,11 +12,11 @@ class ControlCodes:
 
 
 class BTCommand:
-    def __init__(self, charcateristic, data):
-        self.characterisctic = charcateristic
+    def __init__(self, characteristic, data):
+        self.characteristic = characteristic
         self.data = data
 
 start_screen = BTCommand(
     GYWCharacteristics.DISPLAY_COMMAND,
-    bytearray([0x01]),
+    bytearray([ControlCodes.START_DISPLAY]),
 )
