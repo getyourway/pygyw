@@ -15,5 +15,6 @@ jobs:
       - name: Pull Request Changelog Check
         uses: Zomzog/changelog-checker@v1.2.0
         with:
-          file: CHANGELOG
-          error-message: 'The CHANGELOG file has not been updated in this pull request.'
+          fileName: CHANGELOG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
