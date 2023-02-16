@@ -47,6 +47,10 @@ class Drawing:
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
+        '''
+        Converts the drawing in a list of commands understood by the aRdent Bluetooth device.
+        This method is overrident by each type of drawing
+        '''
         return []
 
 
@@ -63,7 +67,7 @@ class WhiteScreen(Drawing):
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 bytearray([commands.ControlCodes.CLEAR]),
-            )
+            ),
         ]
 
 
@@ -83,8 +87,12 @@ class TextDrawing(Drawing):
         data.update(self.font.to_json())
         return data
 
-    def to_commands(self) -> "list[commands.BTCommand]":        
-        operations = super().to_commands() + [
+    def to_commands(self, font=True) -> "list[commands.BTCommand]":
+        operations = super().to_commands()
+
+        # Set font
+        if font:
+            operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
                 bytes(self.font.prefix, 'utf-8'),
@@ -92,27 +100,22 @@ class TextDrawing(Drawing):
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 bytearray([commands.ControlCodes.SET_FONT]),
-            ),
-        ]
+            ),])
 
-        N = 20
-        blocks = [self.text[i:i + N] for i in range(0, len(self.text), N)]
-        for i, block in enumerate(blocks):
-            print(block)
-            ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + (self.position.pos_x + self.font.width * N * i).to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
-            operations.extend([
-                commands.BTCommand(
-                    commands.GYWCharacteristics.DISPLAY_DATA,
-                    bytes(block, 'utf-8'),
-                ),
-                commands.BTCommand(
-                    commands.GYWCharacteristics.DISPLAY_COMMAND,
-                    ctrl_data,
-                ),
-            ])
+        # Send text data
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.position.pos_x.to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
+        operations.extend([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(self.text, 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        ])
 
         return operations
-
 
 class IconDrawing(Drawing):
     '''

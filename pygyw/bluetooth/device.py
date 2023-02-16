@@ -60,7 +60,11 @@ class BTDevice:
 
     async def __execute_commands(self, commands: 'list[commands.BTCommand]', sleep_time: float = 0.15):
         for command in commands:
-            await self.client.write_gatt_char(command.characterisctic, command.data)
+            i = 0
+            data_length = len(command.data)
+            while i < data_length:
+                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20])
+                i += 20
             await asyncio.sleep(sleep_time)
 
     async def send_drawing(self, drawing: drawings.Drawing):

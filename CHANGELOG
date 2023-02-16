@@ -1,5 +1,6 @@
 1.1.1 :
-    - Correction de bug relatif aux codes de contrôles
+    - Fixed a bug related to control codes
+    - Simplified text sending
 
 1.0.0 :
     - Migration to aRdent 1 communication protocol
