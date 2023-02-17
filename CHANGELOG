@@ -4,6 +4,7 @@
     - Fix typography detected by pycodestyle
     - Add CI/CD guidelines for pycodestyle and CHANGELOG
     - Add documentation string everywhere
+    - Fix a bug related to Bluetooth in Windows (no response after write)
 
 1.0.0 :
     - Migration to aRdent 1 communication protocol

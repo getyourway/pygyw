@@ -84,7 +84,7 @@ class BTDevice:
             i = 0
             data_length = len(command.data)
             while i < data_length:
-                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20])
+                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20], True)
                 i += 20
             await asyncio.sleep(sleep_time)
 

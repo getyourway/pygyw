@@ -35,16 +35,17 @@ class BTManager:
         else:
             raise BTException("OS not supported")
 
-    async def scan_devices(self, filter=True, store=True):
+    async def scan_devices(self, filter=True, store=True, timeout=5):
         """
         Scan for BLE devices and saves the information of newly discovered devices.
 
         Args:
-            filter (bool): A flag indicating whether to filter discovered devices by their names.
-            store (bool): A flag indicating whether to store information about newly discovered devices on the local file system.
+            filter (bool): A flag indicating whether to filter discovered devices by their names. Defaults to True.
+            store (bool): A flag indicating whether to store information about newly discovered devices on the local file system. Defaults to True.
+            timeout (int): The duration of the discovery scan. Defaults to 5.
 
         Raises:
-            BTException: If a scan is already in progress or no GYW devices are discovered.
+            BTException: If a scan is already in progress.
 
         """
 
@@ -56,7 +57,7 @@ class BTManager:
 
         device_local_storage = self.__get_device_local_storage()
         try:
-            devices = await BleakScanner.discover()
+            devices = await BleakScanner.discover(timeout=timeout)
             self.devices = []
             for device in devices:
                 if not filter or device.name in settings.device_names:
@@ -73,7 +74,6 @@ class BTManager:
 
             if not self.devices:
                 print(f"No BLE device found found...")
-                raise BTException("No discoverable GYW device")
         finally:
             self.is_scanning = False
 
