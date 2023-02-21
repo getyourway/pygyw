@@ -14,6 +14,7 @@ class BTDevice:
         device (BLEDevice): The underlying BLE device object that is used to communicate with the device.
         client (BleakClient): The Bleak client used to connect to and interact with the device. This attribute
             is set to None by default and will be initialized when a connection to the device is established.
+        font (Font): The font currently used for drawing texts in the device
     """
 
     def __init__(self, device: BLEDevice):
@@ -25,6 +26,9 @@ class BTDevice:
         """
         self.device = device
         self.client: BleakClient = None
+
+        # Optimisation for not executing the set font command when it is not changed
+        self.font = None
 
     def __str__(self) -> str:
         return self.device.name
@@ -79,7 +83,7 @@ class BTDevice:
 
         return disconnected
 
-    async def __execute_commands(self, commands: 'list[commands.BTCommand]', sleep_time: float = 0.15):
+    async def __execute_commands(self, commands: 'list[commands.BTCommand]', sleep_time: float = 0.1):
         for command in commands:
             i = 0
             data_length = len(command.data)
@@ -95,7 +99,17 @@ class BTDevice:
         Args:
             drawing (drawings.Drawing): The drawing to show on the screen.
         """
-        await self.__execute_commands(drawing.to_commands())
+        commands = drawing.to_commands()
+
+        if isinstance(drawing, drawings.TextDrawing):
+            if self.font == drawing.font:
+                # Skip the instruction to set the font
+                commands = commands[2:]
+            else:
+                # Keep the fonts instruction but change the saved font
+                self.font = drawing.font
+
+        await self.__execute_commands(commands)
 
     async def send_drawings(self, drawings: "list[drawings.Drawing]", sleep_time: float = 0.1):
         """
