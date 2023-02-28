@@ -6,6 +6,8 @@
     - Add documentation string everywhere
     - Fix a bug related to Bluetooth in Windows (no response after write)
     - Optimisation of TextDrawing commands conversion
+    - Prevent sending font several times if already selected
+    - Delete time between commands and add error detection in Bluetooth
 
 1.0.0 :
     - Migration to aRdent 1 communication protocol

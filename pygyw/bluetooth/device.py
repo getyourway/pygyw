@@ -1,8 +1,9 @@
 import asyncio
 from bleak.backends.device import BLEDevice
 from bleak import BleakClient
+from bleak.exc import BleakError
 
-from . import commands
+from . import commands, exceptions
 from ..layout import drawings
 
 
@@ -48,10 +49,10 @@ class BTDevice:
         """
 
         print(f"Connecting to {self.device.name} with address: {self.device.address}")
-        client = BleakClient(
-            self.device, timeout=10.0, loop=loop,
-            disconnected_callback=self.disconnect)
-        connected = await client.connect()
+        client = BleakClient(self.device, timeout=5.0, loop=loop)
+        await client.connect()
+
+        connected = client.is_connected
         if connected:
             self.client = client
             print(f"Connection to device {self.device.name} succeeded")
@@ -74,7 +75,9 @@ class BTDevice:
             print("Already disconnected")
             return True
 
-        disconnected = await self.client.disconnect()
+        await self.client.disconnect()
+        
+        disconnected = not self.client.is_connected
         if disconnected:
             self.client = None
             print(f"Disconnection from device {self.device.name} succeeded")
@@ -83,14 +86,13 @@ class BTDevice:
 
         return disconnected
 
-    async def __execute_commands(self, commands: 'list[commands.BTCommand]', sleep_time: float = 0.1):
+    async def __execute_commands(self, commands: 'list[commands.BTCommand]'):
         for command in commands:
             i = 0
             data_length = len(command.data)
             while i < data_length:
                 await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20], True)
                 i += 20
-            await asyncio.sleep(sleep_time)
 
     async def send_drawing(self, drawing: drawings.Drawing):
         """
@@ -109,20 +111,27 @@ class BTDevice:
                 # Keep the fonts instruction but change the saved font
                 self.font = drawing.font
 
-        await self.__execute_commands(commands)
+        try:
+            await self.__execute_commands(commands)
+        except BleakError as e:
+            print("Bluetooth Error while sending data: %s" % e)
+            await self.disconnect()
+            raise exceptions.BTException("BT Error: %s" % str(e))
+        except OSError as e:
+            print("OS Error while sending data: %s" % e)
+            await self.disconnect()
+            raise exceptions.BTException("OS Error: %s" % str(e))
 
-    async def send_drawings(self, drawings: "list[drawings.Drawing]", sleep_time: float = 0.1):
+    async def send_drawings(self, drawings: "list[drawings.Drawing]"):
         """
         Send and display several drawings consecutively on the device.
 
         Args:
             drawings (list[drawings.Drawing]): The list of drawings to show.
-            sleep_time (float, optional): The time to wait between two drawings. Defaults to 0.1.
         """
 
         for drawing in drawings:
             await self.send_drawing(drawing)
-            await asyncio.sleep(sleep_time)
 
     async def start_display(self, sleep_time: float = 0.5):
         """

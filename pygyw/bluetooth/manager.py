@@ -35,14 +35,14 @@ class BTManager:
         else:
             raise BTException("OS not supported")
 
-    async def scan_devices(self, filter=True, store=True, timeout=5):
+    async def scan_devices(self, filter=True, store=True, timeout=3):
         """
         Scan for BLE devices and saves the information of newly discovered devices.
 
         Args:
             filter (bool): A flag indicating whether to filter discovered devices by their names. Defaults to True.
             store (bool): A flag indicating whether to store information about newly discovered devices on the local file system. Defaults to True.
-            timeout (int): The duration of the discovery scan. Defaults to 5.
+            timeout (int): The duration of the discovery scan. Defaults to 3.
 
         Raises:
             BTException: If a scan is already in progress.
