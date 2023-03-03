@@ -76,7 +76,7 @@ class BTDevice:
             return True
 
         await self.client.disconnect()
-        
+
         disconnected = not self.client.is_connected
         if disconnected:
             self.client = None
