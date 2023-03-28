@@ -64,7 +64,7 @@ class WhiteScreen(GYWDrawing):
     def __init__(self):
         """Initialize a `WhiteScreen` object."""
 
-        super().__init__(type="white_screen")
+        super().__init__("white_screen")
 
     def to_commands(self) -> "list[commands.BTCommand]":
         """
@@ -110,7 +110,7 @@ class TextDrawing(GYWDrawing):
 
         """
 
-        super().__init__(type="text", left=left, top=top)
+        super().__init__("text", left=left, top=top)
         self.text = text
         self.font = font
 
@@ -184,7 +184,7 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        super().__init__(type="icon", left=left, top=top)
+        super().__init__("icon", left=left, top=top)
         self.icon = icon
 
     def to_json(self) -> dict():
