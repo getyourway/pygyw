@@ -3,8 +3,8 @@ class GYWCharacteristics:
     A collection of Bluetooth Low Energy (BLE) characteristic UUIDs used to interact with GYW aRdent device.
 
     Attributes:
-        DISPLAY_COMMAND (str): The UUID of the characteristic used to send commands to the display device.
-        DISPLAY_DATA (str): The UUID of the characteristic used to send data (such as image name or text) to the display device.
+        DISPLAY_COMMAND: The UUID of the characteristic used to send commands to the display device.
+        DISPLAY_DATA: The UUID of the characteristic used to send data (such as image name or text) to the display device.
 
     """
 
@@ -17,11 +17,11 @@ class ControlCodes:
     A collection of control codes used by the GYW aRdent device to control the display.
 
     Attributes:
-        START_DISPLAY (int): Turn on the screen.
-        DISPLAY_IMAGE (int): Send an image to the display.
-        DISPLAY_TEXT (int): Send text to the display.
-        CLEAR (int): Clear the screen.
-        SET_FONT (int): Set the font used to display text.
+        START_DISPLAY: Turn on the screen.
+        DISPLAY_IMAGE: Send an image to the display.
+        DISPLAY_TEXT: Send text to the display.
+        CLEAR: Clear the screen.
+        SET_FONT: Set the font used to display text.
 
     """
 
@@ -44,12 +44,14 @@ class BTCommand:
 
     def __init__(self, characteristic, data):
         """
-        Initialize a new instance of the BTCommand class.
+        Initialize a new instance of the `BTCommand` class.
 
-        Args:
-            characteristic (str): The UUID of the BLE characteristic to which the command will be sent.
-            data (bytes): The data to be sent as part of the command.
+        :param characteristic: The UUID of the BLE characteristic to which the command will be sent.
+        :type characteristic: str
+        :param data: The data to be sent as part of the command.
+        :type data: bytearray or bytes
 
         """
+
         self.characteristic = characteristic
         self.data = data

@@ -1,31 +1,39 @@
-class Font:
+class GYWFont:
     """
-    A font stored on an aRdent device used to style the display of a TextDrawing.
+    A font stored on an aRdent device used to style the display of a `drawings.TextDrawing`.
 
     Attributes:
-        name (str): Display name of the font.
-        index (int): Index of the font on the device.
-        prefix (str): Prefix used on the device for the font.
-        size (float): Size of a character in points.
-        height (int): Height of a character in pixels.
-        width (int): Width of a character in pixels.
-        bold (bool): Whether the font is in bold or not.
+        name: Display name of the font.
+        index: Index of the font on the device.
+        prefix: Prefix used on the device for the font.
+        size: Size of a character in points.
+        height: Height of a character in pixels.
+        width: Width of a character in pixels.
+        bold: Whether the font is in bold or not.
     """
 
     def __init__(
-        self, name: str, index: int, prefix: str, size: float, height: int, width: int, bold: bool = False
-    ) -> None:
+        self, name: str, index: int, prefix: str, size: float,
+        height: int, width: int, bold: bool = False,
+    ):
         """
-        Initialize a new Font object.
+        Initialize a new `GYWFont` object.
 
-        Args:
-            name (str): Display name of the font.
-            index (int): Index of the font on the device.
-            prefix (str): Prefix used on the device for the font.
-            size (float): Size of a character in points.
-            height (int): Height of a character in pixels.
-            width (int): Width of a character in pixels.
-            bold (bool, optional): Whether the font is in bold or not. Defaults to False.
+        :param name: Display name of the font.
+        :type name: str
+        :param index: Index of the font on the device.
+        :type index: int
+        :param prefix: Prefix used on the device for the font.
+        :type prefix: str
+        :param size: Size (in points) of a character.
+        :type size: float
+        :param height: Height (in pixels) of a character.
+        :type height: int
+        :param width: Width (in pixels) of a character.
+        :type width: int
+        :param bold: Whether the font is in bold or not. Defaults to False.
+        :type bold: bool
+
         """
 
         self.name = name
@@ -43,35 +51,35 @@ class Font:
         return self.__str__()
 
     def to_json(self) -> dict:
-        """Return a JSON-serializable dictionary of the DrawingPosition object."""
+        """Return a JSON-serializable dictionary of the object."""
 
         return {
             "title": self.index,
         }
 
 
-class Fonts:
+class GYWFonts:
     """
-    All fonts currently active on aRdent device.
+    Active fonts on aRdent smart glasses.
 
     Attributes:
-        SMALL (Font): The small font
-        MEDIUM (Font): The medium font
-        LARGE (Font): The large font
-        HUGE (Font): The huge font
-        values (List[Font]): A list containing all of the fonts in the class.
+        SMALL: A small font
+        MEDIUM: A medium font
+        LARGE: A large font
+        HUGE: A huge font
+        values: List containing every fonts available on aRdent smart glasses.
     """
 
-    SMALL = Font(
+    SMALL = GYWFont(
         name="Small", index=0, prefix="a10", size=18, width=10, height=25)
 
-    MEDIUM = Font(
+    MEDIUM = GYWFont(
         name="Medium", index=1, prefix="b14", size=24, width=14, height=33, bold=True)
 
-    LARGE = Font(
+    LARGE = GYWFont(
         name="Large", index=2, prefix="a16", size=28, width=16, height=39)
 
-    HUGE = Font(
+    HUGE = GYWFont(
         name="Huge", index=3, prefix="b28", size=48, width=28, height=67, bold=True)
 
     values = [SMALL, MEDIUM, LARGE, HUGE]

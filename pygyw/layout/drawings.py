@@ -1,108 +1,77 @@
 from . import fonts
+from . import icons
 from . import settings
 
 from ..bluetooth import commands
 
 
-class DrawingPosition:
-    """
-    Represents the position of a drawing on the screen.
-
-    Attributes:
-        pos_x (int): The horizontal offset.
-        pos_y (int): The vertical offset.
-
-    """
-
-    def __init__(self, pos_x: int, pos_y: int) -> None:
-        """
-        Initialize a DrawingPosition object.
-
-        Args:
-            pos_x (int): The horizontal offset.
-            pos_y (int): The vertical offset.
-
-        """
-
-        self.pos_x = int(pos_x)
-        self.pos_y = int(pos_y)
-
-    def __str__(self) -> str:
-        return f"pos_x: {self.pos_x} - pos_y: {self.pos_y}"
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
-    def to_json(self) -> dict:
-        """Return a JSON-serializable dictionary of the DrawingPosition object."""
-
-        return {
-            "x_start": self.pos_x,
-            "y_start": self.pos_y,
-        }
-
-
-class Drawing:
+class GYWDrawing:
     """
     Represents an element displayed on the screen.
 
     Attributes:
-        type (str): The type of the Drawing object.
-        position (DrawingPosition): The position of the Drawing object.
+        type: The type of the object.
+        left: The horizontal offset (from left).
+        top: The vertical offset (from top).
 
     """
 
-    # @TODO Replace type by drawing_type to avoid conflict with type() method
-    def __init__(self, type: str, position: DrawingPosition) -> None:
+    def __init__(self, drawing_type: str, left: int = 0, top: int = 0):
         """
-        Initialize a Drawing object.
+        Initialize a `GYWDrawing` object.
 
-        Args:
-            type (str): The type of the Drawing object.
-            position (DrawingPosition): The position of the Drawing object.
+        :param drawing_type: The type of the Drawing object.
+        :type drawing_type: str
+        :param left: The horizontal offset. Defaults to 0.
+        :type left: int
+        :param left: The vertical offset. Defaults to 0.
+        :type top: int
 
         """
 
-        self.type = type
-        self.position = position
+        self.drawing_type = drawing_type
+        self.left = left
+        self.top = top
 
     def __str__(self) -> str:
-        return f"{self.type} - {self.position}"
+        return f"{self.drawing_type} - ({self.left}, {self.top})"
 
     def __repr__(self) -> str:
         return self.__str__()
 
     def to_json(self) -> dict:
-        data = self.position.to_json()
-        data["type"] = self.type
-        return data
+        return {
+            "type": self.drawing_type,
+            "left": self.left,
+            "top": self.top,
+        }
 
     def to_commands(self) -> "list[commands.BTCommand]":
         """
-        Convert the Drawing object into a list of commands understood by the aRdent Bluetooth device.
+        Convert the `GYWDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
-        Returns:
-            list[commands.BTCommand]: A list of BTCommand objects.
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
 
         """
 
         return []
 
 
-class WhiteScreen(Drawing):
+class WhiteScreen(GYWDrawing):
     """Represents a white screen with nothing on it. Useful to reset what is displayed."""
 
     def __init__(self):
-        """Initialize a WhiteScreen object."""
+        """Initialize a `WhiteScreen` object."""
 
-        super().__init__(type="white_screen", position=DrawingPosition(0, 0))
+        super().__init__(type="white_screen")
 
     def to_commands(self) -> "list[commands.BTCommand]":
         """
-        Convert the WhiteScreen object into a list of commands understood by the aRdent Bluetooth device.
+        Convert the `WhiteScreen` into a list of commands understood by the aRdent Bluetooth device.
 
-        Returns:
-            list[commands.BTCommand]: A list of BTCommand objects.
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
 
         """
 
@@ -114,57 +83,56 @@ class WhiteScreen(Drawing):
         ]
 
 
-class TextDrawing(Drawing):
+class TextDrawing(GYWDrawing):
     """
     Represents a text element displayed on the screen.
 
     Attributes:
-        text (str): The text to display.
-        position (DrawingPosition): The position of the text element.
-        font (Font): The font to use for the text.
+        text: The text to display.
+        left: The horizontal offset (from the left).
+        top: The vertical offset (from the top).
+        font: The font to use for the text (can be None).
 
     """
 
-    def __init__(self, text: str, position: DrawingPosition, font=fonts.Fonts.SMALL):
+    def __init__(self, text: str, left: int = 0, top: int = 0, font: fonts.GYWFont = None):
         """
-        Initialize a TextDrawing object.
+        Initialize a `TextDrawing` object.
 
-        Args:
-            text (str): The text to display.
-            position (DrawingPosition): The position of the text element.
-            font (Font, optional): The font to use for the text. Defaults to SMALL.
+        :param text: The text to be displayed.
+        :type text: str
+        :param left: The horizontal offset. Defaults to 0.
+        :type left: int
+        :param left: The vertical offset. Defaults to 0.
+        :type top: int
+        :param font: The font used for the text. Defaults to None.
+        :type font: `fonts.GYWFont`
 
         """
 
-        super().__init__(type="text", position=position)
+        super().__init__(type="text", left=left, top=top)
         self.text = text
         self.font = font
 
     def to_json(self) -> dict():
         data = super().to_json()
-        data["data"] = self.text
-        data["x_size"] = settings.screenWidth
-        data.update(self.font.to_json())
+        data["text"] = self.text
+        data["font"] = self.font.name
         return data
 
-    def to_commands(self, font=True) -> "list[commands.BTCommand]":
+    def to_commands(self) -> "list[commands.BTCommand]":
         """
-        Convert the TextDrawing to a list of commands understood by the aRdent Bluetooth device.
+        Convert the `TextDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
-        An option has been added to avoid resetting the font, i.e. to keep the previous one.
-
-        Args:
-            font (bool): Whether or not to include the font commands. Defaults to True.
-
-        Returns:
-            List[commands.BTCommand]: A list of commands to be sent to the aRdent Bluetooth device.
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
 
         """
 
         operations = super().to_commands()
 
         # Set font
-        if font:
+        if self.font:
             operations.extend([
                 commands.BTCommand(
                     commands.GYWCharacteristics.DISPLAY_DATA,
@@ -177,7 +145,7 @@ class TextDrawing(Drawing):
             ])
 
         # Send text data
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.position.pos_x.to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
@@ -192,52 +160,57 @@ class TextDrawing(Drawing):
         return operations
 
 
-class IconDrawing(Drawing):
+class IconDrawing(GYWDrawing):
     """
     Drawing made of an icon stored on aRdent and that can be displayed on the screen.
 
     Attributes:
-        icon (str): The filename of the image to be displayed.
-        position (DrawingPosition): The position of the image on the screen.
+        icon: The filename of the image to be displayed.
+        left: The horizontal offset (from the left).
+        top: The vertical offset (from the top).
 
     """
 
-    def __init__(self, icon: str, position: DrawingPosition):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, ):
         """
-        Initialize an IconDrawing object.
+        Initialize an `IconDrawing` object.
 
-        Args:
-            icon (str): The name of the image to be displayed.
-            position (DrawingPosition): The position of the image on the screen.
+        :param icon: The icon to be displayed.
+        :type icon: `icons.GYWIcon`
+        :param left: The horizontal offset. Defaults to 0.
+        :type left: int
+        :param left: The vertical offset. Defaults to 0.
+        :type top: int
 
         """
 
-        super().__init__(type="memory", position=position)
+        super().__init__(type="icon", left=left, top=top)
         self.icon = icon
 
     def to_json(self) -> dict():
         data = super().to_json()
-        data["data"] = self.icon
+        data["icon"] = self.icon
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
         """
-        Convert the IconDrawing into a list of commands understood by the aRdent Bluetooth device.
+        Convert the `IconDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
-        Returns:
-            list[commands.BTCommand]: A list of BTCommand objects.
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
 
         """
 
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.position.pos_x.to_bytes(4, 'little') + self.position.pos_y.to_bytes(4, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
 
-        return super().to_commands() + [
+        operations = super().to_commands()
+        operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(self.icon, 'utf-8'),
+                bytes(f"{self.icon.name}.png", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 ctrl_data,
             ),
-        ]
+        ])

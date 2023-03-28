@@ -3,120 +3,139 @@ from . import fonts
 
 
 ##############################################
-#   Helpers to compute the position of texts
+# Helpers to horizontally align texts
 ##############################################
-def center_text(text: str, font: fonts.Font) -> int:
+def center_text(text: str, font: fonts.GYWFont) -> int:
     """
     Return the horizontal position of a text that should be horizontally centered.
 
-    Args:
-        text (str): The text to center.
-        font (fonts.Font): The font used to display the text.
+    :param text: The text to align.
+    :type text: str
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
 
-    Returns:
-        int: The horizontal position of the centered text.
+    :return: The horizontal position of the text.
+    :rtype: int
+
     """
 
-    return int((settings.screenWidth - len(text) * font.width) / 2)
+    return int((settings.screen_width - len(text) * font.width) / 2)
 
 
-def left_align_text(text: str, font: fonts.Font) -> int:
+def left_align_text(text: str, font: fonts.GYWFont) -> int:
     """
     Return the horizontal position of a text that should be aligned to the left.
 
-    Args:
-        text (str): The text to align.
-        font (fonts.Font): The font used to display the text.
+    :param text: The text to align.
+    :type text: str
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
 
-    Returns:
-        int: The horizontal position of the left-aligned text.
+    :return: The horizontal position of the text.
+    :rtype: int
+
     """
 
-    return int(settings.contentHorizontalPadding)
+    return settings.horizontal_padding
 
 
-def right_align_text(text: str, font: fonts.Font) -> int:
+def right_align_text(text: str, font: fonts.GYWFont) -> int:
     """
     Return the horizontal position of a text that should be aligned to the right.
 
-    Args:
-        text (str): The text to align.
-        font (fonts.Font): The font used to display the text.
+    :param text: The text to align.
+    :type text: str
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
 
-    Returns:
-        int: The horizontal position of the right-aligned text.
+    :return: The horizontal position of the text.
+    :rtype: int
+
     """
 
-    return int(settings.screenWidth - settings.contentHorizontalPadding - len(text) * font.width)
+    return int(settings.screen_width - settings.horizontal_padding - len(text) * font.width)
 
 
-def top_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
+##############################################
+# Helpers to vertically align texts
+##############################################
+def top_text(lines: list, font: fonts.GYWFont, line_height: float = 2.0) -> int:
     """
     Return the vertical position of a text that should be aligned to the top.
 
-    Args:
-        lines (list): A list of lines of text.
-        font (fonts.Font): The font used to display the text.
-        line_height (float, optional): The height of each line of text, in multiples of font height. Defaults to 2.0.
+    :param lines: A list of lines of text.
+    :type lines: list
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
+    :param line_height: The height of each line of text, in multiples of font height. Defaults to 2.0.
+    :type line_height: float
 
-    Returns:
-        int: The vertical position of the top-aligned text.
+    :return: The vertical position of the text.
+    :rtype: int
+
     """
 
-    return int(settings.appBarHeight + settings.contentVerticalPadding)
+    return settings.vertical_padding
 
 
-def vcenter_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
+def vcenter_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
     """
-    Return the vertical position of a text that should be vertically centered.
+    Return the vertical position of a text that should vertically be centered.
 
-    Args:
-        lines (list): A list of lines of text.
-        font (fonts.Font): The font used to display the text.
-        line_height (float, optional): The height of each line of text, in multiples of font height. Defaults to 2.0.
+    :param lines: A list of lines of text.
+    :type lines: list
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
+    :param line_height: The height of each line of text, in multiples of font height. Defaults to 2.0.
+    :type line_height: float
 
-    Returns:
-        int: The vertical position of the vertically centered text.
-    """
+    :return: The vertical position of the text.
+    :rtype: int
 
-    lines_count = len(lines)
-    return int(settings.appBarHeight + (settings.contentVerticalSpace - line_height * (lines_count - 1) * font.height) / 2)
-
-
-def bottom_text(lines: list, font: fonts.Font, line_height=2.0) -> int:
-    """
-    Return the vertical position of a text that should be aligned to the bottom.
-
-    Args:
-        lines (list): A list of lines of text.
-        font (fonts.Font): The font used to display the text.
-        line_height (float, optional): The height of each line of text, in multiples of font height. Defaults to 2.0.
-
-    Returns:
-        int: The vertical position of the bottom-aligned text.
     """
 
     lines_count = len(lines)
-    return int(settings.screenHeight - settings.contentVerticalPadding - line_height * (lines_count - 1) * font.height)
+    return int((settings.screen_height - lines_count * font.height - (line_height - 1) * (lines_count - 1)) / 2)
+
+
+def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
+    """
+    Return the vertical position of a text that should be aligned at the bottom.
+
+    :param lines: A list of lines of text.
+    :type lines: list
+    :param font: The font used to display the text.
+    :type font: `fonts.GYWFont`
+    :param line_height: The height of each line of text, in multiples of font height. Defaults to 2.0.
+    :type line_height: float
+
+    :return: The vertical position of the text.
+    :rtype: int
+
+    """
+
+    lines_count = len(lines)
+    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (line_height - 1) * font.height * (lines_count - 1))
 
 
 ##############################################
-#   Helpers to reformat text for a better rendering
+# Helpers to justify text
 ##############################################
-def left_justify(words: "list[str]", width: int):
+def left_justify(words: list[str], width: int) -> str:
     """
     Given an iterable of words and a desired line width, left-justifies the words and returns a string containing the justified text.
 
-    Args:
-        words (List[str]): A list of words to be left-justified.
-        width (int): The desired width of the justified text.
+    :param words: A list of words to be left-justified.
+    :type words: list[str]
+    :param width: The desired width of the justified text.
+    :type width: int
 
-    Returns:
-        str: A string containing the left-justified text.
+    :return: A string containing the left-justified text.
+    :rtype: str
 
-    Example:
+    :example:
         >> left_justify(["hello", "world"], 16)
-         "hello world     "
+        "hello world     "
 
     """
 
@@ -130,16 +149,17 @@ def justify(text: str, width: int):
     """
     Given a string of words and a desired line width, splits the words into lines of the given width, fully justifying all lines except for the last line, and left-justifying lines with only one word.
 
-    Args:
-        text (str): A string of words to be justified.
-        width (int): The desired width of the justified lines.
+    :param text: A string to be justified.
+    :type words: str
+    :param width: The desired width of the justified lines.
+    :type width: int
 
-    Returns:
-        List[str]: A list of strings, where each string represents a justified line.
+    :return: A list of strings, where each string represents a justified line.
+    :rtype: list[str]
 
-    Example:
+    :example:
         >> justify("This is an example of text justification.", 16)
-        ['This    is    an', 'example  of text', 'justification.  ']
+        ['This    is    an', 'example  of text', 'justification.  ']  "
 
     """
 

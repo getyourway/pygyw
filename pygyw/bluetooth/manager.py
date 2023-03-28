@@ -1,5 +1,4 @@
 from bleak import BleakScanner
-import pickle
 import os
 import platform
 
@@ -13,13 +12,13 @@ class BTManager:
     A class to manage Bluetooth Low Energy (BLE) devices and their connections.
 
     Attributes:
-        devices (list): A list of BTDevice objects representing devices that have been discovered.
-        is_scanning (bool): A flag indicating whether a scan is currently in progress.
+        devices: A list of `BTDevice` objects representing devices that have been discovered.
+        is_scanning: A flag indicating whether a scan is currently in progress.
 
     """
 
     def __init__(self):
-        """Initialize a new instance of the BTManager class."""
+        """Initialize a new instance of the `BTManager` class."""
 
         self.devices: "list[BTDevice]" = []
         self.is_scanning: bool = False
@@ -39,13 +38,14 @@ class BTManager:
         """
         Scan for BLE devices and saves the information of newly discovered devices.
 
-        Args:
-            filter (bool): A flag indicating whether to filter discovered devices by their names. Defaults to True.
-            store (bool): A flag indicating whether to store information about newly discovered devices on the local file system. Defaults to True.
-            timeout (int): The duration of the discovery scan. Defaults to 3.
+        :param filter: A flag indicating whether to filter discovered devices by their names. Defaults to True.
+        :type filter: bool
+        :param store: A flag indicating whether to store information about newly discovered devices on the local file system. Defaults to True.
+        :type store: bool
+        :param timeout: The duration of the discovery scan. Defaults to 3.
+        :type timeout: int
 
-        Raises:
-            BTException: If a scan is already in progress.
+        :raises `BTException`: If a scan is already in progress.
 
         """
 
@@ -62,15 +62,14 @@ class BTManager:
             for device in devices:
                 if not filter or device.name in settings.device_names:
                     print(f"BLE device {device.name} found! Address: {device.address}")
-                    bt_device = BTDevice(device)
-                    self.devices.append(bt_device)
+                    self.devices.append(BTDevice(device))
 
-                    if store:
-                        if not os.path.exists(device_local_storage):
-                            os.makedirs(device_local_storage)
+            if store:
+                if not os.path.exists(device_local_storage):
+                    os.makedirs(device_local_storage)
 
-                        with open(os.path.join(device_local_storage, f"{device.address}.pkl"), "wb") as f:
-                            pickle.dump(bt_device, file=f)
+                with open(os.path.join(device_local_storage, "devices.txt"), "w") as f:
+                    f.write("\n".join(device.address))
 
             if not self.devices:
                 print(f"No BLE device found found...")
@@ -83,17 +82,14 @@ class BTManager:
         print("Pulling devices...")
         self.devices = []
 
-        device_local_storage = self.__get_device_local_storage()
+        device_local_storage = os.path.join(self.__get_device_local_storage(), "devices.txt")
 
-        if os.path.exists(device_local_storage):
-            filenames = os.listdir(device_local_storage)
-        else:
+        if not os.path.exists(device_local_storage):
             print("Device local storage not setup")
             return
 
-        for filename in filenames:
-            if filename.endswith(".pkl"):
-                with open(f"{device_local_storage}/{filename}", "rb") as f:
-                    device: BTDevice = pickle.load(f)
-                    self.devices.append(device)
-                    print(f"{device} pulled")
+        with open(device_local_storage, "r") as f:
+            devices = f.read().split("\n")
+            for device in devices:
+                self.devices.append(BTDevice(device))
+                print(f"{device} pulled")

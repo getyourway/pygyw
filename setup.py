@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='pygyw',
-    version='1.1.1',
-    description='A Python package to communicate with Get Your Way devices',
+    version='1.2.0',
+    description='A Python package to communicate with aRdent smart glasses',
     url='https://github.com/getyourway/pygyw',
     author='Antoine Malherbe',
     author_email='a.malherbe@getyourway.be',
