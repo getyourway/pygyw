@@ -1,6 +1,5 @@
 from . import fonts
 from . import icons
-from . import settings
 
 from ..bluetooth import commands
 
@@ -131,26 +130,20 @@ class TextDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        # Set font
-        if self.font:
-            operations.extend([
-                commands.BTCommand(
-                    commands.GYWCharacteristics.DISPLAY_DATA,
-                    bytes(self.font.prefix, 'utf-8'),
-                ),
-                commands.BTCommand(
-                    commands.GYWCharacteristics.DISPLAY_COMMAND,
-                    bytearray([commands.ControlCodes.SET_FONT]),
-                ),
-            ])
-
-        # Send text data
+        # Generate control instruction
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
+
+        # Add font to control instruction
+        if self.font:
+            ctrl_data += bytes(self.font.prefix, 'utf-8')
+
         operations.extend([
+            # Text data
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
                 bytes(self.text, 'utf-8'),
             ),
+            # Control
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 ctrl_data,
@@ -171,7 +164,7 @@ class IconDrawing(GYWDrawing):
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, ):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0):
         """
         Initialize an `IconDrawing` object.
 
@@ -214,3 +207,5 @@ class IconDrawing(GYWDrawing):
                 ctrl_data,
             ),
         ])
+
+        return operations

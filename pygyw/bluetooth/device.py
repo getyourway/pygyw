@@ -16,6 +16,7 @@ class BTDevice:
         client: The `BleakClient` used to connect to and interact with the device. This attribute
             is set to None by default and will be initialized when a connection to the device is established.
         font: The font currently used for drawing texts in the device
+        font_optimized: # Whether the font optimisation should be used or not
     """
 
     def __init__(self, device: BLEDevice):
@@ -32,6 +33,8 @@ class BTDevice:
 
         # Optimisation for not executing the set font command when it is not changed
         self.font = None
+        # Whether the font optimisation should be used or not
+        self.font_optimized = True
 
     def __str__(self) -> str:
         return self.device
@@ -109,7 +112,7 @@ class BTDevice:
 
         commands = drawing.to_commands()
 
-        if isinstance(drawing, drawings.TextDrawing):
+        if self.font_optimized and isinstance(drawing, drawings.TextDrawing):
             if drawing.font is not None and self.font == drawing.font:
                 # Skip the instruction to set the font
                 commands = commands[2:]
