@@ -8,34 +8,56 @@ from .device import BTDevice
 from . import settings
 
 
-system = platform.system()
-if os.name == "linux" or system == "Linux":
-    device_local_storage = os.path.join(os.path.expanduser('~'), ".local", "pygyw", "devices")
-elif os.name == "windows" or system == "Windows":
-    device_local_storage = os.path.join(os.getenv("LOCALAPPDATA"), "pygyw", "devices")
-elif os.name == "mac" or platform.system() == "Darwin":
-    device_local_storage = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "pygyw", "devices")
-else:
-    raise BTException("OS not supported")
-
-
 class BTManager:
     """
-    Object that manages BLE devices to which it is possible to connect
+    A class to manage Bluetooth Low Energy (BLE) devices and their connections.
+
+    Attributes:
+        devices (list): A list of BTDevice objects representing devices that have been discovered.
+        is_scanning (bool): A flag indicating whether a scan is currently in progress.
+
     """
+
     def __init__(self):
+        """Initialize a new instance of the BTManager class."""
+
         self.devices: "list[BTDevice]" = []
         self.is_scanning: bool = False
 
-    async def scan_devices(self, filter=True, store=True):
+    def __get_device_local_storage(self):
+        system = platform.system()
+        if os.name == "linux" or system == "Linux":
+            return os.path.join(os.path.expanduser('~'), ".local", "pygyw", "devices")
+        elif os.name == "windows" or system == "Windows":
+            return os.path.join(os.getenv("LOCALAPPDATA"), "pygyw", "devices")
+        elif os.name == "mac" or platform.system() == "Darwin":
+            return os.path.join(os.path.expanduser("~"), "Library", "Application Support", "pygyw", "devices")
+        else:
+            raise BTException("OS not supported")
+
+    async def scan_devices(self, filter=True, store=True, timeout=3):
+        """
+        Scan for BLE devices and saves the information of newly discovered devices.
+
+        Args:
+            filter (bool): A flag indicating whether to filter discovered devices by their names. Defaults to True.
+            store (bool): A flag indicating whether to store information about newly discovered devices on the local file system. Defaults to True.
+            timeout (int): The duration of the discovery scan. Defaults to 3.
+
+        Raises:
+            BTException: If a scan is already in progress.
+
+        """
+
         if self.is_scanning:
             raise BTException("A scan is already in progress")
 
         self.is_scanning = True
         print(f"Scanning for BLE devices...")
 
+        device_local_storage = self.__get_device_local_storage()
         try:
-            devices = await BleakScanner.discover()
+            devices = await BleakScanner.discover(timeout=timeout)
             self.devices = []
             for device in devices:
                 if not filter or device.name in settings.device_names:
@@ -52,13 +74,16 @@ class BTManager:
 
             if not self.devices:
                 print(f"No BLE device found found...")
-                raise BTException("No discoverable GYW device")
         finally:
             self.is_scanning = False
 
     async def pull_devices(self):
+        """Load previously saved device information from the local file system."""
+
         print("Pulling devices...")
         self.devices = []
+
+        device_local_storage = self.__get_device_local_storage()
 
         if os.path.exists(device_local_storage):
             filenames = os.listdir(device_local_storage)

@@ -1,3 +1,14 @@
+1.1.1 :
+    - Fixed a bug related to control codes
+    - Simplified text sending
+    - Fix typography detected by pycodestyle
+    - Add CI/CD guidelines for pycodestyle and CHANGELOG
+    - Add documentation string everywhere
+    - Fix a bug related to Bluetooth in Windows (no response after write)
+    - Optimisation of TextDrawing commands conversion
+    - Prevent sending font several times if already selected
+    - Delete time between commands and add error detection in Bluetooth
+
 1.0.0 :
     - Migration to aRdent 1 communication protocol
     - Use of aRdent 1 fonts

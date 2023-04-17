@@ -1,30 +1,39 @@
 class Font:
-    '''
-    Font stored on aRdent device to style the display of a TextDrawing
-    '''
+    """
+    A font stored on an aRdent device used to style the display of a TextDrawing.
+
+    Attributes:
+        name (str): Display name of the font.
+        index (int): Index of the font on the device.
+        prefix (str): Prefix used on the device for the font.
+        size (float): Size of a character in points.
+        height (int): Height of a character in pixels.
+        width (int): Width of a character in pixels.
+        bold (bool): Whether the font is in bold or not.
+    """
+
     def __init__(
-        self, name, index, prefix, size, height,
-        width, bold=False,
-    ):
-        # Display name of the font
+        self, name: str, index: int, prefix: str, size: float, height: int, width: int, bold: bool = False
+    ) -> None:
+        """
+        Initialize a new Font object.
+
+        Args:
+            name (str): Display name of the font.
+            index (int): Index of the font on the device.
+            prefix (str): Prefix used on the device for the font.
+            size (float): Size of a character in points.
+            height (int): Height of a character in pixels.
+            width (int): Width of a character in pixels.
+            bold (bool, optional): Whether the font is in bold or not. Defaults to False.
+        """
+
         self.name = name
-
-        # Index in the device
         self.index = index
-
-        # Prefix used on the device
         self.prefix = prefix
-
-        # Size of a character in pt
         self.size = size
-
-        # Height of a character in px
         self.height = height
-
-        # Width of a character in px
         self.width = width
-
-        # Whether the font is in bold or not
         self.bold = bold
 
     def __str__(self) -> str:
@@ -34,6 +43,8 @@ class Font:
         return self.__str__()
 
     def to_json(self) -> dict:
+        """Return a JSON-serializable dictionary of the DrawingPosition object."""
+
         return {
             "title": self.index,
         }
@@ -41,8 +52,16 @@ class Font:
 
 class Fonts:
     """
-    All fonts currently active on aRdent device
+    All fonts currently active on aRdent device.
+
+    Attributes:
+        SMALL (Font): The small font
+        MEDIUM (Font): The medium font
+        LARGE (Font): The large font
+        HUGE (Font): The huge font
+        values (List[Font]): A list containing all of the fonts in the class.
     """
+
     SMALL = Font(
         name="Small", index=0, prefix="a10", size=18, width=10, height=25)
 

@@ -1,3 +1,4 @@
 class GYWException(Exception):
-    """Base class for GYW exceptions"""
+    """Base class for GYW exceptions."""
+
     pass

@@ -1,0 +1,19 @@
+name: Check documention style with pydocstyle
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  pydocstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install pydocstyle
+      - name: Run Pydocstyle
+        run: pydocstyle --count --ignore=D1,D100,D105,D202,D203,D212,D215,D406,D407,D409,D413 --match-dir="(?!(^__.*__)).*" pygyw

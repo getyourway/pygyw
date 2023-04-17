@@ -1,3 +1,7 @@
+# File: test_bluetooth_device.py
+# Ignore all pydocstyle checks for this file
+# pydocstyle: ignore-all
+
 import asyncio
 
 from pygyw.bluetooth.manager import BTManager, BTDevice
