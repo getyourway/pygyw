@@ -161,10 +161,11 @@ class IconDrawing(GYWDrawing):
         icon: The filename of the image to be displayed.
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
+        color: The color of the icon (can be None).
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: str = None):
         """
         Initialize an `IconDrawing` object.
 
@@ -172,17 +173,21 @@ class IconDrawing(GYWDrawing):
         :type icon: `icons.GYWIcon`
         :param left: The horizontal offset. Defaults to 0.
         :type left: int
-        :param left: The vertical offset. Defaults to 0.
+        :param top: The vertical offset. Defaults to 0.
         :type top: int
+        :param color: The color of the icon in ORGB format. Defaults to None.
+        :type color: str
 
         """
 
         super().__init__("icon", left=left, top=top)
         self.icon = icon
+        self.color = color
 
     def to_json(self) -> dict():
         data = super().to_json()
         data["icon"] = self.icon
+        data["color"] = self.color
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
@@ -196,11 +201,14 @@ class IconDrawing(GYWDrawing):
 
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
 
+        if self.color:
+            ctrl_data += bytes(self.color, 'utf-8')
+
         operations = super().to_commands()
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(f"{self.icon.name}.png", 'utf-8'),
+                bytes(f"{self.icon.name}.bin", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
