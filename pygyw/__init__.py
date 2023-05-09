@@ -6,7 +6,7 @@ This library allows you to send instructions to the glasses such as displaying t
 
 """
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __author__ = 'Antoine Malherbe'
 __credits__ = 'Get Your Way'
 
