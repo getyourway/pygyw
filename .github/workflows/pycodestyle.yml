@@ -2,7 +2,7 @@ name: Check code style with pycodestyle
 
 on:
   pull_request:
-    branches: [master]
+    branches: [master, develop]
 
 jobs:
   check_style:

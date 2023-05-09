@@ -4,7 +4,7 @@ from bleak import BleakClient
 from bleak.exc import BleakError
 
 from . import commands, exceptions
-from ..layout import drawings
+from ..layout import drawings, fonts
 
 
 class BTDevice:
@@ -32,6 +32,8 @@ class BTDevice:
 
         # Optimisation for not executing the set font command when it is not changed
         self.font = None
+        # Whether the font optimisation should be used or not
+        self.font_optimized = True
 
     def __str__(self) -> str:
         return self.device
@@ -109,14 +111,6 @@ class BTDevice:
 
         commands = drawing.to_commands()
 
-        if isinstance(drawing, drawings.TextDrawing):
-            if drawing.font is not None and self.font == drawing.font:
-                # Skip the instruction to set the font
-                commands = commands[2:]
-            else:
-                # Keep the fonts instruction but change the saved font
-                self.font = drawing.font
-
         try:
             await self.__execute_commands(commands)
         except BleakError as e:
@@ -127,6 +121,10 @@ class BTDevice:
             print("OS Error while sending data: %s" % e)
             await self.disconnect()
             raise exceptions.BTException("OS Error: %s" % str(e))
+
+        # Save font
+        if isinstance(drawing, drawings.TextDrawing) and drawing.font is not None:
+            self.font = drawing.font
 
     async def send_drawings(self, drawings: "list[drawings.GYWDrawing]"):
         """
@@ -144,7 +142,7 @@ class BTDevice:
         """
         Turn the screen on.
 
-        ..note It has no effect if the screen is already on,
+        ..note It has no effect if the screen is already on.
 
         :param sleep_time: Time to wait after having switched on the screen. Defaults to 0.5.
         :type sleep_time: float
@@ -158,3 +156,30 @@ class BTDevice:
             ),
         ])
         await asyncio.sleep(sleep_time)
+
+    async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.1):
+        """
+        Set the default font.
+
+        :param font: The font to use as default
+        :type font: `font.GYWFont`
+        :param sleep_time: Time to wait after having set up the font. Defaults to 0.1.
+        :type sleep_time: float
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(font.prefix, 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_FONT]),
+            ),
+        ])
+
+        await asyncio.sleep(sleep_time)
+
+        # Save font
+        self.font = font

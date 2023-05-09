@@ -148,7 +148,120 @@ class GYWIcons:
             :alt: Upward arrow icon
             :align: center
 
+        KEY_0: An icon representing the key 0
+        .. image:: icons/key_0.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 0 icon
+            :align: center
+
+        KEY_1: An icon representing the key 1
+        .. image:: icons/key_1.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 1 icon
+            :align: center
+
+        KEY_2: An icon representing the key 2
+        .. image:: icons/key_2.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 2 icon
+            :align: center
+
+        KEY_3: An icon representing the key 3
+        .. image:: icons/key_3.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 3 icon
+            :align: center
+
+        KEY_4: An icon representing the key 4
+        .. image:: icons/key_4.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 4 icon
+            :align: center
+
+        KEY_5: An icon representing the key 5
+        .. image:: icons/key_5.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 5 icon
+            :align: center
+
+        KEY_6: An icon representing the key 6
+        .. image:: icons/key_6.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 6 icon
+            :align: center
+
+        KEY_7: An icon representing the key 7
+        .. image:: icons/key_7.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 7 icon
+            :align: center
+
+        KEY_8: An icon representing the key 8
+        .. image:: icons/key_8.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 8 icon
+            :align: center
+
+        KEY_9: An icon representing the key 9
+        .. image:: icons/key_9.png
+            :width: 48px
+            :height: 48px
+            :alt: Key 9 icon
+            :align: center
+
+        KEY_A: An icon representing the key A
+        .. image:: icons/key_A.png
+            :width: 48px
+            :height: 48px
+            :alt: Key A icon
+            :align: center
+
+        KEY_B: An icon representing the key B
+        .. image:: icons/key_B.png
+            :width: 48px
+            :height: 48px
+            :alt: Key B icon
+            :align: center
+
+        KEY_C: An icon representing the key C
+        .. image:: icons/key_C.png
+            :width: 48px
+            :height: 48px
+            :alt: Key C icon
+            :align: center
+
+        KEY_D: An icon representing the key D
+        .. image:: icons/key_D.png
+            :width: 48px
+            :height: 48px
+            :alt: Key D icon
+            :align: center
+
+        KEY_STAR: An icon representing the key *
+        .. image:: icons/key_star.png
+            :width: 48px
+            :height: 48px
+            :alt: Key * icon
+            :align: center
+
+        KEY_NUM: An icon representing the key #
+        .. image:: icons/key_#.png
+            :width: 48px
+            :height: 48px
+            :alt: Key # icon
+            :align: center
+
         values (list[`GYWIcon`]): A list of every available icons.
+
     """
 
     BLANK = GYWIcon("blank")
@@ -166,6 +279,22 @@ class GYWIcons:
     RIGHT = GYWIcon("right")
     UNCHECK = GYWIcon("uncheck")
     UP = GYWIcon("up")
+    KEY_0 = GYWIcon("key_0")
+    KEY_1 = GYWIcon("key_1")
+    KEY_2 = GYWIcon("key_2")
+    KEY_3 = GYWIcon("key_3")
+    KEY_4 = GYWIcon("key_4")
+    KEY_5 = GYWIcon("key_5")
+    KEY_6 = GYWIcon("key_6")
+    KEY_7 = GYWIcon("key_7")
+    KEY_8 = GYWIcon("key_8")
+    KEY_9 = GYWIcon("key_9")
+    KEY_A = GYWIcon("key_A")
+    KEY_B = GYWIcon("key_B")
+    KEY_C = GYWIcon("key_C")
+    KEY_D = GYWIcon("key_D")
+    KEY_STAR = GYWIcon("key_star")
+    KEY_NUM = GYWIcon("key_#")
 
     values = [
         BLANK,
@@ -183,4 +312,20 @@ class GYWIcons:
         RIGHT,
         UNCHECK,
         UP,
+        KEY_0,
+        KEY_1,
+        KEY_2,
+        KEY_3,
+        KEY_4,
+        KEY_5,
+        KEY_6,
+        KEY_7,
+        KEY_8,
+        KEY_9,
+        KEY_A,
+        KEY_B,
+        KEY_C,
+        KEY_D,
+        KEY_STAR,
+        KEY_NUM,
     ]
