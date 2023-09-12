@@ -22,6 +22,7 @@ class ControlCodes:
         DISPLAY_TEXT: Send text to the display.
         CLEAR: Clear the screen.
         SET_FONT: Set the font used to display text.
+        LOCK_SCREEN_ROTATION: Lock or unlock the screen rotation.
 
     """
 
@@ -30,6 +31,7 @@ class ControlCodes:
     DISPLAY_TEXT = 0x03
     CLEAR = 0x05
     SET_FONT = 0x08
+    LOCK_SCREEN_ROTATION = 0x0A
 
 
 class BTCommand:
