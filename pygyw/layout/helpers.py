@@ -121,7 +121,7 @@ def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
 ##############################################
 # Helpers to justify text
 ##############################################
-def left_justify(words: list[str], width: int) -> str:
+def left_justify(words: "list[str]", width: int) -> str:
     """
     Given an iterable of words and a desired line width, left-justifies the words and returns a string containing the justified text.
 

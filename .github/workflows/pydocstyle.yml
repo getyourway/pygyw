@@ -2,7 +2,7 @@ name: Check documention style with pydocstyle
 
 on:
   pull_request:
-    branches: [master]
+    branches: [master, develop]
 
 jobs:
   pydocstyle:
