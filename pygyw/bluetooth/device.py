@@ -159,18 +159,18 @@ class BTDevice:
         ])
         await asyncio.sleep(sleep_time)
 
-    async def lock_screen_rotation(self, lock: bool):
+    async def auto_rotate_screen(self, enable: bool):
         """
-        Lock the screen rotation.
+        Enables or disables the screen autorotation.
 
-        :param lock: True to lock the screen rotation, False to unlock it.
-        :type lock: bool
+        :param enable: True to enable screen auto-rotate, False to disable it.
+        :type enable: bool
 
         """
 
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.LOCK_SCREEN_ROTATION, int(lock)]),
+                bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
