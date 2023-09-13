@@ -1,3 +1,9 @@
+1.2.1:
+    - Integrate font in control instruction for TextDrawing
+    - Add a method to manually set the default font
+    - Add keypad icons
+    - Add colored icons
+
 1.2.0:
     - Clear display templates and other useless files
     - Improve docstrings
