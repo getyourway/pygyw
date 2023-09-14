@@ -1,3 +1,7 @@
+from typing import Optional
+
+from typing_extensions import deprecated
+
 from . import fonts
 from . import icons
 
@@ -57,6 +61,7 @@ class GYWDrawing:
         return []
 
 
+@deprecated("`WhiteScreen` has been replaced by `BlankScreen` who has a variable background color")
 class WhiteScreen(GYWDrawing):
     """Represents a white screen with nothing on it. Useful to reset what is displayed."""
 
@@ -81,6 +86,37 @@ class WhiteScreen(GYWDrawing):
             ),
         ]
 
+
+class BlankScreen(GYWDrawing):
+    """Reset what is displayed. If an ARGB color is provided, the screen will be filled with this color,
+    otherwise the screen will be filled with the last color used. If a color was never provided,
+    if fills the screen with white."""
+
+    def __init__(self, color: Optional[str] = None):
+        """Initialize a `BlankScreen` object."""
+
+        super().__init__("blank_screen")
+        self.color = color  # ARGB
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """
+        Convert the `BlankScreen` into a list of commands understood by the aRdent Bluetooth device.
+
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
+
+        """
+
+        ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
+        if self.color:
+            ctrl_bytes += bytes(self.color, 'ascii')
+
+        return super().to_commands() + [
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_bytes,
+            ),
+        ]
 
 class TextDrawing(GYWDrawing):
     """
@@ -131,7 +167,9 @@ class TextDrawing(GYWDrawing):
         operations = super().to_commands()
 
         # Generate control instruction
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
+        ctrl_data = (bytearray([commands.ControlCodes.DISPLAY_TEXT]) +
+                     self.left.to_bytes(4, 'little') +
+                     self.top.to_bytes(4, 'little'))
 
         # Add font to control instruction
         if self.font:
@@ -199,7 +237,9 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
+        ctrl_data = (bytearray([commands.ControlCodes.DISPLAY_IMAGE]) +
+                     self.left.to_bytes(4, 'little') +
+                     self.top.to_bytes(4, 'little'))
 
         if self.color:
             ctrl_data += bytes(self.color, 'utf-8')

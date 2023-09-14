@@ -2,3 +2,4 @@ bleak
 setuptools
 pycodestyle
 pydocstyle
+typing-extensions
