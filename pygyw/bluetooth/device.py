@@ -183,3 +183,19 @@ class BTDevice:
 
         # Save font
         self.font = font
+
+    async def auto_rotate_screen(self, enable: bool):
+        """
+        Enable or disable the screen autorotation.
+
+        :param enable: True to enable screen auto-rotate, False to disable it.
+        :type enable: bool
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
+            ),
+        ])
