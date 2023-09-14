@@ -171,9 +171,7 @@ class TextDrawing(GYWDrawing):
         operations = super().to_commands()
 
         # Generate control instruction
-        ctrl_data = (bytearray([commands.ControlCodes.DISPLAY_TEXT])
-                     + self.left.to_bytes(4, 'little')
-                     + self.top.to_bytes(4, 'little'))
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
 
         # Add font to control instruction
         if self.font:
@@ -241,9 +239,7 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        ctrl_data = (bytearray([commands.ControlCodes.DISPLAY_IMAGE])
-                     + self.left.to_bytes(4, 'little')
-                     + self.top.to_bytes(4, 'little'))
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
 
         if self.color:
             ctrl_data += bytes(self.color, 'utf-8')
