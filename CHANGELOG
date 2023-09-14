@@ -1,3 +1,6 @@
+1.2.2:
+    - Deprecate `WhiteScreen` in favor of `BlankScreen`
+
 1.2.1:
     - Integrate font in control instruction for TextDrawing
     - Add a method to manually set the default font
