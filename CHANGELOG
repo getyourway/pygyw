@@ -1,4 +1,5 @@
 1.2.2:
+    - Add a method to get the firmware version
     - Add a method to enable or disable screen auto-rotate
     - Deprecate `WhiteScreen` in favor of `BlankScreen`
 
