@@ -202,7 +202,7 @@ class BTDevice:
 
     async def enable_backlight(self, enable: bool, sleep_time: float = 0.5):
         """
-        Enables or disables the display backlight.
+        Enable or disable the display backlight.
 
         :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.5.
         :type sleep_time: float
