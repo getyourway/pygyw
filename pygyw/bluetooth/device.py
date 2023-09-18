@@ -1,9 +1,11 @@
 import asyncio
-from bleak.backends.device import BLEDevice
+
 from bleak import BleakClient
+from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
 
 from . import commands, exceptions
+from .firmware_version import FirmwareVersion
 from ..layout import drawings, fonts
 
 
@@ -18,7 +20,7 @@ class BTDevice:
         font: The font currently used for drawing texts in the device
     """
 
-    def __init__(self, device: BLEDevice):
+    def __init__(self, device: BLEDevice | str):
         """
         Initialize a new instance of the `BTDevice` class.
 
@@ -199,3 +201,11 @@ class BTDevice:
                 bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
+
+    async def get_firmware_version(self) -> FirmwareVersion:
+        data = await self.client.read_gatt_char(commands.GYWCharacteristics.FIRMWARE_VERSION)
+        return FirmwareVersion(
+            major=data[0],
+            minor=data[1],
+            patch=data[2],
+        )
