@@ -204,8 +204,11 @@ class BTDevice:
 
     async def get_firmware_version(self) -> FirmwareVersion:
         data = await self.client.read_gatt_char(commands.GYWCharacteristics.FIRMWARE_VERSION)
+        version = data.decode('utf-8').rstrip('\0')
+        major, minor, patch = version.split('.')
+
         return FirmwareVersion(
-            major=data[0],
-            minor=data[1],
-            patch=data[2],
+            major=int(major),
+            minor=int(minor),
+            patch=int(patch),
         )
