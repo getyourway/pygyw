@@ -260,11 +260,11 @@ class GYWIcons:
             :alt: Key # icon
             :align: center
 
-        CONSTRUCTION: An icon representing construction.
-        .. image:: icons/construction.png
+        BUILD: An icon representing construction tools.
+        .. image:: icons/build.png
             :width: 48px
             :height: 48px
-            :alt: Construction icon
+            :alt: Build icon
             :align: center
 
         HELP: An icon representing the help question mark.
@@ -316,7 +316,7 @@ class GYWIcons:
     KEY_D = GYWIcon("key_D")
     KEY_STAR = GYWIcon("key_star")
     KEY_NUM = GYWIcon("key_#")
-    CONSTRUCTION = GYWIcon("construction")
+    BUILD = GYWIcon("build")
     HELP = GYWIcon("help")
     CAMERA = GYWIcon("camera")
 
@@ -352,7 +352,7 @@ class GYWIcons:
         KEY_D,
         KEY_STAR,
         KEY_NUM,
-        CONSTRUCTION,
+        BUILD,
         HELP,
         CAMERA,
     ]
