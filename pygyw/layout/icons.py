@@ -260,6 +260,27 @@ class GYWIcons:
             :alt: Key # icon
             :align: center
 
+        CONSTRUCTION: An icon representing construction.
+        .. image:: icons/construction.png
+            :width: 48px
+            :height: 48px
+            :alt: Construction icon
+            :align: center
+
+        HELP: An icon representing the help question mark.
+        .. image:: icons/help.png
+            :width: 48px
+            :height: 48px
+            :alt: Help icon
+            :align: center
+
+        CAMERA: An icon representing a camera.
+        .. image:: icons/camera.png
+            :width: 48px
+            :height: 48px
+            :alt: Camera icon
+            :align: center
+
         values (list[`GYWIcon`]): A list of every available icons.
 
     """
@@ -295,6 +316,9 @@ class GYWIcons:
     KEY_D = GYWIcon("key_D")
     KEY_STAR = GYWIcon("key_star")
     KEY_NUM = GYWIcon("key_#")
+    CONSTRUCTION = GYWIcon("construction")
+    HELP = GYWIcon("help")
+    CAMERA = GYWIcon("camera")
 
     values = [
         BLANK,
@@ -328,4 +352,7 @@ class GYWIcons:
         KEY_D,
         KEY_STAR,
         KEY_NUM,
+        CONSTRUCTION,
+        HELP,
+        CAMERA,
     ]
