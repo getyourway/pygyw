@@ -1,9 +1,11 @@
 import asyncio
-from bleak.backends.device import BLEDevice
+
 from bleak import BleakClient
+from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
 
 from . import commands, exceptions
+from .firmware_version import FirmwareVersion
 from ..layout import drawings, fonts
 
 
@@ -18,7 +20,7 @@ class BTDevice:
         font: The font currently used for drawing texts in the device
     """
 
-    def __init__(self, device: BLEDevice):
+    def __init__(self, device: BLEDevice | str):
         """
         Initialize a new instance of the `BTDevice` class.
 
@@ -199,3 +201,33 @@ class BTDevice:
                 bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
+
+    async def get_firmware_version(self) -> FirmwareVersion:
+        data = await self.client.read_gatt_char(commands.GYWCharacteristics.FIRMWARE_VERSION)
+        version = data.decode('utf-8').rstrip('\0')
+        major, minor, patch = version.split('.')
+
+        return FirmwareVersion(
+            major=int(major),
+            minor=int(minor),
+            patch=int(patch),
+        )
+
+    async def enable_backlight(self, enable: bool, sleep_time: float = 0.5):
+        """
+        Enable or disable the display backlight.
+
+        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.5.
+        :type sleep_time: float
+        :param enable: True to enable the backlight, False to disable it.
+        :type enable: bool
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
+            ),
+        ])
+        await asyncio.sleep(sleep_time)

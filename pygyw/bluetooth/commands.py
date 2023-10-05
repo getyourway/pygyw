@@ -8,8 +8,9 @@ class GYWCharacteristics:
 
     """
 
-    DISPLAY_COMMAND = "00004c31-0000-1000-8000-00805f9b34fb"
-    DISPLAY_DATA = "00004c32-0000-1000-8000-00805f9b34fb"
+    DISPLAY_COMMAND = "00004C31-0000-1000-8000-00805F9B34FB"
+    DISPLAY_DATA = "00004C32-0000-1000-8000-00805F9B34FB"
+    FIRMWARE_VERSION = "00002A26-0000-1000-8000-00805F9B34FB"
 
 
 class ControlCodes:
@@ -22,7 +23,8 @@ class ControlCodes:
         DISPLAY_TEXT: Send text to the display.
         CLEAR: Clear the screen.
         SET_FONT: Set the font used to display text.
-        AUTO_ROTATE_SCREEN: Enables or disables the screen autorotation.
+        AUTO_ROTATE_SCREEN: Enable or disable the screen autorotation.
+        ENABLE_BACKLIGHT: Enable or disable the display backlight.
 
     """
 
@@ -32,6 +34,7 @@ class ControlCodes:
     CLEAR = 0x05
     SET_FONT = 0x08
     AUTO_ROTATE_SCREEN = 0x0A
+    ENABLE_BACKLIGHT = 0x0B
 
 
 class BTCommand:
