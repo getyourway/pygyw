@@ -2,6 +2,7 @@
     - Add a method to get the firmware version
     - Add a method to enable or disable screen auto-rotate
     - Deprecate `WhiteScreen` in favor of `BlankScreen`
+    - Add a method to enable or disable the display backlight
 
 1.2.1:
     - Integrate font in control instruction for TextDrawing

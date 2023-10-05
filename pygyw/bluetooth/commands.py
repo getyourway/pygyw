@@ -23,7 +23,8 @@ class ControlCodes:
         DISPLAY_TEXT: Send text to the display.
         CLEAR: Clear the screen.
         SET_FONT: Set the font used to display text.
-        AUTO_ROTATE_SCREEN: Enables or disables the screen autorotation.
+        AUTO_ROTATE_SCREEN: Enable or disable the screen autorotation.
+        ENABLE_BACKLIGHT: Enable or disable the display backlight.
 
     """
 
@@ -33,6 +34,7 @@ class ControlCodes:
     CLEAR = 0x05
     SET_FONT = 0x08
     AUTO_ROTATE_SCREEN = 0x0A
+    ENABLE_BACKLIGHT = 0x0B
 
 
 class BTCommand:

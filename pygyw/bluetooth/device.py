@@ -212,3 +212,22 @@ class BTDevice:
             minor=int(minor),
             patch=int(patch),
         )
+
+    async def enable_backlight(self, enable: bool, sleep_time: float = 0.5):
+        """
+        Enable or disable the display backlight.
+
+        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.5.
+        :type sleep_time: float
+        :param enable: True to enable the backlight, False to disable it.
+        :type enable: bool
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
+            ),
+        ])
+        await asyncio.sleep(sleep_time)
