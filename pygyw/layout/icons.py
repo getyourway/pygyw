@@ -281,6 +281,34 @@ class GYWIcons:
             :alt: Camera icon
             :align: center
 
+        CHAT: An icon representing a chat bubble
+        .. image:: icons/chat.png
+            :width: 48px
+            :height: 48px
+            :alt: Chat icon
+            :align: center
+
+        NFC: An icon representing NFC
+        .. image:: icons/nfc.png
+            :width: 48px
+            :height: 48px
+            :alt: NFC icon
+            :align: center
+
+        WARNING: An icon representing warning
+        .. image:: icons/warning.png
+            :width: 48px
+            :height: 48px
+            :alt: Warning icon
+            :align: center
+
+        WIFI: An icon representing Wi-Fi
+        .. image:: icons/wifi.png
+            :width: 48px
+            :height: 48px
+            :alt: Wi-Fi icon
+            :align: center
+
         values (list[`GYWIcon`]): A list of every available icons.
 
     """
@@ -319,6 +347,10 @@ class GYWIcons:
     BUILD = GYWIcon("build")
     HELP = GYWIcon("help")
     CAMERA = GYWIcon("camera")
+    CHAT = GYWIcon("chat")
+    NFC = GYWIcon("nfc")
+    WARNING = GYWIcon("warning")
+    WIFI = GYWIcon("wifi")
 
     values = [
         BLANK,
@@ -355,4 +387,8 @@ class GYWIcons:
         BUILD,
         HELP,
         CAMERA,
+        CHAT,
+        NFC,
+        WARNING,
+        WIFI,
     ]
