@@ -159,6 +159,48 @@ class BTDevice:
         ])
         await asyncio.sleep(sleep_time)
 
+    async def set_contrast(self, value: float, sleep_time: float = 0.1):
+        """
+        Set the screen contrast.
+
+        :param value: The contrast value (between 0 and 1).
+        :type value: float
+        :param sleep_time: Time to wait after having set up the contrast. Defaults to 0.1.
+        :type sleep_time: float
+
+        """
+        assert 0 <= value <= 1
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
+            ),
+        ])
+
+        await asyncio.sleep(sleep_time)
+
+    async def set_brightness(self, value: float, sleep_time: float = 0.1):
+        """
+        Set the screen brightness.
+
+        :param value: The brightness value (between 0 and 1).
+        :type value: float
+        :param sleep_time: Time to wait after having set up the brightness. Defaults to 0.1.
+        :type sleep_time: float
+
+        """
+        assert 0 <= value <= 1
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
+            ),
+        ])
+
+        await asyncio.sleep(sleep_time)
+
     async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.1):
         """
         Set the default font.
