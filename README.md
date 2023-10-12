@@ -102,3 +102,4 @@ To change the icon displayed, you can use the `icon` parameter, which should be 
 ## Authors
  - Antoine Malherbe, Get Your Way
  - Nicolas Dessambre, Get Your Way
+ - Alex Rosca, Get Your Way
