@@ -3,8 +3,7 @@
     - Add a method to enable or disable screen auto-rotate
     - Deprecate `WhiteScreen` in favor of `BlankScreen`
     - Add a method to enable or disable the display backlight
-    - Add the `build`, `help`, and `camera` icons
-    - Add the `chat`, `nfc`, `warning`, and `wifi` icons
+    - Add 7 icons `build`, `camera`, `chat`, `help`, `nfc`, `warning` and `wifi`
     - Add commands for changing the brightness and contrast
 
 1.2.1:
