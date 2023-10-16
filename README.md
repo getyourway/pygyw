@@ -53,15 +53,18 @@ After the connection is established, you can display elements on the screen.
 
 To display elements on the aRdent glasses' screen, you need to create a `GYWDrawing` object and pass it to the `send_drawing(drawing)` method of the connected `BTDevice` object. There are three types of `GYWDrawing` objects:
 
-### 1. WhiteScreen
+### 1. BlankScreen
 
-A `WhiteScreen` object is a blank white screen that can be used to reset the display. You can create a `WhiteScreen` object like this:
+A `BlankScreen` object is a blank screen that can be used to reset the display. You can create a `BlankScreen` object like this:
 
 ```python
 from pygyw.layout import drawings
 
-ws = drawings.WhiteScreen()
+ws = drawings.BlankScreen(color="ff0000ff") # ARGB
 ```
+
+The color is optional and if not specified, the screen will be filled with the last color used.
+If the color was never specified, it fills the screen with white.
 
 ### 2. TextDrawing
 
@@ -99,3 +102,4 @@ To change the icon displayed, you can use the `icon` parameter, which should be 
 ## Authors
  - Antoine Malherbe, Get Your Way
  - Nicolas Dessambre, Get Your Way
+ - Alex Rosca, Get Your Way

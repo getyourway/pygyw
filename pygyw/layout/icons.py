@@ -50,6 +50,27 @@ class GYWIcons:
             :alt: Blank icon
             :align: center
 
+        BUILD: An icon representing construction tools.
+        .. image:: icons/build.png
+            :width: 48px
+            :height: 48px
+            :alt: Build icon
+            :align: center
+
+        CAMERA: An icon representing a camera.
+        .. image:: icons/camera.png
+            :width: 48px
+            :height: 48px
+            :alt: Camera icon
+            :align: center
+
+        CHAT: An icon representing a chat bubble
+        .. image:: icons/chat.png
+            :width: 48px
+            :height: 48px
+            :alt: Chat icon
+            :align: center
+
         CHECK: An icon representing a validated checkbox.
         .. image:: icons/check.png
             :width: 48px
@@ -85,6 +106,13 @@ class GYWIcons:
             :alt: File icon
             :align: center
 
+        HELP: An icon representing the help question mark.
+        .. image:: icons/help.png
+            :width: 48px
+            :height: 48px
+            :alt: Help icon
+            :align: center
+
         INFO: An icon representing information.
         .. image:: icons/info.png
             :width: 48px
@@ -111,6 +139,13 @@ class GYWIcons:
             :width: 48px
             :height: 48px
             :alt: Next icon
+            :align: center
+
+        NFC: An icon representing NFC
+        .. image:: icons/nfc.png
+            :width: 48px
+            :height: 48px
+            :alt: NFC icon
             :align: center
 
         PREV: An icon representing a previous or backward operation.
@@ -146,6 +181,20 @@ class GYWIcons:
             :width: 48px
             :height: 48px
             :alt: Upward arrow icon
+            :align: center
+
+        WARNING: An icon representing warning
+        .. image:: icons/warning.png
+            :width: 48px
+            :height: 48px
+            :alt: Warning icon
+            :align: center
+
+        WIFI: An icon representing Wi-Fi
+        .. image:: icons/wifi.png
+            :width: 48px
+            :height: 48px
+            :alt: Wi-Fi icon
             :align: center
 
         KEY_0: An icon representing the key 0
@@ -265,20 +314,27 @@ class GYWIcons:
     """
 
     BLANK = GYWIcon("blank")
+    BUILD = GYWIcon("build")
+    CAMERA = GYWIcon("camera")
+    CHAT = GYWIcon("chat")
     CHECK = GYWIcon("check")
     DONE = GYWIcon("done")
     DOWN = GYWIcon("down")
     EDIT = GYWIcon("edit")
     FILE = GYWIcon("file")
+    HELP = GYWIcon("help")
     INFO = GYWIcon("info")
     LEFT = GYWIcon("left")
     LOCATION = GYWIcon("location")
     NEXT = GYWIcon("next")
+    NFC = GYWIcon("nfc")
     PREV = GYWIcon("prev")
     RENAME = GYWIcon("rename")
     RIGHT = GYWIcon("right")
     UNCHECK = GYWIcon("uncheck")
     UP = GYWIcon("up")
+    WARNING = GYWIcon("warning")
+    WIFI = GYWIcon("wifi")
     KEY_0 = GYWIcon("key_0")
     KEY_1 = GYWIcon("key_1")
     KEY_2 = GYWIcon("key_2")
@@ -298,20 +354,27 @@ class GYWIcons:
 
     values = [
         BLANK,
+        BUILD,
+        CAMERA,
+        CHAT,
         CHECK,
         DONE,
         DOWN,
         EDIT,
         FILE,
+        HELP,
         INFO,
         LEFT,
         LOCATION,
         NEXT,
+        NFC,
         PREV,
         RENAME,
         RIGHT,
         UNCHECK,
         UP,
+        WARNING,
+        WIFI,
         KEY_0,
         KEY_1,
         KEY_2,

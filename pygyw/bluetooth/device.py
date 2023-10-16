@@ -1,9 +1,11 @@
 import asyncio
-from bleak.backends.device import BLEDevice
+
 from bleak import BleakClient
+from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
 
 from . import commands, exceptions
+from .firmware_version import FirmwareVersion
 from ..layout import drawings, fonts
 
 
@@ -18,7 +20,7 @@ class BTDevice:
         font: The font currently used for drawing texts in the device
     """
 
-    def __init__(self, device: BLEDevice):
+    def __init__(self, device: BLEDevice | str):
         """
         Initialize a new instance of the `BTDevice` class.
 
@@ -157,6 +159,48 @@ class BTDevice:
         ])
         await asyncio.sleep(sleep_time)
 
+    async def set_contrast(self, value: float, sleep_time: float = 0.1):
+        """
+        Set the screen contrast.
+
+        :param value: The contrast value (between 0 and 1).
+        :type value: float
+        :param sleep_time: Time to wait after having set up the contrast. Defaults to 0.1.
+        :type sleep_time: float
+
+        """
+        assert 0 <= value <= 1
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
+            ),
+        ])
+
+        await asyncio.sleep(sleep_time)
+
+    async def set_brightness(self, value: float, sleep_time: float = 0.1):
+        """
+        Set the screen brightness.
+
+        :param value: The brightness value (between 0 and 1).
+        :type value: float
+        :param sleep_time: Time to wait after having set up the brightness. Defaults to 0.1.
+        :type sleep_time: float
+
+        """
+        assert 0 <= value <= 1
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
+            ),
+        ])
+
+        await asyncio.sleep(sleep_time)
+
     async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.1):
         """
         Set the default font.
@@ -183,3 +227,49 @@ class BTDevice:
 
         # Save font
         self.font = font
+
+    async def auto_rotate_screen(self, enable: bool):
+        """
+        Enable or disable the screen autorotation.
+
+        :param enable: True to enable screen auto-rotate, False to disable it.
+        :type enable: bool
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
+            ),
+        ])
+
+    async def get_firmware_version(self) -> FirmwareVersion:
+        data = await self.client.read_gatt_char(commands.GYWCharacteristics.FIRMWARE_VERSION)
+        version = data.decode('utf-8').rstrip('\0')
+        major, minor, patch = version.split('.')
+
+        return FirmwareVersion(
+            major=int(major),
+            minor=int(minor),
+            patch=int(patch),
+        )
+
+    async def enable_backlight(self, enable: bool, sleep_time: float = 0.5):
+        """
+        Enable or disable the display backlight.
+
+        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.5.
+        :type sleep_time: float
+        :param enable: True to enable the backlight, False to disable it.
+        :type enable: bool
+
+        """
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
+            ),
+        ])
+        await asyncio.sleep(sleep_time)
