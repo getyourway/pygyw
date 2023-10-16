@@ -140,15 +140,11 @@ class BTDevice:
         for drawing in drawings:
             await self.send_drawing(drawing)
 
-    async def start_display(self, sleep_time: float = 0.5):
+    async def start_display(self):
         """
         Turn the screen on.
 
         ..note It has no effect if the screen is already on.
-
-        :param sleep_time: Time to wait after having switched on the screen. Defaults to 0.5.
-        :type sleep_time: float
-
         """
 
         await self.__execute_commands([
@@ -157,16 +153,13 @@ class BTDevice:
                 bytearray([commands.ControlCodes.START_DISPLAY]),
             ),
         ])
-        await asyncio.sleep(sleep_time)
 
-    async def set_contrast(self, value: float, sleep_time: float = 0.1):
+    async def set_contrast(self, value: float):
         """
         Set the screen contrast.
 
         :param value: The contrast value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the contrast. Defaults to 0.1.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -178,16 +171,12 @@ class BTDevice:
             ),
         ])
 
-        await asyncio.sleep(sleep_time)
-
-    async def set_brightness(self, value: float, sleep_time: float = 0.1):
+    async def set_brightness(self, value: float):
         """
         Set the screen brightness.
 
         :param value: The brightness value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the brightness. Defaults to 0.1.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -199,16 +188,12 @@ class BTDevice:
             ),
         ])
 
-        await asyncio.sleep(sleep_time)
-
-    async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.1):
+    async def set_font(self, font: fonts.GYWFont):
         """
         Set the default font.
 
         :param font: The font to use as default
         :type font: `font.GYWFont`
-        :param sleep_time: Time to wait after having set up the font. Defaults to 0.1.
-        :type sleep_time: float
 
         """
 
@@ -222,8 +207,6 @@ class BTDevice:
                 bytearray([commands.ControlCodes.SET_FONT]),
             ),
         ])
-
-        await asyncio.sleep(sleep_time)
 
         # Save font
         self.font = font
@@ -255,12 +238,10 @@ class BTDevice:
             patch=int(patch),
         )
 
-    async def enable_backlight(self, enable: bool, sleep_time: float = 0.5):
+    async def enable_backlight(self, enable: bool):
         """
         Enable or disable the display backlight.
 
-        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.5.
-        :type sleep_time: float
         :param enable: True to enable the backlight, False to disable it.
         :type enable: bool
 
@@ -272,4 +253,3 @@ class BTDevice:
                 bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
             ),
         ])
-        await asyncio.sleep(sleep_time)
