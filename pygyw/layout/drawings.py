@@ -131,10 +131,17 @@ class TextDrawing(GYWDrawing):
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
         font: The font to use for the text (can be None).
-
+        size: The font size.
+        color: The text color.
     """
 
-    def __init__(self, text: str, left: int = 0, top: int = 0, font: fonts.GYWFont = None):
+    def __init__(self,
+                 text: str,
+                 left: int = 0,
+                 top: int = 0,
+                 font: fonts.GYWFont = None,
+                 size: int = None,
+                 color: str = None):
         """
         Initialize a `TextDrawing` object.
 
@@ -146,17 +153,24 @@ class TextDrawing(GYWDrawing):
         :type top: int
         :param font: The font used for the text. Defaults to None.
         :type font: `fonts.GYWFont`
-
+        :param size: The font size.
+        :type size: int
+        :param color: The text color in ORGB format.
+        :type color: str
         """
 
         super().__init__("text", left=left, top=top)
         self.text = text
         self.font = font
+        self.size = size
+        self.color = color
 
     def to_json(self) -> dict():
         data = super().to_json()
         data["text"] = self.text
         data["font"] = self.font.name
+        data["size"] = self.size
+        data["color"] = self.color
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
@@ -171,11 +185,17 @@ class TextDrawing(GYWDrawing):
         operations = super().to_commands()
 
         # Generate control instruction
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
+        ctrl_data += self.left.to_bytes(4, 'little')
+        ctrl_data += self.top.to_bytes(4, 'little')
+        ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
+        ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
 
-        # Add font to control instruction
-        if self.font:
-            ctrl_data += bytes(self.font.prefix, 'utf-8')
+        short_color = "NULL"
+        if self.color:
+            short_color = f"{self.color[0]}{self.color[2]}{self.color[4]}{self.color[6]}"
+
+        ctrl_data += bytes(short_color, 'utf-8')
 
         operations.extend([
             # Text data
@@ -239,7 +259,9 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4, 'little') + self.top.to_bytes(4, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4,
+                                                                                          'little') + self.top.to_bytes(
+            4, 'little')
 
         if self.color:
             ctrl_data += bytes(self.color, 'utf-8')
