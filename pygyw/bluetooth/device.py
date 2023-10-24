@@ -3,6 +3,7 @@ import asyncio
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
+from typing_extensions import deprecated
 
 from . import commands, exceptions
 from .firmware_version import FirmwareVersion
@@ -208,6 +209,7 @@ class BTDevice:
         if sleep_time > 0:
             await asyncio.sleep(sleep_time)
 
+    @deprecated("Set the font when drawing text with `TextDrawing`")
     @deprecated_param("sleep_time", "Delay is no longer needed")
     async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.0):
         """
