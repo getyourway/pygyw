@@ -1,6 +1,7 @@
 1.2.3:
     - Deprecate command delays and change their default value to 0
     - Deprecate `set_font` in favor of `TextDrawing`
+    - Fix missing declarations of subpackages and icons in the setup script
 
 1.2.2:
     - Add a method to get the firmware version
