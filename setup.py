@@ -8,7 +8,14 @@ setup(
     author='Antoine Malherbe',
     author_email='a.malherbe@getyourway.be',
     license='BSD 3-clause',
-    packages=['pygyw'],
+    packages=[
+        'pygyw',
+        'pygyw.bluetooth',
+        'pygyw.layout'
+    ],
+    package_data={
+        'pygyw.layout': ['icons/*'],
+    },
     install_requires=[
         'bleak',
     ],
