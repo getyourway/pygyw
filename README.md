@@ -1,7 +1,6 @@
 # PyGYW
 
-PyGYW is a Python library that provides an easy-to-use interface to control the aRdent smart glasses via Bluetooth. This
-library allows you to send instructions to the glasses such as displaying text, icons, or images on the glasses' screen.
+PyGYW is a Python library that provides an easy-to-use interface to control the aRdent smart glasses via Bluetooth. This library allows you to send instructions to the glasses such as displaying text, icons, or images on the glasses' screen.
 
 ## Installation
 
@@ -49,18 +48,15 @@ await device.connect()
 
 After the connection is established, you can display elements on the screen.
 
-:note: :note: Before actually displaying information, you need to manually indicate to the glasses that the screen needs
-to be turned on with the `start_display` method.
+:note: :note: Before actually displaying information, you need to manually indicate to the glasses that the screen needs to be turned on with the `start_display` method.
 
 ## Display
 
-To display elements on the aRdent glasses' screen, you need to create a `GYWDrawing` object and pass it to
-the `send_drawing(drawing)` method of the connected `BTDevice` object. There are three types of `GYWDrawing` objects:
+To display elements on the aRdent glasses' screen, you need to create a `GYWDrawing` object and pass it to the `send_drawing(drawing)` method of the connected `BTDevice` object. There are three types of `GYWDrawing` objects:
 
 ### 1. BlankScreen
 
-A `BlankScreen` object is a blank screen that can be used to reset the display. You can create a `BlankScreen` object
-like this:
+A `BlankScreen` object is a blank screen that can be used to reset the display. You can create a `BlankScreen` object like this:
 
 ```python
 from pygyw.layout import drawings
@@ -87,9 +83,7 @@ td = drawings.TextDrawing(text=text, left=100, top=100, font=font, size=42, colo
 
 You can specify the position of the `TextDrawing` on the screen by using the `left` and `top` parameters.
 
-To change the font of the text, you can use the font parameter, which should be set to a `GYWFont` object. This object
-also describes the font properties such as the height of a character or the font size. A list of active fonts can be
-found in the `GYWFonts` object.
+To change the font of the text, you can use the font parameter, which should be set to a `GYWFont` object. This object also describes the font properties such as the height of a character or the font size. A list of active fonts can be found in the `GYWFonts` object.
 
 ### 3. IconDrawing
 
@@ -104,15 +98,13 @@ id = drawings.IconDrawing(icon=icon, left=100, top=200, color="ff00ff00")
 
 Similarly to `TextDrawing`, the positions of the `IconDrawing` can be specified with the `left` and `top` properties.
 
-To change the icon displayed, you can use the `icon` parameter, which should be set to a `GYWIcon` object. A list of
-active icons can be found in the `GYWIcons` object.
+To change the icon displayed, you can use the `icon` parameter, which should be set to a `GYWIcon` object. A list of active icons can be found in the `GYWIcons` object.
 
 ### Display a drawing on the screen
 
 To display a single drawing use `device.send_drawing(drawing)`.
 
-If you want to send multiple drawings at once, use `device.send_drawings(drawings)` where `drawings` is a list
-of `GYWDrawing` objects.
+If you want to send multiple drawings at once, use `device.send_drawings(drawings)` where `drawings` is a list of `GYWDrawing` objects.
 
 ## Authors
  - Antoine Malherbe, Get Your Way
