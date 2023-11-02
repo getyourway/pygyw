@@ -114,8 +114,6 @@ To display a single drawing use `device.send_drawing(drawing)`.
 If you want to send multiple drawings at once, use `device.send_drawings(drawings)` where `drawings` is a list
 of `GYWDrawing` objects.
 
-```python
-
 ## Authors
  - Antoine Malherbe, Get Your Way
  - Nicolas Dessambre, Get Your Way
