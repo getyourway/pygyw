@@ -268,8 +268,7 @@ class IconDrawing(GYWDrawing):
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
 
-        if self.color:
-            ctrl_data += bytes(self.color, 'utf-8')
+        ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
 
         def clamp(n, smallest, largest):
             return max(smallest, min(n, largest))
