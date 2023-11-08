@@ -274,17 +274,17 @@ class IconDrawing(GYWDrawing):
         def clamp(n, smallest, largest):
             return max(smallest, min(n, largest))
 
-        self.scale = clamp(self.scale, 0.01, 13.8)
+        self.scale = clamp(self.scale, 0.01, 13.7)
         if self.scale >= 1.0:
             # min: 1.0 -> 0.0 -> 0
-            # max: 13.8 -> 12.8 -> 128
+            # max: 13.7 -> 12.7 -> 127
             scale = round((self.scale - 1.0) * 10.0)
         else:
             # min: 0.01 -> -1
             # max: 0.99 -> -99
             scale = round(-self.scale * 100.0)
 
-        assert -99 <= scale <= 128
+        assert -99 <= scale <= 127
 
         ctrl_data += scale.to_bytes(1, 'little', signed=True)
 
