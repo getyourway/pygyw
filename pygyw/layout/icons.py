@@ -106,6 +106,13 @@ class GYWIcons:
             :alt: File icon
             :align: center
 
+        GYW: An icon representing the Get Your Way logo.
+        .. image:: icons/GYW.svg
+            :width: 121px
+            :height: 48px
+            :alt: Get Your Way icon
+            :align: center
+
         HELP: An icon representing the help question mark.
         .. image:: icons/help.svg
             :width: 48px
