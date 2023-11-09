@@ -2,7 +2,7 @@ import asyncio
 
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
-from bleak.exc import BleakError
+from bleak.exc import BleakError, BleakDeviceNotFoundError
 from typing_extensions import deprecated
 
 from . import commands, exceptions
@@ -59,7 +59,10 @@ class BTDevice:
 
         print(f"Connecting to {self.device}")
         client = BleakClient(self.device, timeout=5.0, loop=loop)
-        await client.connect()
+        try:
+            await client.connect()
+        except BleakDeviceNotFoundError:
+            return False
 
         connected = client.is_connected
         if connected:
