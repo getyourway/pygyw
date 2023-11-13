@@ -93,12 +93,14 @@ A `IconDrawing` object is used to display text on the screen. You can create a `
 from pygyw.layout import drawings, icons
 
 icon = icons.GYWIcons.LEFT
-id = drawings.IconDrawing(icon=icon, left=100, top=200, color="ff00ff00")
+id = drawings.IconDrawing(icon=icon, left=100, top=200, color="ff00ff00", scale=2.5)
 ```
 
 Similarly to `TextDrawing`, the positions of the `IconDrawing` can be specified with the `left` and `top` properties.
 
 To change the icon displayed, you can use the `icon` parameter, which should be set to a `GYWIcon` object. A list of active icons can be found in the `GYWIcons` object.
+
+To change the size of the icon, you can use the `scale` parameter. It's an optional parameter with a default value of 1.0. If the icon is 48x48, a scale factor of 2.0 will make it 96x96.
 
 ### Display a drawing on the screen
 
