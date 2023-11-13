@@ -1,10 +1,9 @@
-from typing import Optional
+from typing import Optional, Any
 
 from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-
 from ..bluetooth import commands
 
 
@@ -222,10 +221,11 @@ class IconDrawing(GYWDrawing):
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
         color: The color of the icon (can be None).
+        scale: The icon scale.
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: str = None):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: str = None, scale: float = 1.0):
         """
         Initialize an `IconDrawing` object.
 
@@ -237,17 +237,22 @@ class IconDrawing(GYWDrawing):
         :type top: int
         :param color: The color of the icon in ORGB format. Defaults to None.
         :type color: str
+        :param scale: The icon scale. Defaults to 1.0.
+        :type scale: float
 
         """
 
         super().__init__("icon", left=left, top=top)
         self.icon = icon
         self.color = color
+        assert scale > 0
+        self.scale = scale
 
-    def to_json(self) -> dict():
+    def to_json(self) -> dict[str, Any]:
         data = super().to_json()
         data["icon"] = self.icon
         data["color"] = self.color
+        data["scale"] = self.scale
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
@@ -259,12 +264,28 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + self.left.to_bytes(4,
-                                                                                          'little') + self.top.to_bytes(
-            4, 'little')
+        left = self.left.to_bytes(4, 'little')
+        top = self.top.to_bytes(4, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
 
-        if self.color:
-            ctrl_data += bytes(self.color, 'utf-8')
+        ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
+
+        def clamp(n, smallest, largest):
+            return max(smallest, min(n, largest))
+
+        self.scale = clamp(self.scale, 0.01, 13.7)
+        if self.scale >= 1.0:
+            # min: 1.0 -> 0.0 -> 0
+            # max: 13.7 -> 12.7 -> 127
+            scale = round((self.scale - 1.0) * 10.0)
+        else:
+            # min: 0.01 -> -1
+            # max: 0.99 -> -99
+            scale = round(-self.scale * 100.0)
+
+        assert -99 <= scale <= 127
+
+        ctrl_data += scale.to_bytes(1, 'little', signed=True)
 
         operations = super().to_commands()
         operations.extend([

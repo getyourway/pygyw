@@ -3,6 +3,7 @@
     - Deprecate `set_font` in favor of `TextDrawing`
     - Fix missing declarations of subpackages and icons in the setup script
     - Add an example script to show how to use the library
+    - Replace PNG icons with SVGs and add a scaling factor
     - Handle `BleakDeviceNotFound` errors on connection
 
 1.2.2:
