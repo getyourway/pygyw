@@ -5,6 +5,7 @@
     - Add an example script to show how to use the library
     - Replace PNG icons with SVGs and add a scaling factor
     - Handle `BleakDeviceNotFound` errors on connection
+    - Handle `IconDrawing` and `TextDrawing` that has no data
 
 1.2.2:
     - Add a method to get the firmware version
