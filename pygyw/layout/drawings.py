@@ -183,6 +183,9 @@ class TextDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
+        if not self.text:
+            return operations
+
         # Generate control instruction
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
         ctrl_data += self.left.to_bytes(4, 'little')
@@ -264,6 +267,11 @@ class IconDrawing(GYWDrawing):
 
         """
 
+        operations = super().to_commands()
+
+        if not self.icon:
+            return operations
+
         left = self.left.to_bytes(4, 'little')
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
@@ -287,7 +295,6 @@ class IconDrawing(GYWDrawing):
 
         ctrl_data += scale.to_bytes(1, 'little', signed=True)
 
-        operations = super().to_commands()
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
