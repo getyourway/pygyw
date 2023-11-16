@@ -128,11 +128,15 @@ class TextDrawing(GYWDrawing):
     """
     Represents a text element displayed on the screen.
 
-    Attributes: text: The text to display. left: The horizontal offset (from the left). top: The vertical offset (
-    from the top). font: The font to use for the text (can be None). size: The font size. color: The text color.
-    max_width: The maximum width (in pixels) of the text. It will be wrapped on multiple lines if it is too long.
-    max_lines: The maximum number of lines the text can be wrapped on. All extra lines will be ignored.
-    The value 0 is special and disables the limit.
+    Attributes:
+        text: The text to display.
+        left: The horizontal offset (from the left).
+        top: The vertical offset (from the top).
+        font: The font to use for the text (can be None).
+        size: The font size. color: The text color.
+        max_width: The maximum width (in pixels) of the text. It will be wrapped on multiple lines if it is too long.
+        max_lines: The maximum number of lines the text can be wrapped on. All extra lines will be ignored.
+            The value 0 is special and disables the limit.
     """
 
     def __init__(self,
