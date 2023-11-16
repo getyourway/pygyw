@@ -6,6 +6,7 @@
     - Replace PNG icons with SVGs and add a scaling factor
     - Handle `BleakDeviceNotFound` errors on connection
     - Handle `IconDrawing` and `TextDrawing` that has no data
+    - Add support for wrapping TextDrawings on multiple lines
 
 1.2.2:
     - Add a method to get the firmware version
