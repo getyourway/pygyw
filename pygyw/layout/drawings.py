@@ -185,6 +185,13 @@ class TextDrawing(GYWDrawing):
 
     @property
     def wrapped_text(self):
+        """
+        Returns the text wrapped on multiple lines constrained by `max_width` and `max_lines`.
+
+        :return: The wrapped text.
+        :rtype: str
+
+        """
         return "\n".join(self._wrap_text())
 
     def to_commands(self) -> list[commands.BTCommand]:
@@ -241,8 +248,6 @@ class TextDrawing(GYWDrawing):
         :rtype: `list[commands.BTCommand]`
 
         """
-        operations = []
-
         # Generate control instruction
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
         ctrl_data += self.left.to_bytes(4, 'little')
@@ -256,7 +261,7 @@ class TextDrawing(GYWDrawing):
 
         ctrl_data += bytes(short_color, 'utf-8')
 
-        operations.extend([
+        return [
             # Text data
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
@@ -267,9 +272,7 @@ class TextDrawing(GYWDrawing):
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 ctrl_data,
             ),
-        ])
-
-        return operations
+        ]
 
 
 class IconDrawing(GYWDrawing):
