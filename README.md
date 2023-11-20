@@ -27,6 +27,7 @@ await device.connect()
 ```
 
 2. If you don't know the device MAC address:
+
 ```python
 from pygyw.bluetooth import BTManager
 
@@ -60,7 +61,7 @@ A `BlankScreen` object is a blank screen that can be used to reset the display. 
 ```python
 from pygyw.layout import drawings
 
-ws = drawings.BlankScreen(color="ff0000ff") # ARGB
+ws = drawings.BlankScreen(color="ff0000ff")  # ARGB
 ```
 
 The color is optional and if not specified, the screen will be filled with the last color used.
@@ -75,7 +76,7 @@ from pygyw.layout import drawings, fonts
 
 text = "Hello, world!"
 font = fonts.GYWFonts.LARGE
-td = drawing.TextDrawing(text=text, left=100, top=100, font=font)
+td = drawings.TextDrawing(text=text, left=100, top=100, font=font, size=42, color="ff000000")
 ```
 
 :note: If you do not specify any font, the last one used on the device will be used again.
@@ -92,12 +93,20 @@ A `IconDrawing` object is used to display text on the screen. You can create a `
 from pygyw.layout import drawings, icons
 
 icon = icons.GYWIcons.LEFT
-id = drawing.IconDrawing(icon=icon, left=100, top=200)
+id = drawings.IconDrawing(icon=icon, left=100, top=200, color="ff00ff00", scale=2.5)
 ```
 
 Similarly to `TextDrawing`, the positions of the `IconDrawing` can be specified with the `left` and `top` properties.
 
 To change the icon displayed, you can use the `icon` parameter, which should be set to a `GYWIcon` object. A list of active icons can be found in the `GYWIcons` object.
+
+To change the size of the icon, you can use the `scale` parameter. It's an optional parameter with a default value of 1.0. If the icon is 48x48, a scale factor of 2.0 will make it 96x96. The scale factor has a range between 0.01 and 13.7. Any scale factor outside of this range will be clamped to the nearest value within the range.
+
+### Display a drawing on the screen
+
+To display a single drawing use `device.send_drawing(drawing)`.
+
+If you want to send multiple drawings at once, use `device.send_drawings(drawings)` where `drawings` is a list of `GYWDrawing` objects.
 
 ## Authors
  - Antoine Malherbe, Get Your Way

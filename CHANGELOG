@@ -1,3 +1,13 @@
+1.2.3:
+    - Deprecate command delays and change their default value to 0
+    - Deprecate `set_font` in favor of `TextDrawing`
+    - Fix missing declarations of subpackages and icons in the setup script
+    - Add an example script to show how to use the library
+    - Replace PNG icons with SVGs and add a scaling factor
+    - Handle `BleakDeviceNotFound` errors on connection
+    - Handle `IconDrawing` and `TextDrawing` that has no data
+    - Add support for wrapping TextDrawings on multiple lines
+
 1.2.2:
     - Add a method to get the firmware version
     - Add a method to enable or disable screen auto-rotate

@@ -34,7 +34,7 @@ class BTManager:
         else:
             raise BTException("OS not supported")
 
-    async def scan_devices(self, filter=True, store=True, timeout=3):
+    async def scan_devices(self, filter: bool = True, store: bool = True, timeout: int = 3):
         """
         Scan for BLE devices and saves the information of newly discovered devices.
 
