@@ -1,5 +1,6 @@
 from typing import Any
 
+
 class GYWFont:
     """
     A font stored on an aRdent device used to style the display of a `drawings.TextDrawing`.
