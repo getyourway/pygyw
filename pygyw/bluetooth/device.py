@@ -22,7 +22,7 @@ class BTDevice:
         font: The font currently used for drawing texts in the device
     """
 
-    def __init__(self, device: BLEDevice | str):
+    def __init__(self, device: "BLEDevice | str"):
         """
         Initialize a new instance of the `BTDevice` class.
 
@@ -99,7 +99,7 @@ class BTDevice:
 
         return disconnected
 
-    async def __execute_commands(self, commands: 'list[commands.BTCommand]'):
+    async def __execute_commands(self, commands: "list[commands.BTCommand]"):
         for command in commands:
             i = 0
             data_length = len(command.data)

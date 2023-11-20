@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class GYWFont:
     """
     A font stored on an aRdent device used to style the display of a `drawings.TextDrawing`.
@@ -50,7 +53,7 @@ class GYWFont:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict:
+    def to_json(self) -> dict[str, Any]:
         """Return a JSON-serializable dictionary of the object."""
 
         return {

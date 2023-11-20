@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pygyw',
-    version='1.2.2',
+    version='1.2.3',
     description='A Python package to interact with aRdent smart glasses',
     url='https://github.com/getyourway/pygyw',
     author='Antoine Malherbe',
@@ -11,13 +11,14 @@ setup(
     packages=[
         'pygyw',
         'pygyw.bluetooth',
-        'pygyw.layout'
+        'pygyw.layout',
     ],
     package_data={
         'pygyw.layout': ['icons/*'],
     },
     install_requires=[
         'bleak',
+        'typing-extensions',
     ],
     classifiers=[
         'Development Status :: 2 - Alpha',

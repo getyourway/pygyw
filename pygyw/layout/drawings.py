@@ -44,7 +44,7 @@ class GYWDrawing:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict:
+    def to_json(self) -> dict[str, Any]:
         return {
             "type": self.drawing_type,
             "left": self.left,
@@ -177,7 +177,7 @@ class TextDrawing(GYWDrawing):
         self.max_width = max_width
         self.max_lines = max_lines
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> "dict[str, Any]":
         data = super().to_json()
         data["text"] = self.text
         data["font"] = self.font.name
@@ -188,7 +188,7 @@ class TextDrawing(GYWDrawing):
         return data
 
     @property
-    def wrapped_text(self):
+    def wrapped_text(self) -> str:
         """
         Returns the text wrapped on multiple lines constrained by `max_width` and `max_lines`.
 
@@ -198,7 +198,7 @@ class TextDrawing(GYWDrawing):
         """
         return "\n".join(self._wrap_text())
 
-    def to_commands(self) -> list[commands.BTCommand]:
+    def to_commands(self) -> "list[commands.BTCommand]":
         """
         Convert the `TextDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -222,7 +222,7 @@ class TextDrawing(GYWDrawing):
 
         return commands
 
-    def _wrap_text(self) -> list[str]:
+    def _wrap_text(self) -> "list[str]":
         # An invalid value will be considered as unconstrained.
         max_width = None if self.max_width is not None and self.max_width < 1 else self.max_width
         max_lines = max(0, self.max_lines)
@@ -244,7 +244,7 @@ class TextDrawing(GYWDrawing):
 
         return lines
 
-    def _line_to_commands(self, line: str, top: int) -> list[commands.BTCommand]:
+    def _line_to_commands(self, line: str, top: int) -> "list[commands.BTCommand]":
         """
         Convert a line of text into a list of commands understood by the aRdent Bluetooth device.
 
@@ -315,7 +315,7 @@ class IconDrawing(GYWDrawing):
         assert scale > 0
         self.scale = scale
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> "dict[str, Any]":
         data = super().to_json()
         data["icon"] = self.icon
         data["color"] = self.color
