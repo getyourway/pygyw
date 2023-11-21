@@ -6,7 +6,6 @@ from bleak.exc import BleakError, BleakDeviceNotFoundError
 from typing_extensions import deprecated
 
 from . import commands, exceptions
-from .firmware_version import FirmwareVersion
 from ..deprecated_param import deprecated_param
 from ..layout import drawings, fonts
 
@@ -257,17 +256,6 @@ class BTDevice:
                 bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
-
-    async def get_firmware_version(self) -> FirmwareVersion:
-        data = await self.client.read_gatt_char(commands.GYWCharacteristics.FIRMWARE_VERSION)
-        version = data.decode('utf-8').rstrip('\0')
-        major, minor, patch = version.split('.')
-
-        return FirmwareVersion(
-            major=int(major),
-            minor=int(minor),
-            patch=int(patch),
-        )
 
     @deprecated_param("sleep_time", "Delay is no longer needed")
     async def enable_backlight(self, enable: bool, sleep_time: float = 0.0):
