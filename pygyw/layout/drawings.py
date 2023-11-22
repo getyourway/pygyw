@@ -44,7 +44,7 @@ class GYWDrawing:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> "dict[str, Any]":
         return {
             "type": self.drawing_type,
             "left": self.left,
@@ -371,3 +371,69 @@ class IconDrawing(GYWDrawing):
         ])
 
         return operations
+
+
+class RectangleDrawing(GYWDrawing):
+    """
+    A colored rectangle.
+
+    Attributes:
+        left: The horizontal offset.
+        top: The vertical offset.
+        width: The rectangle width.
+        height: The rectangle height.
+        color: The fill color. Defaults to None in which case the current background color is used.
+    """
+
+    def __init__(self,
+                 left: int,
+                 top: int,
+                 width: int,
+                 height: int,
+                 color: str = None):
+        super().__init__("rectangle", left, top)
+        self.width = width
+        self.height = height
+        self.color = color
+
+    def to_json(self) -> "dict[str, Any]":
+        data = super().to_json()
+        data["width"] = self.width
+        data["height"] = self.height
+        data["color"] = self.color
+        return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """Converts this `RectangleDrawing` into a list of commands."""
+
+        operations = super().to_commands()
+
+        left = self.left.to_bytes(2, 'little')
+        top = self.top.to_bytes(2, 'little')
+        width = self.width.to_bytes(2, 'little')
+        height = self.height.to_bytes(2, 'little')
+        color = str_color_to_rgba8888_bytes(self.color)
+
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
+
+        operations.append(
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        )
+
+        return operations
+
+
+def str_color_to_rgba8888_bytes(color: str) -> bytes:
+    """Transforms an ARGB color string into an RGBA8888 byte array of length 4."""
+
+    if color is None:
+        return bytearray([0, 0, 0, 0])
+
+    alpha = int(color[0:2], 16).to_bytes(1, "little")
+    red = int(color[2:4], 16).to_bytes(1, "little")
+    green = int(color[4:6], 16).to_bytes(1, "little")
+    blue = int(color[6:8], 16).to_bytes(1, "little")
+    return red + green + blue + alpha
