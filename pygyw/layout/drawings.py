@@ -404,7 +404,7 @@ class RectangleDrawing(GYWDrawing):
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
-        """Converts this `RectangleDrawing` into a list of commands."""
+        """Convert this `RectangleDrawing` into a list of commands."""
 
         operations = super().to_commands()
 
@@ -427,7 +427,7 @@ class RectangleDrawing(GYWDrawing):
 
 
 def str_color_to_rgba8888_bytes(color: str) -> bytes:
-    """Transforms an ARGB color string into an RGBA8888 byte array of length 4."""
+    """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
 
     if color is None:
         return bytearray([0, 0, 0, 0])
