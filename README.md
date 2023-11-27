@@ -116,8 +116,7 @@ The position of the rectangle can be specified with the `left` and `top` propert
 
 The size of the rectangle can be specified with the `width` and `height` properties.
 
-The color is optional and if not specified, the rectangle will be filled with the current background color, useful for
-erasing parts of the screen.
+The color is optional and if not specified, the rectangle will be filled with the current background color, useful for erasing parts of the screen.
 
 ### Display a drawing on the screen
 
