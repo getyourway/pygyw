@@ -6,6 +6,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
+from .helpers import rgba8888_bytes_from_color_string
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -412,7 +413,7 @@ class RectangleDrawing(GYWDrawing):
         top = self.top.to_bytes(2, 'little')
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
-        color = str_color_to_rgba8888_bytes(self.color)
+        color = rgba8888_bytes_from_color_string(self.color)
 
         ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
 
@@ -424,16 +425,3 @@ class RectangleDrawing(GYWDrawing):
         )
 
         return operations
-
-
-def str_color_to_rgba8888_bytes(color: str) -> bytes:
-    """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
-
-    if color is None:
-        return bytearray([0, 0, 0, 0])
-
-    alpha = int(color[0:2], 16).to_bytes(1, "little")
-    red = int(color[2:4], 16).to_bytes(1, "little")
-    green = int(color[4:6], 16).to_bytes(1, "little")
-    blue = int(color[6:8], 16).to_bytes(1, "little")
-    return red + green + blue + alpha
