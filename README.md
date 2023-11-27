@@ -107,9 +107,8 @@ To change the size of the icon, you can use the `scale` parameter. It's an optio
 A `RectangleDrawing` object is used to draw rectangles on the screen. You can create a `RectangleDrawing` object like this:
 
 ```python
-from pygyw.layout import drawings, icons
+from pygyw.layout import drawings
 
-icon = icons.GYWIcons.LEFT
 rd = drawings.RectangleDrawing(left=100, top=200, width=50, height=70, color="ff0000ff")
 ```
 
