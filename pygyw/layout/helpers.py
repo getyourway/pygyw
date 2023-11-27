@@ -193,3 +193,16 @@ def justify(text: str, width: int):
             lines.append(' '.join(line))
 
     return lines
+
+
+def rgba8888_bytes_from_color_string(color: str) -> bytes:
+    """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
+
+    if color is None:
+        return bytearray([0, 0, 0, 0])
+
+    alpha = int(color[0:2], 16).to_bytes(1, "little")
+    red = int(color[2:4], 16).to_bytes(1, "little")
+    green = int(color[4:6], 16).to_bytes(1, "little")
+    blue = int(color[6:8], 16).to_bytes(1, "little")
+    return red + green + blue + alpha
