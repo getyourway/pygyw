@@ -1,4 +1,5 @@
 import asyncio
+from asyncio import Future
 
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
@@ -277,3 +278,53 @@ class BTDevice:
         ])
         if sleep_time > 0:
             await asyncio.sleep(sleep_time)
+
+    async def list_files(self) -> "list[str] | None":
+        """List the files stored on the device."""
+
+        output = ""
+        done = Future()
+
+        def callback(_sender, data: bytearray):
+            nonlocal output
+            print(data)
+            if data:
+                output += data.decode("utf-8")
+            else:
+                done.set_result(None)
+
+        await self.client.start_notify(commands.GYWCharacteristics.LIST_FILES_CHARACTERISTIC, callback)
+
+        try:
+            await self.__execute_commands([
+                commands.BTCommand(
+                    commands.GYWCharacteristics.DISPLAY_COMMAND,
+                    bytearray([commands.ControlCodes.LIST_FILES]),
+                ),
+            ])
+            await asyncio.wait_for(done, timeout=3)
+
+        except asyncio.TimeoutError:
+            # If we don't get the last packet indicating end of transmission, consider the transfer corrupted.
+            raise exceptions.BTException("File list transfer timed out")
+
+        finally:
+            await self.client.stop_notify(commands.GYWCharacteristics.LIST_FILES_CHARACTERISTIC)
+
+        # Parse the output and return the list of files.
+        directory = []
+        files = []
+        for line in output.splitlines():
+            if line[0] == "/":
+                directory.append(line[1:])
+            elif line == "\\":
+                try:
+                    directory.pop()
+                except IndexError:
+                    # We popped more than we pushed because some packets were lost.
+                    raise exceptions.BTException("Packets lost while listing files")
+            else:
+                absolute_path = "/".join(directory + [line])
+                files.append(absolute_path)
+
+        return files
