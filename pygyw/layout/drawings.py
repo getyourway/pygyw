@@ -6,6 +6,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
+from .helpers import rgba8888_bytes_from_color_string
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -44,7 +45,7 @@ class GYWDrawing:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> "dict[str, Any]":
         return {
             "type": self.drawing_type,
             "left": self.left,
@@ -369,5 +370,58 @@ class IconDrawing(GYWDrawing):
                 ctrl_data,
             ),
         ])
+
+        return operations
+
+
+class RectangleDrawing(GYWDrawing):
+    """
+    A colored rectangle.
+
+    Attributes:
+        left: The horizontal offset.
+        top: The vertical offset.
+        width: The rectangle width.
+        height: The rectangle height.
+        color: The fill color. Defaults to None in which case the current background color is used.
+    """
+
+    def __init__(self,
+                 left: int,
+                 top: int,
+                 width: int,
+                 height: int,
+                 color: str = None):
+        super().__init__("rectangle", left, top)
+        self.width = width
+        self.height = height
+        self.color = color
+
+    def to_json(self) -> "dict[str, Any]":
+        data = super().to_json()
+        data["width"] = self.width
+        data["height"] = self.height
+        data["color"] = self.color
+        return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """Convert this `RectangleDrawing` into a list of commands."""
+
+        operations = super().to_commands()
+
+        left = self.left.to_bytes(2, 'little')
+        top = self.top.to_bytes(2, 'little')
+        width = self.width.to_bytes(2, 'little')
+        height = self.height.to_bytes(2, 'little')
+        color = rgba8888_bytes_from_color_string(self.color)
+
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
+
+        operations.append(
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        )
 
         return operations
