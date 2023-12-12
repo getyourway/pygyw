@@ -177,6 +177,13 @@ class GYWIcons:
             :alt: Right arrow icon
             :align: center
 
+        SPINNER_1: An icon representing a spinner.
+        .. image:: icons/spinner_1.svg
+            :width: 48px
+            :height: 48px
+            :alt: Spinner icon
+            :align: center
+
         UNCHECK: An icon representing an unchecked checkbox.
         .. image:: icons/uncheck.svg
             :width: 48px
@@ -340,6 +347,7 @@ class GYWIcons:
     PREV = GYWIcon("prev")
     RENAME = GYWIcon("rename")
     RIGHT = GYWIcon("right")
+    SPINNER_1 = GYWIcon("spinner_1")
     UNCHECK = GYWIcon("uncheck")
     UP = GYWIcon("up")
     WARNING = GYWIcon("warning")
@@ -381,6 +389,7 @@ class GYWIcons:
         PREV,
         RENAME,
         RIGHT,
+        SPINNER_1,
         UNCHECK,
         UP,
         WARNING,

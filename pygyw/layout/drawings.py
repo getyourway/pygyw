@@ -1,4 +1,5 @@
 import textwrap
+from enum import IntEnum
 from math import ceil
 from typing import Optional, Any
 
@@ -6,7 +7,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color_string
+from .helpers import rgba8888_bytes_from_color_string, byte_from_positive_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -340,25 +341,8 @@ class IconDrawing(GYWDrawing):
         left = self.left.to_bytes(4, 'little')
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
-
         ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
-
-        def clamp(n, smallest, largest):
-            return max(smallest, min(n, largest))
-
-        self.scale = clamp(self.scale, 0.01, 13.7)
-        if self.scale >= 1.0:
-            # min: 1.0 -> 0.0 -> 0
-            # max: 13.7 -> 12.7 -> 127
-            scale = round((self.scale - 1.0) * 10.0)
-        else:
-            # min: 0.01 -> -1
-            # max: 0.99 -> -99
-            scale = round(-self.scale * 100.0)
-
-        assert -99 <= scale <= 127
-
-        ctrl_data += scale.to_bytes(1, 'little', signed=True)
+        ctrl_data += byte_from_positive_float(self.scale)
 
         operations.extend([
             commands.BTCommand(
@@ -423,5 +407,97 @@ class RectangleDrawing(GYWDrawing):
                 ctrl_data,
             ),
         )
+
+        return operations
+
+
+class AnimationTimingFunction(IntEnum):
+    """The animation timing function to use for the spinner."""
+    LINEAR = 0
+    EASE = 1
+    EASE_IN = 2
+    EASE_OUT = 3
+    EASE_IN_OUT = 4
+
+
+class SpinnerDrawing(GYWDrawing):
+    """
+    Drawing made of an SVG image stored on aRdent and that can be displayed on the screen.
+
+    Attributes:
+        icon: The filename of the SVG image to be displayed.
+        left: The horizontal offset (from the left).
+        top: The vertical offset (from the top).
+        color: The color of the spinner.
+        scale: The spinner scale.
+        animation_timing_function: The animation timing function to use.
+        spins_per_second: The number of spins per second.
+
+    """
+
+    def __init__(self,
+                 icon: icons.GYWIcon,
+                 left: int = 0,
+                 top: int = 0,
+                 color: str = "FF000000",
+                 scale: float = 1.0,
+                 animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
+                 spins_per_second: float = 1.0):
+        """
+        Initialize an `IconDrawing` object.
+        """
+
+        super().__init__("spinner", left=left, top=top)
+        self.icon = icon
+        self.color = color
+        assert scale > 0
+        self.scale = scale
+        self.animation_timing_function = animation_timing_function
+        self.spins_per_second = spins_per_second
+        assert spins_per_second >= 0
+
+    def to_json(self) -> "dict[str, Any]":
+        data = super().to_json()
+        data["icon"] = self.icon
+        data["color"] = self.color
+        data["scale"] = self.scale
+        data["animation_timing_function"] = self.animation_timing_function
+        data["spins_per_second"] = self.spins_per_second
+        return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """
+        Convert the `SpinnerDrawing` into a list of commands understood by the aRdent Bluetooth device.
+
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
+
+        """
+
+        operations = super().to_commands()
+
+        if not self.icon:
+            return operations
+
+        left = self.left.to_bytes(2, 'little')
+        top = self.top.to_bytes(2, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
+        ctrl_data += rgba8888_bytes_from_color_string(self.color)
+        ctrl_data += byte_from_positive_float(self.scale)
+        ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
+
+        spins_per_second = int(clamp(self.spins_per_second, 0.0, 25.5) * 10)
+        ctrl_data += spins_per_second.to_bytes(1, 'little')
+
+        operations.extend([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(f"{self.icon.name}.svg", 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        ])
 
         return operations
