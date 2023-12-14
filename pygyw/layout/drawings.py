@@ -414,10 +414,8 @@ class RectangleDrawing(GYWDrawing):
 class AnimationTimingFunction(IntEnum):
     """The animation timing function to use for the spinner."""
     LINEAR = 0
-    EASE = 1
-    EASE_IN = 2
-    EASE_OUT = 3
-    EASE_IN_OUT = 4
+    EASE_IN = 1
+    EASE_OUT = 2
 
 
 class SpinnerDrawing(GYWDrawing):
