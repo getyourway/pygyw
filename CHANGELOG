@@ -1,6 +1,7 @@
 1.2.4:
     - Remove `get_firmware_version` method
     - Add a new command for drawing colored rectangles and partially clearing the screen
+    - Add `SpinnerDrawing` for displaying animated spinners
 
 1.2.3:
     - Deprecate command delays and change their default value to 0

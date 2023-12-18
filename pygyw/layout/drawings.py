@@ -7,7 +7,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color_string, byte_from_positive_float, clamp
+from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -342,7 +342,7 @@ class IconDrawing(GYWDrawing):
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
         ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
-        ctrl_data += byte_from_positive_float(self.scale)
+        ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
             commands.BTCommand(
@@ -474,14 +474,11 @@ class SpinnerDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        if not self.icon:
-            return operations
-
         left = self.left.to_bytes(2, 'little')
         top = self.top.to_bytes(2, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
         ctrl_data += rgba8888_bytes_from_color_string(self.color)
-        ctrl_data += byte_from_positive_float(self.scale)
+        ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
 
         spins_per_second = int(clamp(self.spins_per_second, 0.0, 25.5) * 10)

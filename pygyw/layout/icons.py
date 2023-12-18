@@ -4,7 +4,7 @@ from . import settings
 
 class GYWIcon:
     """
-    An icon available on aRdent smart glasses and that can be used wuth an `IconDrawing`.
+    An icon available on aRdent smart glasses and that can be used with an `IconDrawing`.
 
     Attributes:
         name (str): Display name of the font.

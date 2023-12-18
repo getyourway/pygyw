@@ -115,7 +115,8 @@ def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
     """
 
     lines_count = len(lines)
-    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (line_height - 1) * font.height * (lines_count - 1))
+    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (
+            line_height - 1) * font.height * (lines_count - 1))
 
 
 ##############################################
@@ -213,18 +214,18 @@ def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
 
-def byte_from_positive_float(value: float) -> bytes:
-    """Transform a positive float into a byte."""
-    value = clamp(value, 0.01, 13.7)
+def byte_from_scale_float(scale: float) -> bytes:
+    """Encodes the scale into a single byte."""
+    scale = clamp(scale, 0.01, 13.7)
 
-    if value >= 1.0:
+    if scale >= 1.0:
         # min: 1.0 -> 0.0 -> 0
         # max: 13.7 -> 12.7 -> 127
-        byte = round((value - 1.0) * 10.0)
+        byte = round((scale - 1.0) * 10.0)
     else:
         # min: 0.01 -> -1
         # max: 0.99 -> -99
-        byte = round(-value * 100.0)
+        byte = round(-scale * 100.0)
 
     assert -99 <= byte <= 127
     return byte.to_bytes(1, 'little', signed=True)
