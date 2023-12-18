@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import textwrap
 from enum import IntEnum
 from math import ceil
@@ -438,7 +440,7 @@ class SpinnerDrawing(GYWDrawing):
                  icon: icons.GYWIcon,
                  left: int = 0,
                  top: int = 0,
-                 color: str = "FF000000",
+                 color: str | None = None,
                  scale: float = 1.0,
                  animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
                  spins_per_second: float = 1.0):

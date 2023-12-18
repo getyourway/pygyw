@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from . import settings
 from . import fonts
 
@@ -195,7 +197,7 @@ def justify(text: str, width: int):
     return lines
 
 
-def rgba8888_bytes_from_color_string(color: str) -> bytes:
+def rgba8888_bytes_from_color_string(color: str | None) -> bytes:
     """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
 
     if color is None:
