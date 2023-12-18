@@ -115,8 +115,7 @@ def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
     """
 
     lines_count = len(lines)
-    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (
-            line_height - 1) * font.height * (lines_count - 1))
+    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (line_height - 1) * font.height * (lines_count - 1))
 
 
 ##############################################
@@ -215,7 +214,7 @@ def clamp(n, smallest, largest):
 
 
 def byte_from_scale_float(scale: float) -> bytes:
-    """Encodes the scale into a single byte."""
+    """Encode the scale into a single byte."""
     scale = clamp(scale, 0.01, 13.7)
 
     if scale >= 1.0:

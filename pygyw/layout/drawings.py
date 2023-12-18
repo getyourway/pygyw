@@ -413,6 +413,7 @@ class RectangleDrawing(GYWDrawing):
 
 class AnimationTimingFunction(IntEnum):
     """The animation timing function to use for the spinner."""
+
     LINEAR = 0
     EASE_IN = 1
     EASE_OUT = 2
@@ -441,10 +442,6 @@ class SpinnerDrawing(GYWDrawing):
                  scale: float = 1.0,
                  animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
                  spins_per_second: float = 1.0):
-        """
-        Initialize an `IconDrawing` object.
-        """
-
         super().__init__("spinner", left=left, top=top)
         self.icon = icon
         self.color = color
