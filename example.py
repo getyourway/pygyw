@@ -34,8 +34,7 @@ async def main():
     icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color="ffff0000")
     await device.send_drawing(icon_drawing)
 
-    spinner = drawings.SpinnerDrawing(icon=icons.GYWIcons.SPINNER_1,
-                                      left=500, top=200,
+    spinner = drawings.SpinnerDrawing(left=500, top=200,
                                       color="ff0000ff",
                                       scale=3,
                                       animation_timing_function=drawings.AnimationTimingFunction.EASE_OUT,

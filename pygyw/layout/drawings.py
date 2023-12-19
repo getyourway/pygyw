@@ -423,10 +423,9 @@ class AnimationTimingFunction(IntEnum):
 
 class SpinnerDrawing(GYWDrawing):
     """
-    Drawing made of an SVG image stored on aRdent and that can be displayed on the screen.
+    Animated spinner and that can be displayed on the screen.
 
     Attributes:
-        icon: The filename of the SVG image to be displayed.
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
         color: The color of the spinner.
@@ -437,7 +436,6 @@ class SpinnerDrawing(GYWDrawing):
     """
 
     def __init__(self,
-                 icon: icons.GYWIcon,
                  left: int = 0,
                  top: int = 0,
                  color: str | None = None,
@@ -445,7 +443,6 @@ class SpinnerDrawing(GYWDrawing):
                  animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
                  spins_per_second: float = 1.0):
         super().__init__("spinner", left=left, top=top)
-        self.icon = icon
         self.color = color
         assert scale > 0
         self.scale = scale
@@ -455,7 +452,6 @@ class SpinnerDrawing(GYWDrawing):
 
     def to_json(self) -> "dict[str, Any]":
         data = super().to_json()
-        data["icon"] = self.icon
         data["color"] = self.color
         data["scale"] = self.scale
         data["animation_timing_function"] = self.animation_timing_function
@@ -486,7 +482,7 @@ class SpinnerDrawing(GYWDrawing):
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(f"{self.icon.name}.svg", 'utf-8'),
+                bytes(f"spinner_1.svg", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,

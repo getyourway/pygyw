@@ -125,8 +125,7 @@ A `SpinnerDrawing` object is used to display an animated spinner on the screen. 
 ```python
 from pygyw.layout import drawings, icons
 
-spinner = drawings.SpinnerDrawing(icon=icons.GYWIcons.SPINNER_1,
-                                  left=400, top=200,
+spinner = drawings.SpinnerDrawing(left=400, top=200,
                                   color="ff0000ff",
                                   scale=3,
                                   animation_timing_function=drawings.AnimationTimingFunction.EASE_OUT,
