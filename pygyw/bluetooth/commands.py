@@ -41,6 +41,7 @@ class ControlCodes:
     AUTO_ROTATE_SCREEN = 0x0A
     ENABLE_BACKLIGHT = 0x0B
     DRAW_RECTANGLE = 0x0C
+    DISPLAY_SPINNER = 0x0D
 
 
 class BTCommand:

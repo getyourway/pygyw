@@ -118,6 +118,20 @@ The size of the rectangle can be specified with the `width` and `height` propert
 
 The color is optional and if not specified, the rectangle will be filled with the current background color, useful for erasing parts of the screen.
 
+### 5. SpinnerDrawing
+
+A `SpinnerDrawing` object is used to display an animated spinner on the screen. You can create a `SpinnerDrawing` object like this:
+
+```python
+from pygyw.layout import drawings, icons
+
+spinner = drawings.SpinnerDrawing(left=400, top=200,
+                                  color="ff0000ff",
+                                  scale=3,
+                                  animation_timing_function=drawings.AnimationTimingFunction.EASE_OUT,
+                                  spins_per_second=1)
+```
+
 ### Display a drawing on the screen
 
 To display a single drawing use `device.send_drawing(drawing)`.

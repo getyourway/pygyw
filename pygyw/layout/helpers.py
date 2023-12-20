@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from . import settings
 from . import fonts
 
@@ -195,7 +197,7 @@ def justify(text: str, width: int):
     return lines
 
 
-def rgba8888_bytes_from_color_string(color: str) -> bytes:
+def rgba8888_bytes_from_color_string(color: str | None) -> bytes:
     """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
 
     if color is None:
@@ -206,3 +208,25 @@ def rgba8888_bytes_from_color_string(color: str) -> bytes:
     green = int(color[4:6], 16).to_bytes(1, "little")
     blue = int(color[6:8], 16).to_bytes(1, "little")
     return red + green + blue + alpha
+
+
+def clamp(n, smallest, largest):
+    """Clamp a value between two bounds."""
+    return max(smallest, min(n, largest))
+
+
+def byte_from_scale_float(scale: float) -> bytes:
+    """Encode the scale into a single byte."""
+    scale = clamp(scale, 0.01, 13.7)
+
+    if scale >= 1.0:
+        # min: 1.0 -> 0.0 -> 0
+        # max: 13.7 -> 12.7 -> 127
+        byte = round((scale - 1.0) * 10.0)
+    else:
+        # min: 0.01 -> -1
+        # max: 0.99 -> -99
+        byte = round(-scale * 100.0)
+
+    assert -99 <= byte <= 127
+    return byte.to_bytes(1, 'little', signed=True)
