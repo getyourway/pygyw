@@ -37,6 +37,8 @@ class BTDevice:
         self.font = None
         # Whether the font optimisation should be used or not
         self.font_optimized = True
+        # Whether dark mode is enabled or not
+        self.dark_mode = False
 
     def __str__(self) -> str:
         return self.device
@@ -115,7 +117,7 @@ class BTDevice:
 
         """
 
-        commands = drawing.to_commands()
+        commands = drawing.to_commands(self.dark_mode)
 
         try:
             await self.__execute_commands(commands)

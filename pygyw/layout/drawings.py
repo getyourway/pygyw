@@ -9,7 +9,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
+from .helpers import rgba8888_bytes_from_color, byte_from_scale_float, clamp, Color
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -55,7 +55,7 @@ class GYWDrawing:
             "top": self.top,
         }
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `GYWDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -76,7 +76,7 @@ class WhiteScreen(GYWDrawing):
 
         super().__init__("white_screen")
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `WhiteScreen` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -85,7 +85,7 @@ class WhiteScreen(GYWDrawing):
 
         """
 
-        return super().to_commands() + [
+        return super().to_commands(dark_mode) + [
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 bytearray([commands.ControlCodes.CLEAR]),
@@ -107,7 +107,7 @@ class BlankScreen(GYWDrawing):
         super().__init__("blank_screen")
         self.color = color  # ARGB
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `BlankScreen` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -117,10 +117,15 @@ class BlankScreen(GYWDrawing):
         """
 
         ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
-        if self.color:
-            ctrl_bytes += bytes(self.color, 'ascii')
 
-        return super().to_commands() + [
+        if self.color:
+            color = Color.from_argb_hex(self.color)
+            if dark_mode:
+                color = color.invert_lightness()
+
+            ctrl_bytes += bytes(color.to_argb_hex(), 'ascii')
+
+        return super().to_commands(dark_mode) + [
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 ctrl_bytes,
@@ -202,7 +207,7 @@ class TextDrawing(GYWDrawing):
         """
         return "\n".join(self._wrap_text())
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `TextDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -210,7 +215,7 @@ class TextDrawing(GYWDrawing):
         :rtype: `list[commands.BTCommand]`
 
         """
-        operations = super().to_commands()
+        operations = super().to_commands(dark_mode)
 
         if not self.text:
             return operations
@@ -221,7 +226,7 @@ class TextDrawing(GYWDrawing):
         commands = []
         current_top = self.top
         for line in self._wrap_text():
-            commands.extend(self._line_to_commands(line, current_top))
+            commands.extend(self._line_to_commands(line, current_top, dark_mode))
             current_top += char_height
 
         return commands
@@ -248,7 +253,7 @@ class TextDrawing(GYWDrawing):
 
         return lines
 
-    def _line_to_commands(self, line: str, top: int) -> "list[commands.BTCommand]":
+    def _line_to_commands(self, line: str, top: int, dark_mode: bool) -> "list[commands.BTCommand]":
         """
         Convert a line of text into a list of commands understood by the aRdent Bluetooth device.
 
@@ -263,9 +268,12 @@ class TextDrawing(GYWDrawing):
         ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
         ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
 
-        short_color = "NULL"
-        if self.color:
-            short_color = f"{self.color[0]}{self.color[2]}{self.color[4]}{self.color[6]}"
+        color: Color = Color.from_argb_hex(self.color or "FF000000")
+        if dark_mode:
+            color = color.invert_lightness()
+
+        color: str = color.to_argb_hex()
+        short_color = f"{color[0]}{color[2]}{color[4]}{color[6]}"
 
         ctrl_data += bytes(short_color, 'utf-8')
 
@@ -326,7 +334,7 @@ class IconDrawing(GYWDrawing):
         data["scale"] = self.scale
         return data
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `IconDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -335,7 +343,7 @@ class IconDrawing(GYWDrawing):
 
         """
 
-        operations = super().to_commands()
+        operations = super().to_commands(dark_mode)
 
         if not self.icon:
             return operations
@@ -343,7 +351,12 @@ class IconDrawing(GYWDrawing):
         left = self.left.to_bytes(4, 'little')
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
-        ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
+
+        color: Color = Color.from_argb_hex(self.color or "FF000000")
+        if dark_mode:
+            color = color.invert_lightness()
+
+        ctrl_data += bytes(color.to_argb_hex(), 'utf-8')
         ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
@@ -390,18 +403,26 @@ class RectangleDrawing(GYWDrawing):
         data["color"] = self.color
         return data
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """Convert this `RectangleDrawing` into a list of commands."""
 
-        operations = super().to_commands()
+        operations = super().to_commands(dark_mode)
 
         left = self.left.to_bytes(2, 'little')
         top = self.top.to_bytes(2, 'little')
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
-        color = rgba8888_bytes_from_color_string(self.color)
 
-        ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
+        if self.color is None:
+            color_bytes = bytearray([0, 0, 0, 0])
+        else:
+            color = Color.from_argb_hex(self.color)
+            if dark_mode:
+                color = color.invert_lightness()
+
+            color_bytes = color.to_rgba8888_bytes()
+
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color_bytes
 
         operations.append(
             commands.BTCommand(
@@ -458,7 +479,7 @@ class SpinnerDrawing(GYWDrawing):
         data["spins_per_second"] = self.spins_per_second
         return data
 
-    def to_commands(self) -> "list[commands.BTCommand]":
+    def to_commands(self, dark_mode=False) -> "list[commands.BTCommand]":
         """
         Convert the `SpinnerDrawing` into a list of commands understood by the aRdent Bluetooth device.
 
@@ -467,12 +488,22 @@ class SpinnerDrawing(GYWDrawing):
 
         """
 
-        operations = super().to_commands()
+        operations = super().to_commands(dark_mode)
 
         left = self.left.to_bytes(2, 'little')
         top = self.top.to_bytes(2, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
-        ctrl_data += rgba8888_bytes_from_color_string(self.color)
+
+        if self.color is None:
+            color_bytes = bytearray([0, 0, 0, 0])
+        else:
+            color = Color.from_argb_hex(self.color)
+            if dark_mode:
+                color = color.invert_lightness()
+
+            color_bytes = color.to_rgba8888_bytes()
+
+        ctrl_data += color_bytes
         ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
 
