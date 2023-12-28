@@ -1,3 +1,7 @@
+"""
+Most of the code was translated from `colors.dart` from Flutter.
+"""
+
 from dataclasses import dataclass
 from typing_extensions import Self
 
@@ -72,8 +76,6 @@ class HSLColor:
 
 
 def _get_hue(red: float, green: float, blue: float, max_channel: float, delta: float):
-    """Return the hue of a color. Translated from `colors.dart` from Flutter."""
-
     if delta == 0.0:
         # Set hue to 0.0 when red == green == blue.
         return 0.0
@@ -91,8 +93,6 @@ def _get_hue(red: float, green: float, blue: float, max_channel: float, delta: f
 
 
 def _color_from_hue(alpha: float, hue: float, chroma: float, secondary: float, match: float) -> Color:
-    """Convert hue into color. Translated from `colors.dart` from Flutter"""
-
     if hue < 60.0:
         red = chroma
         green = secondary
