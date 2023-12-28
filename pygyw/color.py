@@ -1,6 +1,4 @@
-"""
-Most of the code was translated from `colors.dart` from Flutter.
-"""
+"""Most of the code was translated from `colors.dart` from Flutter."""
 
 from dataclasses import dataclass
 from typing_extensions import Self

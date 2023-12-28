@@ -119,8 +119,7 @@ def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
     """
 
     lines_count = len(lines)
-    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (
-            line_height - 1) * font.height * (lines_count - 1))
+    return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (line_height - 1) * font.height * (lines_count - 1))
 
 
 ##############################################
