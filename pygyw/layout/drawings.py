@@ -9,9 +9,10 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import byte_from_scale_float, clamp, Color
+from .helpers import byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
+from ..color import Color
 
 
 class GYWDrawing:
