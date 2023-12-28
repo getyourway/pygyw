@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Self
+from typing_extensions import Self
 
 from pygyw.layout.helpers import clamp
 
