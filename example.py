@@ -15,6 +15,8 @@ async def main():
     # Alternatively, you can connect to a device using its MAC address:
     # device = BTDevice("AA:BB:CC:DD:EE:FF")
 
+    # device.dark_mode = True
+
     await device.connect()
     await device.start_display()
 
@@ -33,6 +35,9 @@ async def main():
     icon = icons.GYWIcons.HELP
     icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color="ffff0000")
     await device.send_drawing(icon_drawing)
+
+    rect_drawing = drawings.RectangleDrawing(left=700, top=300, width=100, height=150, color="80f000f0")
+    await device.send_drawing(rect_drawing)
 
     spinner = drawings.SpinnerDrawing(left=500, top=200,
                                       color="ff0000ff",

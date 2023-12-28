@@ -9,7 +9,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color, byte_from_scale_float, clamp, Color
+from .helpers import byte_from_scale_float, clamp, Color
 from .settings import screen_width
 from ..bluetooth import commands
 

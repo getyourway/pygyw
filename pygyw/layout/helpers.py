@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
 
-from . import settings
 from . import fonts
+from . import settings
 
 
 ##############################################
@@ -281,7 +280,10 @@ class HSLColor:
         alpha = color.alpha / 0xFF
         hue = _get_hue(red, green, blue, max_channel, delta)
         lightness = (max_channel + min_channel) / 2.0
-        saturation = 0.0 if lightness == 1.0 else clamp(delta / (1.0 - abs(2.0 * lightness - 1.0)), 0.0, 1.0)
+        try:
+            saturation = 0.0 if lightness == 1.0 else clamp(delta / (1.0 - abs(2.0 * lightness - 1.0)), 0.0, 1.0)
+        except ZeroDivisionError:
+            saturation = 1.0
 
         return HSLColor(alpha, hue, saturation, lightness)
 
@@ -296,6 +298,10 @@ class HSLColor:
 def _get_hue(red: float, green: float, blue: float, max_channel: float, delta: float):
     """Translated from `colors.dart` from Flutter"""
 
+    if delta == 0.0:
+        # Set hue to 0.0 when red == green == blue.
+        return 0.0
+
     if max_channel == 0.0:
         hue = 0.0
     elif max_channel == red:
@@ -305,10 +311,6 @@ def _get_hue(red: float, green: float, blue: float, max_channel: float, delta: f
     elif max_channel == blue:
         hue = 60.0 * (((red - green) / delta) + 4)
 
-    assert hue
-
-    # Set hue to 0.0 when red == green == blue.
-    hue = 0.0 if math.isnan(hue) else hue
     return hue
 
 
