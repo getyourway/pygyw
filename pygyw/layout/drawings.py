@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import textwrap
+from enum import IntEnum
 from math import ceil
 from typing import Optional, Any
 
@@ -6,6 +9,7 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
+from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
 
@@ -44,7 +48,7 @@ class GYWDrawing:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> "dict[str, Any]":
         return {
             "type": self.drawing_type,
             "left": self.left,
@@ -339,30 +343,146 @@ class IconDrawing(GYWDrawing):
         left = self.left.to_bytes(4, 'little')
         top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
-
         ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
-
-        def clamp(n, smallest, largest):
-            return max(smallest, min(n, largest))
-
-        self.scale = clamp(self.scale, 0.01, 13.7)
-        if self.scale >= 1.0:
-            # min: 1.0 -> 0.0 -> 0
-            # max: 13.7 -> 12.7 -> 127
-            scale = round((self.scale - 1.0) * 10.0)
-        else:
-            # min: 0.01 -> -1
-            # max: 0.99 -> -99
-            scale = round(-self.scale * 100.0)
-
-        assert -99 <= scale <= 127
-
-        ctrl_data += scale.to_bytes(1, 'little', signed=True)
+        ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
                 bytes(f"{self.icon.name}.bin", 'utf-8'),
+            ),
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        ])
+
+        return operations
+
+
+class RectangleDrawing(GYWDrawing):
+    """
+    A colored rectangle.
+
+    Attributes:
+        left: The horizontal offset.
+        top: The vertical offset.
+        width: The rectangle width.
+        height: The rectangle height.
+        color: The fill color. Defaults to None in which case the current background color is used.
+    """
+
+    def __init__(self,
+                 left: int,
+                 top: int,
+                 width: int,
+                 height: int,
+                 color: str = None):
+        super().__init__("rectangle", left, top)
+        self.width = width
+        self.height = height
+        self.color = color
+
+    def to_json(self) -> "dict[str, Any]":
+        data = super().to_json()
+        data["width"] = self.width
+        data["height"] = self.height
+        data["color"] = self.color
+        return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """Convert this `RectangleDrawing` into a list of commands."""
+
+        operations = super().to_commands()
+
+        left = self.left.to_bytes(2, 'little')
+        top = self.top.to_bytes(2, 'little')
+        width = self.width.to_bytes(2, 'little')
+        height = self.height.to_bytes(2, 'little')
+        color = rgba8888_bytes_from_color_string(self.color)
+
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
+
+        operations.append(
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_data,
+            ),
+        )
+
+        return operations
+
+
+class AnimationTimingFunction(IntEnum):
+    """The animation timing function to use for the spinner."""
+
+    LINEAR = 0
+    EASE_IN = 1
+    EASE_OUT = 2
+
+
+class SpinnerDrawing(GYWDrawing):
+    """
+    Animated spinner and that can be displayed on the screen.
+
+    Attributes:
+        left: The horizontal offset (from the left).
+        top: The vertical offset (from the top).
+        color: The color of the spinner.
+        scale: The spinner scale.
+        animation_timing_function: The animation timing function to use.
+        spins_per_second: The number of spins per second.
+
+    """
+
+    def __init__(self,
+                 left: int = 0,
+                 top: int = 0,
+                 color: str | None = None,
+                 scale: float = 1.0,
+                 animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
+                 spins_per_second: float = 1.0):
+        super().__init__("spinner", left=left, top=top)
+        self.color = color
+        assert scale > 0
+        self.scale = scale
+        self.animation_timing_function = animation_timing_function
+        self.spins_per_second = spins_per_second
+        assert spins_per_second >= 0
+
+    def to_json(self) -> "dict[str, Any]":
+        data = super().to_json()
+        data["color"] = self.color
+        data["scale"] = self.scale
+        data["animation_timing_function"] = self.animation_timing_function
+        data["spins_per_second"] = self.spins_per_second
+        return data
+
+    def to_commands(self) -> "list[commands.BTCommand]":
+        """
+        Convert the `SpinnerDrawing` into a list of commands understood by the aRdent Bluetooth device.
+
+        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
+        :rtype: `list[commands.BTCommand]`
+
+        """
+
+        operations = super().to_commands()
+
+        left = self.left.to_bytes(2, 'little')
+        top = self.top.to_bytes(2, 'little')
+        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
+        ctrl_data += rgba8888_bytes_from_color_string(self.color)
+        ctrl_data += byte_from_scale_float(self.scale)
+        ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
+
+        spins_per_second = int(clamp(self.spins_per_second, 0.0, 25.5) * 10)
+        ctrl_data += spins_per_second.to_bytes(1, 'little')
+
+        operations.extend([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_DATA,
+                bytes(f"spinner_1.svg", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,

@@ -27,6 +27,7 @@ class ControlCodes:
         SET_FONT: Set the font used to display text.
         AUTO_ROTATE_SCREEN: Enable or disable the screen autorotation.
         ENABLE_BACKLIGHT: Enable or disable the display backlight.
+        DRAW_RECTANGLE: Draw a colored rectangle.
 
     """
 
@@ -39,6 +40,8 @@ class ControlCodes:
     SET_FONT = 0x08
     AUTO_ROTATE_SCREEN = 0x0A
     ENABLE_BACKLIGHT = 0x0B
+    DRAW_RECTANGLE = 0x0C
+    DISPLAY_SPINNER = 0x0D
 
 
 class BTCommand:

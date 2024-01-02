@@ -102,6 +102,36 @@ To change the icon displayed, you can use the `icon` parameter, which should be 
 
 To change the size of the icon, you can use the `scale` parameter. It's an optional parameter with a default value of 1.0. If the icon is 48x48, a scale factor of 2.0 will make it 96x96. The scale factor has a range between 0.01 and 13.7. Any scale factor outside of this range will be clamped to the nearest value within the range.
 
+### 4. RectangleDrawing
+
+A `RectangleDrawing` object is used to draw rectangles on the screen. You can create a `RectangleDrawing` object like this:
+
+```python
+from pygyw.layout import drawings
+
+rd = drawings.RectangleDrawing(left=100, top=200, width=50, height=70, color="ff0000ff")
+```
+
+The position of the rectangle can be specified with the `left` and `top` properties.
+
+The size of the rectangle can be specified with the `width` and `height` properties.
+
+The color is optional and if not specified, the rectangle will be filled with the current background color, useful for erasing parts of the screen.
+
+### 5. SpinnerDrawing
+
+A `SpinnerDrawing` object is used to display an animated spinner on the screen. You can create a `SpinnerDrawing` object like this:
+
+```python
+from pygyw.layout import drawings, icons
+
+spinner = drawings.SpinnerDrawing(left=400, top=200,
+                                  color="ff0000ff",
+                                  scale=3,
+                                  animation_timing_function=drawings.AnimationTimingFunction.EASE_OUT,
+                                  spins_per_second=1)
+```
+
 ### Display a drawing on the screen
 
 To display a single drawing use `device.send_drawing(drawing)`.
