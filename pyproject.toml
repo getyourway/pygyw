@@ -10,8 +10,9 @@ authors = [
     { name = "Get Your Way" },
     { name = "Antoine Malherbe", email = "a.malherbe@getyourway.be" }
 ]
-license = { text = "BSD 3-clause" }
 description = "A Python package to interact with aRdent smart glasses"
+license = { file = "LICENSE" }
+readme = "README.md"
 classifiers = [
     "Development Status :: 2 - Alpha",
     "Intended Audience :: Developers",
@@ -23,7 +24,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: System :: Hardware :: Hardware Drivers",
 ]
-urls = { Homepage = "https://github.com/getyourway/pygyw" }
+urls = { Repository = "https://github.com/getyourway/pygyw" }
 
 dependencies = [
     "bleak",
