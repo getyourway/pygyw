@@ -8,6 +8,7 @@ To install PyGYW, clone the repository and use pip:
 
 ```console
 > git clone https://www.github.com/getyourway/pygyw
+> pip install --upgrade pip
 > pip install -e pygyw
 ```
 
