@@ -9,3 +9,7 @@ This library allows you to send instructions to the glasses such as displaying t
 from . import bluetooth
 from . import exceptions
 from . import layout
+
+from importlib.metadata import version
+
+__version__ = version("pygyw")
