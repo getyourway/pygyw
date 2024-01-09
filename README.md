@@ -15,7 +15,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-If you are a GYW employee and you want to develop PyGYW, clone the develop branch through SSH and install it in editable mode:
+If you are a developer, and you want to contribute to PyGYW, clone the develop branch through SSH and install it in editable mode:
 
 ```shell
 git clone -b develop git@github.com:getyourway/pygyw.git
