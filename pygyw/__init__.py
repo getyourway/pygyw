@@ -6,10 +6,10 @@ This library allows you to send instructions to the glasses such as displaying t
 
 """
 
-__version__ = "1.3.0"
-__author__ = 'Antoine Malherbe'
-__credits__ = 'Get Your Way'
-
 from . import bluetooth
 from . import exceptions
 from . import layout
+
+from importlib.metadata import version
+
+__version__ = version("pygyw")
