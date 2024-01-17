@@ -395,8 +395,8 @@ class RectangleDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(2, 'little')
-        top = self.top.to_bytes(2, 'little')
+        left = self.left.to_bytes(4, 'little')
+        top = self.top.to_bytes(4, 'little')
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
         color = rgba8888_bytes_from_color_string(self.color)
@@ -469,8 +469,8 @@ class SpinnerDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(2, 'little')
-        top = self.top.to_bytes(2, 'little')
+        left = self.left.to_bytes(4, 'little')
+        top = self.top.to_bytes(4, 'little')
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
         ctrl_data += rgba8888_bytes_from_color_string(self.color)
         ctrl_data += byte_from_scale_float(self.scale)
