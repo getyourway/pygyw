@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 from . import settings
 
 
@@ -31,7 +31,7 @@ class GYWIcon:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self) -> Dict[str, Any]:
         """Return a JSON-serializable dictionary of the object."""
 
         return {
