@@ -215,7 +215,8 @@ class TextDrawing(GYWDrawing):
         if not self.text:
             return operations
 
-        font_size = self.size if self.size is not None else self.font.size
+        font = self.font or fonts.GYWFonts.MEDIUM
+        font_size = self.size or font.size
         char_height = ceil(font_size * 1.33)
 
         commands = []
@@ -238,7 +239,8 @@ class TextDrawing(GYWDrawing):
         else:
             text_width = max_width
 
-        font_size = self.size if self.size is not None else self.font.size
+        font = self.font or fonts.GYWFonts.MEDIUM
+        font_size = self.size or font.size
         char_width = ceil(font_size * 0.6)
         max_chars_per_line = text_width // char_width
 
