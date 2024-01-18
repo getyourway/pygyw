@@ -3,6 +3,7 @@
     - Fix position encoding for rectangles and spinners
     - Default to the medium font to avoid dereferencing None
     - Encode positions as signed integers
+    - Make the library compatible with Python 3.8
 
 1.3.0:
     - Remove `get_firmware_version` method
