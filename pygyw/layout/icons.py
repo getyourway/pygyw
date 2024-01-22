@@ -79,6 +79,20 @@ class GYWIcons:
             :alt: Check icon
             :align: center
 
+        CLOUD_BACKUP: An icon representing a cloud with an arrow pointing upwards.
+        .. image:: icons/cloud_backup.svg
+            :width: 48px
+            :height: 48px
+            :alt: Cloud backup icon
+            :align: center
+
+        CLOUD_DONE: An icon representing a cloud with a check mark.
+        .. image:: icons/cloud_done.svg
+            :width: 48px
+            :height: 48px
+            :alt: Cloud done icon
+            :align: center
+
         DONE: An icon representing a check mark.
         .. image:: icons/done.svg
             :width: 48px
@@ -105,6 +119,13 @@ class GYWIcons:
             :width: 48px
             :height: 48px
             :alt: File icon
+            :align: center
+
+        FOLDER: An icon representing a folder.
+        .. image:: icons/folder.svg
+            :width: 48px
+            :height: 48px
+            :alt: Folder icon
             :align: center
 
         GYW: An icon representing the Get Your Way logo.
@@ -156,6 +177,13 @@ class GYWIcons:
             :alt: NFC icon
             :align: center
 
+        PERSON: An icon representing a person.
+        .. image:: icons/person.svg
+            :width: 48px
+            :height: 48px
+            :alt: Person icon
+            :align: center
+
         PREV: An icon representing a previous or backward operation.
         .. image:: icons/prev.svg
             :width: 48px
@@ -175,6 +203,13 @@ class GYWIcons:
             :width: 48px
             :height: 48px
             :alt: Right arrow icon
+            :align: center
+
+        SETTINGS: An icon representing settings.
+        .. image:: icons/settings.svg
+            :width: 48px
+            :height: 48px
+            :alt: Settings icon
             :align: center
 
         UNCHECK: An icon representing an unchecked checkbox.
@@ -203,6 +238,13 @@ class GYWIcons:
             :width: 48px
             :height: 48px
             :alt: Wi-Fi icon
+            :align: center
+
+        WIFI_OFF: An icon representing Wi-Fi off
+        .. image:: icons/wifi_off.svg
+            :width: 48px
+            :height: 48px
+            :alt: Wi-Fi off icon
             :align: center
 
         KEY_0: An icon representing the key 0
@@ -326,10 +368,13 @@ class GYWIcons:
     CAMERA = GYWIcon("camera")
     CHAT = GYWIcon("chat")
     CHECK = GYWIcon("check")
+    CLOUD_BACKUP = GYWIcon("cloud_backup")
+    CLOUD_DONE = GYWIcon("cloud_done")
     DONE = GYWIcon("done")
     DOWN = GYWIcon("down")
     EDIT = GYWIcon("edit")
     FILE = GYWIcon("file")
+    FOLDER = GYWIcon("folder")
     GYW = GYWIcon("GYW")
     HELP = GYWIcon("help")
     INFO = GYWIcon("info")
@@ -337,13 +382,16 @@ class GYWIcons:
     LOCATION = GYWIcon("location")
     NEXT = GYWIcon("next")
     NFC = GYWIcon("nfc")
+    PERSON = GYWIcon("person")
     PREV = GYWIcon("prev")
     RENAME = GYWIcon("rename")
     RIGHT = GYWIcon("right")
+    SETTINGS = GYWIcon("settings")
     UNCHECK = GYWIcon("uncheck")
     UP = GYWIcon("up")
     WARNING = GYWIcon("warning")
     WIFI = GYWIcon("wifi")
+    WIFI_OFF = GYWIcon("wifi_off")
     KEY_0 = GYWIcon("key_0")
     KEY_1 = GYWIcon("key_1")
     KEY_2 = GYWIcon("key_2")
@@ -367,10 +415,13 @@ class GYWIcons:
         CAMERA,
         CHAT,
         CHECK,
+        CLOUD_BACKUP,
+        CLOUD_DONE,
         DONE,
         DOWN,
         EDIT,
         FILE,
+        FOLDER,
         GYW,
         HELP,
         INFO,
@@ -378,13 +429,16 @@ class GYWIcons:
         LOCATION,
         NEXT,
         NFC,
+        PERSON,
         PREV,
         RENAME,
         RIGHT,
+        SETTINGS,
         UNCHECK,
         UP,
         WARNING,
         WIFI,
+        WIFI_OFF,
         KEY_0,
         KEY_1,
         KEY_2,
