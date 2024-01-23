@@ -4,6 +4,7 @@
     - Default to the medium font to avoid dereferencing None
     - Encode positions as signed integers
     - Make the library compatible with Python 3.8
+    - Add the following icons: folder, person, cloud_done, cloud_backup, wifi_off, settings
 
 1.3.0:
     - Remove `get_firmware_version` method
