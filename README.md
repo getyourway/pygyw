@@ -4,11 +4,23 @@ PyGYW is a Python library that provides an easy-to-use interface to control the 
 
 ## Installation
 
-To install PyGYW, clone the repository and use pip:
+To install PyGYW, append this line to your `requirements.txt`:
 
-```console
-> git clone https://www.github.com/getyourway/pygyw
-> pip install -e pygyw
+`pygyw @ git+https://github.com/getyourway/pygyw.git`
+
+Then run the following:
+
+```shell
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+If you are a developer, and you want to contribute to PyGYW, clone the develop branch through SSH and install it in editable mode:
+
+```shell
+git clone -b develop git@github.com:getyourway/pygyw.git
+pip install --upgrade pip
+pip install -e ./pygyw
 ```
 
 ## Usage
