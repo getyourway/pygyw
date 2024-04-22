@@ -5,8 +5,6 @@ from enum import IntEnum
 from math import ceil
 from typing import Optional, Any
 
-from typing_extensions import deprecated
-
 from . import fonts
 from . import icons
 from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
@@ -65,32 +63,6 @@ class GYWDrawing:
         """
 
         return []
-
-
-@deprecated("`WhiteScreen` has been replaced by `BlankScreen` who has a variable background color")
-class WhiteScreen(GYWDrawing):
-    """Represents a white screen with nothing on it. Useful to reset what is displayed."""
-
-    def __init__(self):
-        """Initialize a `WhiteScreen` object."""
-
-        super().__init__("white_screen")
-
-    def to_commands(self) -> "list[commands.BTCommand]":
-        """
-        Convert the `WhiteScreen` into a list of commands understood by the aRdent Bluetooth device.
-
-        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
-        :rtype: `list[commands.BTCommand]`
-
-        """
-
-        return super().to_commands() + [
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.CLEAR]),
-            ),
-        ]
 
 
 class BlankScreen(GYWDrawing):
