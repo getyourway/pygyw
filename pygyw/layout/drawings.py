@@ -9,9 +9,10 @@ from typing_extensions import deprecated
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
+from .helpers import byte_from_scale_float, clamp, rgba8888_bytes_from_color
 from .settings import screen_width
 from ..bluetooth import commands
+from ..color import Color, Colors
 
 
 class GYWDrawing:
@@ -101,11 +102,11 @@ class BlankScreen(GYWDrawing):
     the last color used.If a color was never provided, if fills the screen with white.
     """
 
-    def __init__(self, color: Optional[str] = None):
+    def __init__(self, color: Optional[Color] = None):
         """Initialize a `BlankScreen` object."""
 
         super().__init__("blank_screen")
-        self.color = color  # ARGB
+        self.color = color
 
     def to_commands(self) -> "list[commands.BTCommand]":
         """
@@ -118,7 +119,7 @@ class BlankScreen(GYWDrawing):
 
         ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
         if self.color:
-            ctrl_bytes += bytes(self.color, 'ascii')
+            ctrl_bytes += rgba8888_bytes_from_color(self.color)
 
         return super().to_commands() + [
             commands.BTCommand(
@@ -149,7 +150,7 @@ class TextDrawing(GYWDrawing):
                  top: int = 0,
                  font: fonts.GYWFont = None,
                  size: int = None,
-                 color: str = None,
+                 color: Color = Colors.BLACK,
                  max_width: int = None,
                  max_lines: int = 1):
         """
@@ -165,8 +166,8 @@ class TextDrawing(GYWDrawing):
         :type font: `fonts.GYWFont`
         :param size: The font size.
         :type size: int
-        :param color: The text color in ORGB format.
-        :type color: str
+        :param color: The text color.
+        :type color: Color
         :param max_width: The maximum width of the text.
         :type max_width: int
         :param max_lines: The maximum number of lines the text can be wrapped on.
@@ -186,7 +187,7 @@ class TextDrawing(GYWDrawing):
         data["text"] = self.text
         data["font"] = self.font.name
         data["size"] = self.size
-        data["color"] = self.color
+        data["color"] = str(self.color)
         data["max_width"] = self.max_width
         data["max_lines"] = self.max_lines
         return data
@@ -265,11 +266,7 @@ class TextDrawing(GYWDrawing):
         ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
         ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
 
-        short_color = "NULL"
-        if self.color:
-            short_color = f"{self.color[0]}{self.color[2]}{self.color[4]}{self.color[6]}"
-
-        ctrl_data += bytes(short_color, 'utf-8')
+        ctrl_data += rgba8888_bytes_from_color(self.color)
 
         return [
             # Text data
@@ -298,7 +295,7 @@ class IconDrawing(GYWDrawing):
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: str = None, scale: float = 1.0):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: Color = None, scale: float = 1.0):
         """
         Initialize an `IconDrawing` object.
 
@@ -308,8 +305,8 @@ class IconDrawing(GYWDrawing):
         :type left: int
         :param top: The vertical offset. Defaults to 0.
         :type top: int
-        :param color: The color of the icon in ORGB format. Defaults to None.
-        :type color: str
+        :param color: The color of the icon. Defaults to None.
+        :type color: Color
         :param scale: The icon scale. Defaults to 1.0.
         :type scale: float
 
@@ -345,7 +342,8 @@ class IconDrawing(GYWDrawing):
         left = self.left.to_bytes(4, 'little', signed=True)
         top = self.top.to_bytes(4, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
-        ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
+
+        ctrl_data += rgba8888_bytes_from_color(self.color)
         ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
@@ -379,7 +377,7 @@ class RectangleDrawing(GYWDrawing):
                  top: int,
                  width: int,
                  height: int,
-                 color: str = None):
+                 color: Color = None):
         super().__init__("rectangle", left, top)
         self.width = width
         self.height = height
@@ -389,7 +387,7 @@ class RectangleDrawing(GYWDrawing):
         data = super().to_json()
         data["width"] = self.width
         data["height"] = self.height
-        data["color"] = self.color
+        data["color"] = str(self.color)
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
@@ -401,7 +399,7 @@ class RectangleDrawing(GYWDrawing):
         top = self.top.to_bytes(4, 'little', signed=True)
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
-        color = rgba8888_bytes_from_color_string(self.color)
+        color = rgba8888_bytes_from_color(self.color)
 
         ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
 
@@ -440,7 +438,7 @@ class SpinnerDrawing(GYWDrawing):
     def __init__(self,
                  left: int = 0,
                  top: int = 0,
-                 color: str | None = None,
+                 color: Color = Colors.BLACK,
                  scale: float = 1.0,
                  animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
                  spins_per_second: float = 1.0):
@@ -454,7 +452,7 @@ class SpinnerDrawing(GYWDrawing):
 
     def to_json(self) -> "dict[str, Any]":
         data = super().to_json()
-        data["color"] = self.color
+        data["color"] = str(self.color)
         data["scale"] = self.scale
         data["animation_timing_function"] = self.animation_timing_function
         data["spins_per_second"] = self.spins_per_second
@@ -474,7 +472,7 @@ class SpinnerDrawing(GYWDrawing):
         left = self.left.to_bytes(4, 'little', signed=True)
         top = self.top.to_bytes(4, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
-        ctrl_data += rgba8888_bytes_from_color_string(self.color)
+        ctrl_data += rgba8888_bytes_from_color(self.color)
         ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
 

@@ -9,6 +9,7 @@ This library allows you to send instructions to the glasses such as displaying t
 from . import bluetooth
 from . import exceptions
 from . import layout
+from . import color
 
 from importlib.metadata import version
 
