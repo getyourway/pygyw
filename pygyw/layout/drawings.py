@@ -260,8 +260,8 @@ class TextDrawing(GYWDrawing):
         """
         # Generate control instruction
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
-        ctrl_data += self.left.to_bytes(4, 'little', signed=True)
-        ctrl_data += top.to_bytes(4, 'little', signed=True)
+        ctrl_data += self.left.to_bytes(2, 'little', signed=True)
+        ctrl_data += top.to_bytes(2, 'little', signed=True)
         ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
         ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
 
@@ -342,8 +342,8 @@ class IconDrawing(GYWDrawing):
         if not self.icon:
             return operations
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
         ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
         ctrl_data += byte_from_scale_float(self.scale)
@@ -397,8 +397,8 @@ class RectangleDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
         color = rgba8888_bytes_from_color_string(self.color)
@@ -471,8 +471,8 @@ class SpinnerDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
         ctrl_data += rgba8888_bytes_from_color_string(self.color)
         ctrl_data += byte_from_scale_float(self.scale)
