@@ -16,14 +16,27 @@ class Color:
         self.alpha = a
 
     @classmethod
-    def hex(cls, color: int):
-        """Transforms a hexadecimal ARGB color into a Color object."""
-        return Color(
-            (color >> 16) & 0xFF,
-            (color >> 8) & 0xFF,
-            color & 0xFF,
-            (color >> 24) & 0xFF,
-        )
+    def from_rgba(cls, r: int, g: int, b: int, a: int = 255):
+        """Creates a new Color object with the given RGBA values."""
+        return cls(r, g, b, a)
+
+    @classmethod
+    def from_hex(cls, color: str):
+        """Creates a new Color object from a hexadecimal string."""
+        assert len(color) == 6 or len(color) == 8
+
+        if len(color) == 6:
+            # RRGGBB
+            return cls(int(color[:2], 16),
+                       int(color[2:4], 16),
+                       int(color[4:6], 16))
+
+        if len(color) == 8:
+            # RRGGBBAA
+            return cls(int(color[:2], 16),
+                       int(color[2:4], 16),
+                       int(color[4:6], 16),
+                       int(color[6:8], 16))
 
     def __str__(self):
         return f"{self.red:02x}{self.green:02x}{self.blue:02x}{self.alpha:02x}"

@@ -28,11 +28,11 @@ async def main():
     await device.send_drawing(text_drawing)
 
     text = "Big green text!"
-    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color=Color(0, 255, 0))
+    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color=Color.from_rgba(0, 255, 0))
     await device.send_drawing(text_drawing)
 
     icon = icons.GYWIcons.HELP
-    icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color=Colors.RED)
+    icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color=Color.from_hex("ff0000"))
     await device.send_drawing(icon_drawing)
 
     spinner = drawings.SpinnerDrawing(left=500, top=200,
