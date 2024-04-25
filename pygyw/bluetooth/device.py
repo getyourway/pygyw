@@ -44,11 +44,7 @@ class BTDevice:
 
     def __repr__(self) -> str:
         return self.__str__()
-    
 
-
-
-    
     async def start_notify(self, char_uuid_for_notifications, handler):
         if self.client is not None and self.client.is_connected:
             print(char_uuid_for_notifications)
@@ -61,7 +57,6 @@ class BTDevice:
             await self.client.stop_notify(char_uuid)
         else:
             print("Client not connected or not available.")
-
 
     async def connect(self, loop: asyncio.AbstractEventLoop = None) -> bool:
         """
@@ -203,7 +198,8 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
+                bytearray(
+                    [commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
             ),
         ])
 
@@ -226,7 +222,8 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
+                bytearray(
+                    [commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
             ),
         ])
 
@@ -275,7 +272,8 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
+                bytearray(
+                    [commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
 
