@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional
 
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
@@ -220,5 +221,25 @@ class BTDevice:
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
                 bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
+            ),
+        ])
+
+    async def clear_screen(self, color: Optional[str]):
+        """
+        Clear the screen with a specific color.
+
+        :param color: The color to use to clear the screen.
+        :type color: str or None
+
+        """
+
+        ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
+        if color:
+            ctrl_bytes += bytes(color, 'ascii')
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_bytes,
             ),
         ])
