@@ -118,7 +118,7 @@ class BTDevice:
             i = 0
             data_length = len(command.data)
             while i < data_length:
-                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20],  False)
+                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20], False)
                 if system == "Darwin":  # Darwin is the name for MacOS
                     await asyncio.sleep(0.004)
                 i += 20
