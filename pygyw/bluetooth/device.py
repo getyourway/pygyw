@@ -226,7 +226,10 @@ class BTDevice:
 
     async def clear_screen(self, color: Optional[str]):
         """
-        Clear the screen with a specific color.
+        Reset what is displayed.
+
+        If an ARGB color is provided, the screen will be filled with this color, otherwise the screen will be filled
+        with the last color used. If a color was never provided, if fills the screen with white.
 
         :param color: The color to use to clear the screen.
         :type color: str or None
