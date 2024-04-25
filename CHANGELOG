@@ -1,5 +1,6 @@
 2.0.0:
     - Remove deprecated functionality
+    - Encode positions on 2 bytes instead of 4
     - Convert BlankScreen into the `clear_screen` method
 
 1.3.1:
