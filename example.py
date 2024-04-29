@@ -18,8 +18,7 @@ async def main():
     await device.connect()
     await device.start_display()
 
-    white_screen = drawings.BlankScreen(color="ffffffff")  # ARGB
-    await device.send_drawing(white_screen)
+    await device.clear_screen("ffffffff")
 
     text = "Hello, world!"
     font = fonts.GYWFonts.LARGE
