@@ -5,8 +5,6 @@ from enum import IntEnum
 from math import ceil
 from typing import Optional, Any
 
-from typing_extensions import deprecated
-
 from . import fonts
 from . import icons
 from .helpers import byte_from_scale_float, clamp, rgba8888_bytes_from_color
@@ -66,67 +64,6 @@ class GYWDrawing:
         """
 
         return []
-
-
-@deprecated("`WhiteScreen` has been replaced by `BlankScreen` who has a variable background color")
-class WhiteScreen(GYWDrawing):
-    """Represents a white screen with nothing on it. Useful to reset what is displayed."""
-
-    def __init__(self):
-        """Initialize a `WhiteScreen` object."""
-
-        super().__init__("white_screen")
-
-    def to_commands(self) -> "list[commands.BTCommand]":
-        """
-        Convert the `WhiteScreen` into a list of commands understood by the aRdent Bluetooth device.
-
-        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
-        :rtype: `list[commands.BTCommand]`
-
-        """
-
-        return super().to_commands() + [
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.CLEAR]),
-            ),
-        ]
-
-
-class BlankScreen(GYWDrawing):
-    """
-    Reset what is displayed.
-
-    If an ARGB color is provided, the screen will be filled with this color, otherwise the screen will be filled with
-    the last color used.If a color was never provided, if fills the screen with white.
-    """
-
-    def __init__(self, color: Optional[Color] = None):
-        """Initialize a `BlankScreen` object."""
-
-        super().__init__("blank_screen")
-        self.color = color
-
-    def to_commands(self) -> "list[commands.BTCommand]":
-        """
-        Convert the `BlankScreen` into a list of commands understood by the aRdent Bluetooth device.
-
-        :return: The list of `commands.BTCommand` that describes the Bluetooth instructions to perform.
-        :rtype: `list[commands.BTCommand]`
-
-        """
-
-        ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
-        if self.color:
-            ctrl_bytes += rgba8888_bytes_from_color(self.color)
-
-        return super().to_commands() + [
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                ctrl_bytes,
-            ),
-        ]
 
 
 class TextDrawing(GYWDrawing):
@@ -261,8 +198,8 @@ class TextDrawing(GYWDrawing):
         """
         # Generate control instruction
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
-        ctrl_data += self.left.to_bytes(4, 'little', signed=True)
-        ctrl_data += top.to_bytes(4, 'little', signed=True)
+        ctrl_data += self.left.to_bytes(2, 'little', signed=True)
+        ctrl_data += top.to_bytes(2, 'little', signed=True)
         ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
         ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
 
@@ -339,8 +276,8 @@ class IconDrawing(GYWDrawing):
         if not self.icon:
             return operations
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
 
         ctrl_data += rgba8888_bytes_from_color(self.color)
@@ -395,8 +332,8 @@ class RectangleDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
         color = rgba8888_bytes_from_color(self.color)
@@ -469,8 +406,8 @@ class SpinnerDrawing(GYWDrawing):
 
         operations = super().to_commands()
 
-        left = self.left.to_bytes(4, 'little', signed=True)
-        top = self.top.to_bytes(4, 'little', signed=True)
+        left = self.left.to_bytes(2, 'little', signed=True)
+        top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
         ctrl_data += rgba8888_bytes_from_color(self.color)
         ctrl_data += byte_from_scale_float(self.scale)

@@ -1,13 +1,12 @@
 import asyncio
+from typing import Optional
 
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError, BleakDeviceNotFoundError
-from typing_extensions import deprecated
 
 from . import commands, exceptions
-from ..deprecated_param import deprecated_param
-from ..layout import drawings, fonts
+from ..layout import drawings
 
 
 class BTDevice:
@@ -144,15 +143,11 @@ class BTDevice:
         for drawing in drawings:
             await self.send_drawing(drawing)
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def start_display(self, sleep_time: float = 0.0):
+    async def start_display(self):
         """
         Turn the screen on.
 
         ..note It has no effect if the screen is already on.
-
-        :param sleep_time: Time to wait after having switched on the screen. Defaults to 0.0.
-        :type sleep_time: float
 
         """
 
@@ -162,18 +157,13 @@ class BTDevice:
                 bytearray([commands.ControlCodes.START_DISPLAY]),
             ),
         ])
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_contrast(self, value: float, sleep_time: float = 0.0):
+    async def set_contrast(self, value: float):
         """
         Set the screen contrast.
 
         :param value: The contrast value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the contrast. Defaults to 0.0.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -185,18 +175,12 @@ class BTDevice:
             ),
         ])
 
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_brightness(self, value: float, sleep_time: float = 0.0):
+    async def set_brightness(self, value: float):
         """
         Set the screen brightness.
 
         :param value: The brightness value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the brightness. Defaults to 0.0.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -207,39 +191,6 @@ class BTDevice:
                 bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
             ),
         ])
-
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-    @deprecated("Set the font when drawing text with `TextDrawing`")
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.0):
-        """
-        Set the default font.
-
-        :param font: The font to use as default
-        :type font: `font.GYWFont`
-        :param sleep_time: Time to wait after having set up the font. Defaults to 0.0.
-        :type sleep_time: float
-
-        """
-
-        await self.__execute_commands([
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(font.prefix, 'utf-8'),
-            ),
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.SET_FONT]),
-            ),
-        ])
-
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-        # Save font
-        self.font = font
 
     async def auto_rotate_screen(self, enable: bool):
         """
@@ -257,13 +208,10 @@ class BTDevice:
             ),
         ])
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def enable_backlight(self, enable: bool, sleep_time: float = 0.0):
+    async def enable_backlight(self, enable: bool):
         """
         Enable or disable the display backlight.
 
-        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.0.
-        :type sleep_time: float
         :param enable: True to enable the backlight, False to disable it.
         :type enable: bool
 
@@ -275,5 +223,26 @@ class BTDevice:
                 bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
             ),
         ])
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
+
+    async def clear_screen(self, color: Optional[str]):
+        """
+        Reset what is displayed.
+
+        If an ARGB color is provided, the screen will be filled with this color, otherwise the screen will be filled
+        with the last color used. If a color was never provided, if fills the screen with white.
+
+        :param color: The color to use to clear the screen.
+        :type color: str or None
+
+        """
+
+        ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
+        if color:
+            ctrl_bytes += bytes(color, 'ascii')
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_bytes,
+            ),
+        ])
