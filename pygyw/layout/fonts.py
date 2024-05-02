@@ -8,12 +8,16 @@ class GYWFont:
     Attributes:
         name: Display name of the font.
         filename: Filename of the font on the device. (5 characters-long and no type extension).
+        bold: Whether the font is bold.
+        italic: Whether the font is italic.
     """
 
     def __init__(
             self,
             name: str,
             filename: str,
+            bold: bool = False,
+            italic: bool = False,
     ):
         """
         Initialize a new `GYWFont` object.
@@ -22,6 +26,10 @@ class GYWFont:
         :type name: str
         :param filename: Filename of the font on the device. (5 characters-long and no type extension).
         :type filename: str
+        :param bold: Whether the font is bold. Defaults to False.
+        :type bold: bool
+        :param italic: Whether the font is italic. Defaults to False.
+        :type italic: bool
 
         """
 
@@ -29,6 +37,8 @@ class GYWFont:
 
         self.name = name
         self.filename = filename
+        self.bold = bold
+        self.italic = italic
 
     def __str__(self) -> str:
         return self.name
@@ -48,6 +58,6 @@ class GYWFonts:
     """Active fonts on aRdent smart glasses."""
 
     ROBOTO_MONO = GYWFont(name="Roboto Mono", filename="robmn")
-    ROBOTO_MONO_BOLD = GYWFont(name="Roboto Mono Bold", filename="robmb")
+    ROBOTO_MONO_BOLD = GYWFont(name="Roboto Mono Bold", filename="robmb", bold=True)
 
     values = [ROBOTO_MONO, ROBOTO_MONO_BOLD]
