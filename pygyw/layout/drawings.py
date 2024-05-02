@@ -82,8 +82,8 @@ class TextDrawing(GYWDrawing):
 
     def __init__(self,
                  text: str,
-                 font: fonts.GYWFont,
-                 size: int,
+                 font: fonts.GYWFont = fonts.GYWFonts.ROBOTO_MONO,
+                 size: int = 24,
                  left: int = 0,
                  top: int = 0,
                  color: str = None,
