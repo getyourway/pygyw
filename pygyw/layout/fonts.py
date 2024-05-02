@@ -7,7 +7,7 @@ class GYWFont:
 
     Attributes:
         name: Display name of the font.
-        filename: Filename of the font on the device.
+        filename: Filename of the font on the device. (5 characters-long and no type extension).
     """
 
     def __init__(
@@ -20,10 +20,12 @@ class GYWFont:
 
         :param name: Display name of the font.
         :type name: str
-        :param filename: Filename of the font on the device.
+        :param filename: Filename of the font on the device. (5 characters-long and no type extension).
         :type filename: str
 
         """
+
+        assert len(filename) == 5, "The filename must be 5 characters long."
 
         self.name = name
         self.filename = filename

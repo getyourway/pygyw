@@ -195,7 +195,7 @@ class TextDrawing(GYWDrawing):
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
         ctrl_data += self.left.to_bytes(2, 'little', signed=True)
         ctrl_data += top.to_bytes(2, 'little', signed=True)
-        ctrl_data += bytes(self.font.filename.ljust(5, '\0'), 'utf-8')
+        ctrl_data += bytes(self.font.filename, 'utf-8')
         ctrl_data += self.size.to_bytes(1, 'little')
 
         short_color = "NULL"
