@@ -45,7 +45,7 @@ class GYWFont:
 class GYWFonts:
     """Active fonts on aRdent smart glasses."""
 
-    ROBOTO_MONO_NORMAL = GYWFont(name="Roboto Mono Normal", filename="robmn")
+    ROBOTO_MONO = GYWFont(name="Roboto Mono", filename="robmn")
     ROBOTO_MONO_BOLD = GYWFont(name="Roboto Mono Bold", filename="robmb")
 
-    values = [ROBOTO_MONO_NORMAL, ROBOTO_MONO_BOLD]
+    values = [ROBOTO_MONO, ROBOTO_MONO_BOLD]
