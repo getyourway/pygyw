@@ -27,37 +27,37 @@ class Color:
         # https://www.w3.org/TR/css-color-4/#hex-notation
         assert len(color) in [3, 4, 6, 8], "Color must be in the format RGB, RGBA, RRGGBB, or RRGGBBAA."
 
+        # RGB
         if len(color) == 3:
-            # RGB
             return cls(int(color[0], 16) * 17,
                        int(color[1], 16) * 17,
                        int(color[2], 16) * 17)
 
+        # RGBA
         elif len(color) == 4:
-            # RGBA
             return cls(int(color[0], 16) * 17,
                        int(color[1], 16) * 17,
                        int(color[2], 16) * 17,
                        int(color[3], 16) * 17)
 
+        # RRGGBB
         elif len(color) == 6:
-            # RRGGBB
             return cls(int(color[:2], 16),
                        int(color[2:4], 16),
                        int(color[4:6], 16))
 
+        # RRGGBBAA
         elif len(color) == 8:
-            # RRGGBBAA
             return cls(int(color[:2], 16),
                        int(color[2:4], 16),
                        int(color[4:6], 16),
                        int(color[6:8], 16))
 
     def to_rgba8888_bytes(self):
-        alpha = self.alpha.to_bytes(1, "little")
         red = self.red.to_bytes(1, "little")
         green = self.green.to_bytes(1, "little")
         blue = self.blue.to_bytes(1, "little")
+        alpha = self.alpha.to_bytes(1, "little")
         return red + green + blue + alpha
 
     def __str__(self):
