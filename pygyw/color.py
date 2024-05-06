@@ -23,7 +23,7 @@ class Color:
     @classmethod
     def from_hex(cls, color: str):
         """Creates a new Color object from a hexadecimal string."""
-        assert len(color) == 6 or len(color) == 8
+        assert len(color) == 6 or len(color) == 8, "Color must be in the format RRGGBB or RRGGBBAA."
 
         if len(color) == 6:
             # RRGGBB
