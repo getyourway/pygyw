@@ -23,15 +23,30 @@ class Color:
     @classmethod
     def from_hex(cls, color: str):
         """Creates a new Color object from a hexadecimal string."""
-        assert len(color) == 6 or len(color) == 8, "Color must be in the format RRGGBB or RRGGBBAA."
 
-        if len(color) == 6:
+        # https://www.w3.org/TR/css-color-4/#hex-notation
+        assert len(color) in [3, 4, 6, 8], "Color must be in the format RGB, RGBA, RRGGBB, or RRGGBBAA."
+
+        if len(color) == 3:
+            # RGB
+            return cls(int(color[0], 16) * 17,
+                       int(color[1], 16) * 17,
+                       int(color[2], 16) * 17)
+
+        elif len(color) == 4:
+            # RGBA
+            return cls(int(color[0], 16) * 17,
+                       int(color[1], 16) * 17,
+                       int(color[2], 16) * 17,
+                       int(color[3], 16) * 17)
+
+        elif len(color) == 6:
             # RRGGBB
             return cls(int(color[:2], 16),
                        int(color[2:4], 16),
                        int(color[4:6], 16))
 
-        if len(color) == 8:
+        elif len(color) == 8:
             # RRGGBBAA
             return cls(int(color[:2], 16),
                        int(color[2:4], 16),
