@@ -7,7 +7,7 @@ from typing import Optional, Any
 
 from . import fonts
 from . import icons
-from .helpers import byte_from_scale_float, clamp, rgba8888_bytes_from_color
+from .helpers import byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
 from ..color import Color, Colors
@@ -202,8 +202,7 @@ class TextDrawing(GYWDrawing):
         ctrl_data += top.to_bytes(2, 'little', signed=True)
         ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
         ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
-
-        ctrl_data += rgba8888_bytes_from_color(self.color)
+        ctrl_data += self.color.to_rgba8888_bytes()
 
         return [
             # Text data
@@ -232,7 +231,7 @@ class IconDrawing(GYWDrawing):
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: Color = None, scale: float = 1.0):
+    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: Color = None, scale: float = 1.0,):
         """
         Initialize an `IconDrawing` object.
 
@@ -280,7 +279,7 @@ class IconDrawing(GYWDrawing):
         top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
 
-        ctrl_data += rgba8888_bytes_from_color(self.color)
+        ctrl_data += self.color.to_rgba8888_bytes() if self.color is not None else bytearray([0, 0, 0, 0])
         ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
@@ -336,7 +335,7 @@ class RectangleDrawing(GYWDrawing):
         top = self.top.to_bytes(2, 'little', signed=True)
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
-        color = rgba8888_bytes_from_color(self.color)
+        color = self.color.to_rgba8888_bytes() if self.color is not None else bytearray([0, 0, 0, 0])
 
         ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
 
@@ -409,7 +408,7 @@ class SpinnerDrawing(GYWDrawing):
         left = self.left.to_bytes(2, 'little', signed=True)
         top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
-        ctrl_data += rgba8888_bytes_from_color(self.color)
+        ctrl_data += self.color.to_rgba8888_bytes()
         ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
 

@@ -53,6 +53,13 @@ class Color:
                        int(color[4:6], 16),
                        int(color[6:8], 16))
 
+    def to_rgba8888_bytes(self):
+        alpha = self.alpha.to_bytes(1, "little")
+        red = self.red.to_bytes(1, "little")
+        green = self.green.to_bytes(1, "little")
+        blue = self.blue.to_bytes(1, "little")
+        return red + green + blue + alpha
+
     def __str__(self):
         return f"{self.red:02x}{self.green:02x}{self.blue:02x}{self.alpha:02x}"
 

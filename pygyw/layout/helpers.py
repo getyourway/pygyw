@@ -119,7 +119,7 @@ def bottom_text(lines: list, font: fonts.GYWFont, line_height=2.0) -> int:
 
     lines_count = len(lines)
     return int(settings.screen_height - settings.vertical_padding - lines_count * font.height - (
-                line_height - 1) * font.height * (lines_count - 1))
+            line_height - 1) * font.height * (lines_count - 1))
 
 
 ##############################################
@@ -197,19 +197,6 @@ def justify(text: str, width: int):
             lines.append(' '.join(line))
 
     return lines
-
-
-def rgba8888_bytes_from_color(color: Color | None) -> bytes:
-    """Transform a Color object into an RGBA8888 byte array of length 4."""
-
-    if color is None:
-        return bytearray([0, 0, 0, 0])
-
-    red = color.red.to_bytes(1, "little")
-    green = color.green.to_bytes(1, "little")
-    blue = color.blue.to_bytes(1, "little")
-    alpha = color.alpha.to_bytes(1, "little")
-    return red + green + blue + alpha
 
 
 def clamp(n, smallest, largest):
