@@ -45,12 +45,12 @@ class BTDevice:
     def __repr__(self) -> str:
         return self.__str__()
 
-    async def start_notify(self, char_uuid_for_notifications, handler):
-        if self.client is not None and self.client.is_connected:
-            print(char_uuid_for_notifications)
-            await self.client.start_notify(char_uuid_for_notifications, handler)
-        else:
-            print("Client not connected or not available.")
+async def start_notify(self, char_uuid_for_notifications, handler):
+    if self.client is not None and self.client.is_connected:
+        print(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
+        await self.client.start_notify(char_uuid_for_notifications, handler)
+    else:
+        print("Client not connected or not available.")
 
     async def stop_notify(self, char_uuid):
         if self.client is not None and self.client.is_connected:
