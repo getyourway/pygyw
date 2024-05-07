@@ -198,8 +198,7 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray(
-                    [commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
+                bytearray([commands.ControlCodes.SET_CONTRAST, int(value * 255)]),
             ),
         ])
 
@@ -222,8 +221,7 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray(
-                    [commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
+                bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
             ),
         ])
 
@@ -272,8 +270,7 @@ class BTDevice:
         await self.__execute_commands([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray(
-                    [commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
+                bytearray([commands.ControlCodes.AUTO_ROTATE_SCREEN, int(enable)]),
             ),
         ])
 
