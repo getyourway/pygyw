@@ -98,9 +98,9 @@ class TextDrawing(GYWDrawing):
         :type left: int
         :param left: The vertical offset. Defaults to 0.
         :type top: int
-        :param font: The font used for the text.
+        :param font: The font used for the text. Defaults to `fonts.GYWFonts.ROBOTO_MONO`.
         :type font: `fonts.GYWFont`
-        :param size: The font size.
+        :param size: The font size. Defaults to 24.
         :type size: int
         :param color: The text color in ORGB format.
         :type color: str
