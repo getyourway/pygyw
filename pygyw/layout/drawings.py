@@ -484,7 +484,7 @@ class SpinnerDrawing(GYWDrawing):
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(f"spinner_1.svg", 'utf-8'),
+                bytes("spinner_1.svg", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
