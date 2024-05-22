@@ -2,8 +2,8 @@
 
 import asyncio
 
-from pygyw.bluetooth import BTDevice, BTManager
-from pygyw.color import Colors, Color
+from pygyw.bluetooth import BTManager
+from pygyw.layout.color import Colors, Color
 from pygyw.layout import drawings, fonts, icons
 
 
@@ -27,7 +27,7 @@ async def main():
     await device.send_drawing(text_drawing)
 
     text = "Big green text!"
-    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color=Color.from_rgba(0, 255, 0))
+    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color=Color(0, 255, 0))
     await device.send_drawing(text_drawing)
 
     icon = icons.GYWIcons.HELP

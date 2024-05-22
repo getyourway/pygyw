@@ -3,14 +3,14 @@ from __future__ import annotations
 import textwrap
 from enum import IntEnum
 from math import ceil
-from typing import Optional, Any
+from typing import Any
 
 from . import fonts
 from . import icons
 from .helpers import byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
-from ..color import Color, Colors
+from .color import Color, Colors
 
 
 class GYWDrawing:

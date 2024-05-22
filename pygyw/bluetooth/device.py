@@ -7,6 +7,7 @@ from bleak.exc import BleakError, BleakDeviceNotFoundError
 
 from . import commands, exceptions
 from ..layout import drawings
+from ..layout.color import Color
 
 
 class BTDevice:
