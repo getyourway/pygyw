@@ -19,7 +19,7 @@ async def main():
     await device.connect()
     await device.start_display()
 
-    await device.clear_screen("ffffffff")
+    await device.clear_screen(Colors.WHITE)
 
     text = "Hello, world!"
     font = fonts.GYWFonts.LARGE

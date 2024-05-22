@@ -231,7 +231,12 @@ class IconDrawing(GYWDrawing):
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: Color = None, scale: float = 1.0,):
+    def __init__(self,
+                 icon: icons.GYWIcon,
+                 left: int = 0,
+                 top: int = 0,
+                 color: Color = None,
+                 scale: float = 1.0):
         """
         Initialize an `IconDrawing` object.
 
