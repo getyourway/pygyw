@@ -16,7 +16,10 @@ class Color:
 
     @classmethod
     def from_hex(cls, color: str):
-        """Creates a new Color object from a hexadecimal string."""
+        """
+        Creates a new Color object from a hexadecimal string.
+        The string must be in the format RGB, RGBA, RRGGBB, or RRGGBBAA.
+        """
 
         # https://www.w3.org/TR/css-color-4/#hex-notation
         assert len(color) in [3, 4, 6, 8], "Color must be in the format RGB, RGBA, RRGGBB, or RRGGBBAA."
