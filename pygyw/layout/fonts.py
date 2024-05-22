@@ -59,7 +59,7 @@ class GYWFonts:
 
     ROBOTO_MONO = GYWFont(name="Roboto Mono", filename="robmn")
     ROBOTO_MONO_BOLD = GYWFont(name="Roboto Mono Bold", filename="robmb", bold=True)
-    ROBOTO_MONO_ITALIC = GYWFont(name="Roboto Mono Italic", filename="robmi", bold=True)
-    ROBOTO_MONO_BOLD_ITALIC = GYWFont(name="Roboto Mono Bold Italic", filename="robmB", bold=True)
+    ROBOTO_MONO_ITALIC = GYWFont(name="Roboto Mono Italic", filename="robmi", italic=True)
+    ROBOTO_MONO_BOLD_ITALIC = GYWFont(name="Roboto Mono Bold Italic", filename="robme", bold=True, italic=True)
 
     values = [ROBOTO_MONO, ROBOTO_MONO_BOLD, ROBOTO_MONO_ITALIC, ROBOTO_MONO_BOLD_ITALIC]
