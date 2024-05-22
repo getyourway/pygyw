@@ -1,19 +1,18 @@
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
 class Color:
     red: int
     green: int
     blue: int
-    alpha: int
+    alpha: int = 255
 
-    def __init__(self, r: int, g: int, b: int, a: int = 255):
-        assert 0 <= r <= 255
-        assert 0 <= g <= 255
-        assert 0 <= b <= 255
-        assert 0 <= a <= 255
-
-        self.red = r
-        self.green = g
-        self.blue = b
-        self.alpha = a
+    def __post_init__(self):
+        assert 0 <= self.red <= 255
+        assert 0 <= self.green <= 255
+        assert 0 <= self.blue <= 255
+        assert 0 <= self.alpha <= 255
 
     @classmethod
     def from_rgba(cls, r: int, g: int, b: int, a: int = 255):
@@ -59,9 +58,6 @@ class Color:
         blue = self.blue.to_bytes(1, "little")
         alpha = self.alpha.to_bytes(1, "little")
         return red + green + blue + alpha
-
-    def __str__(self):
-        return f"{self.red:02x}{self.green:02x}{self.blue:02x}{self.alpha:02x}"
 
 
 class Colors:
