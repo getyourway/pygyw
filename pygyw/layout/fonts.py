@@ -8,6 +8,7 @@ class GYWFont:
     Attributes:
         name: Display name of the font.
         filename: Filename of the font on the device. (5 characters-long and no type extension).
+        char_width: The width of a character at 1pt.
         bold: Whether the font is bold.
         italic: Whether the font is italic.
     """
@@ -16,6 +17,7 @@ class GYWFont:
             self,
             name: str,
             filename: str,
+            char_width: float = 0.6,
             bold: bool = False,
             italic: bool = False,
     ):
@@ -26,6 +28,8 @@ class GYWFont:
         :type name: str
         :param filename: Filename of the font on the device. (5 characters-long and no type extension).
         :type filename: str
+        :param char_width: The width of a character at 1pt. Defaults to 0.6.
+        :type char_width: float
         :param bold: Whether the font is bold. Defaults to False.
         :type bold: bool
         :param italic: Whether the font is italic. Defaults to False.
@@ -37,6 +41,7 @@ class GYWFont:
 
         self.name = name
         self.filename = filename
+        self.char_width = char_width
         self.bold = bold
         self.italic = italic
 
