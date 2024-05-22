@@ -15,11 +15,6 @@ class Color:
         assert 0 <= self.alpha <= 255
 
     @classmethod
-    def from_rgba(cls, r: int, g: int, b: int, a: int = 255):
-        """Creates a new Color object with the given RGBA values."""
-        return cls(r, g, b, a)
-
-    @classmethod
     def from_hex(cls, color: str):
         """Creates a new Color object from a hexadecimal string."""
 
@@ -52,7 +47,7 @@ class Color:
                        int(color[4:6], 16),
                        int(color[6:8], 16))
 
-    def to_rgba8888_bytes(self):
+    def to_rgba8888_bytes(self) -> bytes:
         red = self.red.to_bytes(1, "little")
         green = self.green.to_bytes(1, "little")
         blue = self.blue.to_bytes(1, "little")
