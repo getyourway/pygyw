@@ -2,7 +2,7 @@
 
 import asyncio
 
-from pygyw.bluetooth import BTDevice, BTManager
+from pygyw.bluetooth import BTManager
 from pygyw.layout import drawings, fonts, icons
 
 

@@ -1,4 +1,5 @@
 import asyncio
+import platform
 from typing import Optional
 
 from bleak import BleakClient
@@ -42,6 +43,19 @@ class BTDevice:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    async def start_notify(self, char_uuid_for_notifications, handler):
+        if self.client is not None and self.client.is_connected:
+            print(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
+            await self.client.start_notify(char_uuid_for_notifications, handler)
+        else:
+            print("Client not connected or not available.")
+
+    async def stop_notify(self, char_uuid):
+        if self.client is not None and self.client.is_connected:
+            await self.client.stop_notify(char_uuid)
+        else:
+            print("Client not connected or not available.")
 
     async def connect(self, loop: asyncio.AbstractEventLoop = None) -> bool:
         """
@@ -98,11 +112,14 @@ class BTDevice:
         return disconnected
 
     async def __execute_commands(self, commands: "list[commands.BTCommand]"):
+        system = platform.system()
         for command in commands:
             i = 0
             data_length = len(command.data)
             while i < data_length:
-                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20], True)
+                await self.client.write_gatt_char(command.characteristic, command.data[i:i + 20], False)
+                if system == "Darwin":  # Darwin is the name for MacOS
+                    await asyncio.sleep(0.004)
                 i += 20
 
     async def send_drawing(self, drawing: drawings.GYWDrawing):

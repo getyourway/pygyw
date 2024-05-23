@@ -53,7 +53,7 @@ class BTManager:
             raise BTException("A scan is already in progress")
 
         self.is_scanning = True
-        print(f"Scanning for BLE devices...")
+        print("Scanning for BLE devices...")
 
         device_local_storage = self.__get_device_local_storage()
         try:
@@ -72,7 +72,7 @@ class BTManager:
                     f.write("\n".join(device.address))
 
             if not self.devices:
-                print(f"No BLE device found found...")
+                print("No BLE device found found...")
         finally:
             self.is_scanning = False
 
