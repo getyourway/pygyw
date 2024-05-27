@@ -17,7 +17,6 @@ class BTDevice:
         device: The underlying BLE device object that is used to communicate with the device.
         client: The `BleakClient` used to connect to and interact with the device. This attribute
             is set to None by default and will be initialized when a connection to the device is established.
-        font: The font currently used for drawing texts in the device
     """
 
     def __init__(self, device: "BLEDevice | str"):
@@ -31,11 +30,6 @@ class BTDevice:
 
         self.device = device
         self.client: BleakClient = None
-
-        # Optimisation for not executing the set font command when it is not changed
-        self.font = None
-        # Whether the font optimisation should be used or not
-        self.font_optimized = True
 
     def __str__(self) -> str:
         return self.device
@@ -126,10 +120,6 @@ class BTDevice:
             print("OS Error while sending data: %s" % e)
             await self.disconnect()
             raise exceptions.BTException("OS Error: %s" % str(e))
-
-        # Save font
-        if isinstance(drawing, drawings.TextDrawing) and drawing.font is not None:
-            self.font = drawing.font
 
     async def send_drawings(self, drawings: "list[drawings.GYWDrawing]"):
         """
