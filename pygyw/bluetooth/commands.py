@@ -24,7 +24,6 @@ class ControlCodes:
         CLEAR: Clear the screen.
         SET_CONTRAST: Set the screen contrast.
         SET_BRIGHTNESS: Set the screen brightness.
-        SET_FONT: Set the font used to display text.
         AUTO_ROTATE_SCREEN: Enable or disable the screen autorotation.
         ENABLE_BACKLIGHT: Enable or disable the display backlight.
         DRAW_RECTANGLE: Draw a colored rectangle.
@@ -37,7 +36,6 @@ class ControlCodes:
     CLEAR = 0x05
     SET_CONTRAST = 0x06
     SET_BRIGHTNESS = 0x07
-    SET_FONT = 0x08
     AUTO_ROTATE_SCREEN = 0x0A
     ENABLE_BACKLIGHT = 0x0B
     DRAW_RECTANGLE = 0x0C

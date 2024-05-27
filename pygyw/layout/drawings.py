@@ -74,7 +74,7 @@ class TextDrawing(GYWDrawing):
         text: The text to display.
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
-        font: The font to use for the text (can be None).
+        font: The font to use for the text.
         size: The font size.
         color: The text color.
         max_width: The maximum width (in pixels) of the text. It will be wrapped on multiple lines if it is too long.
@@ -85,9 +85,9 @@ class TextDrawing(GYWDrawing):
                  text: str,
                  left: int = 0,
                  top: int = 0,
-                 font: fonts.GYWFont = None,
-                 size: int = None,
-                 color: Color = Colors.BLACK,
+                 font: fonts.GYWFont = fonts.GYWFonts.ROBOTO_MONO,
+                 size: int = 24,
+                 color: str = None,
                  max_width: int = None,
                  max_lines: int = 1):
         """
@@ -99,9 +99,9 @@ class TextDrawing(GYWDrawing):
         :type left: int
         :param left: The vertical offset. Defaults to 0.
         :type top: int
-        :param font: The font used for the text. Defaults to None.
+        :param font: The font used for the text. Defaults to `fonts.GYWFonts.ROBOTO_MONO`.
         :type font: `fonts.GYWFont`
-        :param size: The font size.
+        :param size: The font size. Defaults to 24.
         :type size: int
         :param color: The text color.
         :type color: Color
@@ -153,9 +153,7 @@ class TextDrawing(GYWDrawing):
         if not self.text:
             return operations
 
-        font = self.font or fonts.GYWFonts.MEDIUM
-        font_size = self.size or font.size
-        char_height = ceil(font_size * 1.33)
+        char_height = ceil(self.size * 1.33)
 
         commands = []
         current_top = self.top
@@ -177,9 +175,7 @@ class TextDrawing(GYWDrawing):
         else:
             text_width = max_width
 
-        font = self.font or fonts.GYWFonts.MEDIUM
-        font_size = self.size or font.size
-        char_width = ceil(font_size * 0.6)
+        char_width = ceil(self.size * 0.6)
         max_chars_per_line = text_width // char_width
 
         lines = textwrap.wrap(self.text, width=max_chars_per_line)
@@ -200,8 +196,8 @@ class TextDrawing(GYWDrawing):
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
         ctrl_data += self.left.to_bytes(2, 'little', signed=True)
         ctrl_data += top.to_bytes(2, 'little', signed=True)
-        ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
-        ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
+        ctrl_data += bytes(self.font.filename, 'utf-8')
+        ctrl_data += self.size.to_bytes(1, 'little')
         ctrl_data += self.color.to_rgba8888_bytes()
 
         return [
