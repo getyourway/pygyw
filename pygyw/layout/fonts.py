@@ -7,45 +7,43 @@ class GYWFont:
 
     Attributes:
         name: Display name of the font.
-        index: Index of the font on the device.
-        prefix: Prefix used on the device for the font.
-        size: Size of a character in points.
-        height: Height of a character in pixels.
-        width: Width of a character in pixels.
-        bold: Whether the font is in bold or not.
+        filename: Filename of the font on the device. (5 characters-long and no type extension).
+        char_width: The width of a character at 1pt.
+        bold: Whether the font is bold.
+        italic: Whether the font is italic.
     """
 
     def __init__(
-        self, name: str, index: int, prefix: str, size: float,
-        height: int, width: int, bold: bool = False,
+            self,
+            name: str,
+            filename: str,
+            char_width: float = 0.6,
+            bold: bool = False,
+            italic: bool = False,
     ):
         """
         Initialize a new `GYWFont` object.
 
         :param name: Display name of the font.
         :type name: str
-        :param index: Index of the font on the device.
-        :type index: int
-        :param prefix: Prefix used on the device for the font.
-        :type prefix: str
-        :param size: Size (in points) of a character.
-        :type size: float
-        :param height: Height (in pixels) of a character.
-        :type height: int
-        :param width: Width (in pixels) of a character.
-        :type width: int
-        :param bold: Whether the font is in bold or not. Defaults to False.
+        :param filename: Filename of the font on the device. (5 characters-long and no type extension).
+        :type filename: str
+        :param char_width: The width of a character at 1pt. Defaults to 0.6.
+        :type char_width: float
+        :param bold: Whether the font is bold. Defaults to False.
         :type bold: bool
+        :param italic: Whether the font is italic. Defaults to False.
+        :type italic: bool
 
         """
 
+        assert len(filename) == 5, "The filename must be 5 characters long."
+
         self.name = name
-        self.index = index
-        self.prefix = prefix
-        self.size = size
-        self.height = height
-        self.width = width
+        self.filename = filename
+        self.char_width = char_width
         self.bold = bold
+        self.italic = italic
 
     def __str__(self) -> str:
         return self.name
@@ -57,32 +55,16 @@ class GYWFont:
         """Return a JSON-serializable dictionary of the object."""
 
         return {
-            "title": self.index,
+            "title": self.filename,
         }
 
 
 class GYWFonts:
-    """
-    Active fonts on aRdent smart glasses.
+    """Active fonts on aRdent smart glasses."""
 
-    Attributes:
-        SMALL: A small font
-        MEDIUM: A medium font
-        LARGE: A large font
-        HUGE: A huge font
-        values: List containing every fonts available on aRdent smart glasses.
-    """
+    ROBOTO_MONO = GYWFont(name="Roboto Mono", filename="robmn")
+    ROBOTO_MONO_BOLD = GYWFont(name="Roboto Mono Bold", filename="robmb", bold=True)
+    ROBOTO_MONO_ITALIC = GYWFont(name="Roboto Mono Italic", filename="robmi", italic=True)
+    ROBOTO_MONO_BOLD_ITALIC = GYWFont(name="Roboto Mono Bold Italic", filename="robme", bold=True, italic=True)
 
-    SMALL = GYWFont(
-        name="Small", index=0, prefix="a10", size=18, width=10, height=25)
-
-    MEDIUM = GYWFont(
-        name="Medium", index=1, prefix="b14", size=24, width=14, height=33, bold=True)
-
-    LARGE = GYWFont(
-        name="Large", index=2, prefix="a16", size=28, width=16, height=39)
-
-    HUGE = GYWFont(
-        name="Huge", index=3, prefix="b28", size=48, width=28, height=67, bold=True)
-
-    values = [SMALL, MEDIUM, LARGE, HUGE]
+    values = [ROBOTO_MONO, ROBOTO_MONO_BOLD, ROBOTO_MONO_ITALIC, ROBOTO_MONO_BOLD_ITALIC]

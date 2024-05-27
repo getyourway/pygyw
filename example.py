@@ -21,8 +21,8 @@ async def main():
     await device.clear_screen("ffffffff")
 
     text = "Hello, world!"
-    font = fonts.GYWFonts.LARGE
-    text_drawing = drawings.TextDrawing(text=text, left=100, top=100, font=font, color="ff000000")
+    font = fonts.GYWFonts.ROBOTO_MONO_BOLD
+    text_drawing = drawings.TextDrawing(text=text, left=100, top=100, font=font, size=24, color="ff000000")
     await device.send_drawing(text_drawing)
 
     text = "Big green text!"
