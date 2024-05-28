@@ -77,8 +77,10 @@ class TextDrawing(GYWDrawing):
         font: The font to use for the text.
         size: The font size.
         color: The text color.
-        max_width: The maximum width (in pixels) of the text. It will be wrapped on multiple lines if it is too long.
-        max_lines: The maximum number of lines the text can be wrapped on. All extra lines will be ignored. The value 0 is special and disables the limit.
+        max_width: The maximum width (in pixels) of the text.
+                   It will be wrapped on multiple lines if it is too long.
+        max_lines: The maximum number of lines the text can be wrapped on.
+                   All extra lines will be ignored. The value 0 is special and disables the limit.
     """
 
     def __init__(self,
@@ -87,7 +89,7 @@ class TextDrawing(GYWDrawing):
                  top: int = 0,
                  font: fonts.GYWFont = fonts.GYWFonts.ROBOTO_MONO,
                  size: int = 24,
-                 color: str = None,
+                 color: str = Colors.BLACK,
                  max_width: int = None,
                  max_lines: int = 1):
         """
@@ -103,11 +105,11 @@ class TextDrawing(GYWDrawing):
         :type font: `fonts.GYWFont`
         :param size: The font size. Defaults to 24.
         :type size: int
-        :param color: The text color.
+        :param color: The text color. Defaults to `Colors.BLACK`.
         :type color: Color
         :param max_width: The maximum width of the text.
         :type max_width: int
-        :param max_lines: The maximum number of lines the text can be wrapped on.
+        :param max_lines: The maximum number of lines the text can be wrapped on. Defaults to 1.
         :type max_lines: int
         """
 
@@ -286,7 +288,7 @@ class IconDrawing(GYWDrawing):
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(f"{self.icon.name}.bin", 'utf-8'),
+                bytes(f"{self.icon.name}.svg", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,
@@ -419,7 +421,7 @@ class SpinnerDrawing(GYWDrawing):
         operations.extend([
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(f"spinner_1.svg", 'utf-8'),
+                bytes("spinner_1.svg", 'utf-8'),
             ),
             commands.BTCommand(
                 commands.GYWCharacteristics.DISPLAY_COMMAND,

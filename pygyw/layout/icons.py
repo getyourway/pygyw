@@ -44,13 +44,6 @@ class GYWIcons:
     All icons currently active on aRdent smart glasses.
 
     Attributes:
-        BLANK: A blank icon that is usually used to remove an icon from the screen.
-        .. image:: icons/blank.svg
-            :width: 48px
-            :height: 48px
-            :alt: Blank icon
-            :align: center
-
         BUILD: An icon representing construction tools.
         .. image:: icons/build.svg
             :width: 48px
@@ -363,7 +356,6 @@ class GYWIcons:
 
     """
 
-    BLANK = GYWIcon("blank")
     BUILD = GYWIcon("build")
     CAMERA = GYWIcon("camera")
     CHAT = GYWIcon("chat")
@@ -410,7 +402,6 @@ class GYWIcons:
     KEY_NUM = GYWIcon("key_#")
 
     values = [
-        BLANK,
         BUILD,
         CAMERA,
         CHAT,
