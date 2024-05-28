@@ -5,6 +5,7 @@
     - Update UUIDs of BLE characteristics
     - Remove leftover font and font_optimized fields in BTDevice
     - Remove font prefixes
+    - Add Flake8 as default linter
 
 1.3.2:
     - Write Mode Enhancement: Updated the device.py to utilize "Write Without Response" mode instead of "Write With Response" to improve communication efficiency.

@@ -2,7 +2,9 @@ name: Check code quality with Flake 8
 
 on:
   pull_request:
-    branches: [master, develop]
+    branches: 
+      - master
+      - develop
 
 jobs:
   check_style:
