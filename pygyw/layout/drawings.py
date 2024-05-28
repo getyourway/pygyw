@@ -89,7 +89,7 @@ class TextDrawing(GYWDrawing):
                  top: int = 0,
                  font: fonts.GYWFont = fonts.GYWFonts.ROBOTO_MONO,
                  size: int = 24,
-                 color: str = Colors.BLACK,
+                 color: Color = Colors.BLACK,
                  max_width: int = None,
                  max_lines: int = 1):
         """
