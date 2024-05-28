@@ -8,6 +8,7 @@ from bleak.exc import BleakError, BleakDeviceNotFoundError
 
 from . import commands, exceptions
 from ..layout import drawings
+from ..layout.color import Color
 
 
 class BTDevice:
@@ -18,7 +19,6 @@ class BTDevice:
         device: The underlying BLE device object that is used to communicate with the device.
         client: The `BleakClient` used to connect to and interact with the device. This attribute
             is set to None by default and will be initialized when a connection to the device is established.
-        font: The font currently used for drawing texts in the device
     """
 
     def __init__(self, device: "BLEDevice | str"):
@@ -32,11 +32,6 @@ class BTDevice:
 
         self.device = device
         self.client: BleakClient = None
-
-        # Optimisation for not executing the set font command when it is not changed
-        self.font = None
-        # Whether the font optimisation should be used or not
-        self.font_optimized = True
 
     def __str__(self) -> str:
         return self.device
@@ -144,10 +139,6 @@ class BTDevice:
             await self.disconnect()
             raise exceptions.BTException("OS Error: %s" % str(e))
 
-        # Save font
-        if isinstance(drawing, drawings.TextDrawing) and drawing.font is not None:
-            self.font = drawing.font
-
     async def send_drawings(self, drawings: "list[drawings.GYWDrawing]"):
         """
         Send and display several drawings consecutively on the device.
@@ -241,21 +232,21 @@ class BTDevice:
             ),
         ])
 
-    async def clear_screen(self, color: Optional[str]):
+    async def clear_screen(self, color: Optional[Color]):
         """
         Reset what is displayed.
 
-        If an ARGB color is provided, the screen will be filled with this color, otherwise the screen will be filled
+        If a color is provided, the screen will be filled with this color, otherwise the screen will be filled
         with the last color used. If a color was never provided, if fills the screen with white.
 
         :param color: The color to use to clear the screen.
-        :type color: str or None
+        :type color: Color or None
 
         """
 
         ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
         if color:
-            ctrl_bytes += bytes(color, 'ascii')
+            ctrl_bytes += color.to_rgba8888_bytes()
 
         await self.__execute_commands([
             commands.BTCommand(

@@ -3,6 +3,7 @@
 import asyncio
 
 from pygyw.bluetooth import BTManager
+from pygyw.layout.color import Colors, Color
 from pygyw.layout import drawings, fonts, icons
 
 
@@ -18,23 +19,24 @@ async def main():
     await device.connect()
     await device.start_display()
 
-    await device.clear_screen("ffffffff")
+    await device.clear_screen(Colors.WHITE)
 
     text = "Hello, world!"
-    font = fonts.GYWFonts.LARGE
-    text_drawing = drawings.TextDrawing(text=text, left=100, top=100, font=font, color="ff000000")
+    font = fonts.GYWFonts.ROBOTO_MONO_BOLD
+    text_drawing = drawings.TextDrawing(text=text, left=100, top=100, font=font, size=24, color=Colors.BLACK)
+
     await device.send_drawing(text_drawing)
 
     text = "Big green text!"
-    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color="ff00ff00")
+    text_drawing = drawings.TextDrawing(text=text, left=100, top=350, size=80, color=Color(0, 255, 0))
     await device.send_drawing(text_drawing)
 
     icon = icons.GYWIcons.HELP
-    icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color="ffff0000")
+    icon_drawing = drawings.IconDrawing(icon=icon, left=400, top=200, color=Color.from_hex("ff0000"))
     await device.send_drawing(icon_drawing)
 
     spinner = drawings.SpinnerDrawing(left=500, top=200,
-                                      color="ff0000ff",
+                                      color=Colors.BLUE,
                                       scale=3,
                                       animation_timing_function=drawings.AnimationTimingFunction.EASE_OUT,
                                       spins_per_second=1)

@@ -3,13 +3,14 @@ from __future__ import annotations
 import textwrap
 from enum import IntEnum
 from math import ceil
-from typing import Optional, Any
+from typing import Any
 
 from . import fonts
 from . import icons
-from .helpers import rgba8888_bytes_from_color_string, byte_from_scale_float, clamp
+from .helpers import byte_from_scale_float, clamp
 from .settings import screen_width
 from ..bluetooth import commands
+from .color import Color, Colors
 
 
 class GYWDrawing:
@@ -73,7 +74,7 @@ class TextDrawing(GYWDrawing):
         text: The text to display.
         left: The horizontal offset (from the left).
         top: The vertical offset (from the top).
-        font: The font to use for the text (can be None).
+        font: The font to use for the text.
         size: The font size.
         color: The text color.
         max_width: The maximum width (in pixels) of the text. It will be wrapped on multiple lines if it is too long.
@@ -84,8 +85,8 @@ class TextDrawing(GYWDrawing):
                  text: str,
                  left: int = 0,
                  top: int = 0,
-                 font: fonts.GYWFont = None,
-                 size: int = None,
+                 font: fonts.GYWFont = fonts.GYWFonts.ROBOTO_MONO,
+                 size: int = 24,
                  color: str = None,
                  max_width: int = None,
                  max_lines: int = 1):
@@ -98,12 +99,12 @@ class TextDrawing(GYWDrawing):
         :type left: int
         :param left: The vertical offset. Defaults to 0.
         :type top: int
-        :param font: The font used for the text. Defaults to None.
+        :param font: The font used for the text. Defaults to `fonts.GYWFonts.ROBOTO_MONO`.
         :type font: `fonts.GYWFont`
-        :param size: The font size.
+        :param size: The font size. Defaults to 24.
         :type size: int
-        :param color: The text color in ORGB format.
-        :type color: str
+        :param color: The text color.
+        :type color: Color
         :param max_width: The maximum width of the text.
         :type max_width: int
         :param max_lines: The maximum number of lines the text can be wrapped on.
@@ -123,7 +124,7 @@ class TextDrawing(GYWDrawing):
         data["text"] = self.text
         data["font"] = self.font.name
         data["size"] = self.size
-        data["color"] = self.color
+        data["color"] = str(self.color)
         data["max_width"] = self.max_width
         data["max_lines"] = self.max_lines
         return data
@@ -152,9 +153,7 @@ class TextDrawing(GYWDrawing):
         if not self.text:
             return operations
 
-        font = self.font or fonts.GYWFonts.MEDIUM
-        font_size = self.size or font.size
-        char_height = ceil(font_size * 1.33)
+        char_height = ceil(self.size * 1.33)
 
         commands = []
         current_top = self.top
@@ -176,9 +175,7 @@ class TextDrawing(GYWDrawing):
         else:
             text_width = max_width
 
-        font = self.font or fonts.GYWFonts.MEDIUM
-        font_size = self.size or font.size
-        char_width = ceil(font_size * 0.6)
+        char_width = ceil(self.size * 0.6)
         max_chars_per_line = text_width // char_width
 
         lines = textwrap.wrap(self.text, width=max_chars_per_line)
@@ -199,14 +196,9 @@ class TextDrawing(GYWDrawing):
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
         ctrl_data += self.left.to_bytes(2, 'little', signed=True)
         ctrl_data += top.to_bytes(2, 'little', signed=True)
-        ctrl_data += bytes(self.font.prefix if self.font is not None else "NUL", 'utf-8')
-        ctrl_data += (self.size if self.size is not None else 0).to_bytes(1, 'little')
-
-        short_color = "NULL"
-        if self.color:
-            short_color = f"{self.color[0]}{self.color[2]}{self.color[4]}{self.color[6]}"
-
-        ctrl_data += bytes(short_color, 'utf-8')
+        ctrl_data += bytes(self.font.filename, 'utf-8')
+        ctrl_data += self.size.to_bytes(1, 'little')
+        ctrl_data += self.color.to_rgba8888_bytes()
 
         return [
             # Text data
@@ -235,7 +227,12 @@ class IconDrawing(GYWDrawing):
 
     """
 
-    def __init__(self, icon: icons.GYWIcon, left: int = 0, top: int = 0, color: str = None, scale: float = 1.0):
+    def __init__(self,
+                 icon: icons.GYWIcon,
+                 left: int = 0,
+                 top: int = 0,
+                 color: Color = None,
+                 scale: float = 1.0):
         """
         Initialize an `IconDrawing` object.
 
@@ -245,8 +242,8 @@ class IconDrawing(GYWDrawing):
         :type left: int
         :param top: The vertical offset. Defaults to 0.
         :type top: int
-        :param color: The color of the icon in ORGB format. Defaults to None.
-        :type color: str
+        :param color: The color of the icon. Defaults to None.
+        :type color: Color
         :param scale: The icon scale. Defaults to 1.0.
         :type scale: float
 
@@ -282,7 +279,8 @@ class IconDrawing(GYWDrawing):
         left = self.left.to_bytes(2, 'little', signed=True)
         top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
-        ctrl_data += bytes(self.color or "NULLNULL", 'utf-8')
+
+        ctrl_data += self.color.to_rgba8888_bytes() if self.color is not None else bytearray([0, 0, 0, 0])
         ctrl_data += byte_from_scale_float(self.scale)
 
         operations.extend([
@@ -316,7 +314,7 @@ class RectangleDrawing(GYWDrawing):
                  top: int,
                  width: int,
                  height: int,
-                 color: str = None):
+                 color: Color = None):
         super().__init__("rectangle", left, top)
         self.width = width
         self.height = height
@@ -326,7 +324,7 @@ class RectangleDrawing(GYWDrawing):
         data = super().to_json()
         data["width"] = self.width
         data["height"] = self.height
-        data["color"] = self.color
+        data["color"] = str(self.color)
         return data
 
     def to_commands(self) -> "list[commands.BTCommand]":
@@ -338,7 +336,7 @@ class RectangleDrawing(GYWDrawing):
         top = self.top.to_bytes(2, 'little', signed=True)
         width = self.width.to_bytes(2, 'little')
         height = self.height.to_bytes(2, 'little')
-        color = rgba8888_bytes_from_color_string(self.color)
+        color = self.color.to_rgba8888_bytes() if self.color is not None else bytearray([0, 0, 0, 0])
 
         ctrl_data = bytearray([commands.ControlCodes.DRAW_RECTANGLE]) + left + top + width + height + color
 
@@ -377,7 +375,7 @@ class SpinnerDrawing(GYWDrawing):
     def __init__(self,
                  left: int = 0,
                  top: int = 0,
-                 color: str | None = None,
+                 color: Color = Colors.BLACK,
                  scale: float = 1.0,
                  animation_timing_function: AnimationTimingFunction = AnimationTimingFunction.LINEAR,
                  spins_per_second: float = 1.0):
@@ -391,7 +389,7 @@ class SpinnerDrawing(GYWDrawing):
 
     def to_json(self) -> "dict[str, Any]":
         data = super().to_json()
-        data["color"] = self.color
+        data["color"] = str(self.color)
         data["scale"] = self.scale
         data["animation_timing_function"] = self.animation_timing_function
         data["spins_per_second"] = self.spins_per_second
@@ -411,7 +409,7 @@ class SpinnerDrawing(GYWDrawing):
         left = self.left.to_bytes(2, 'little', signed=True)
         top = self.top.to_bytes(2, 'little', signed=True)
         ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
-        ctrl_data += rgba8888_bytes_from_color_string(self.color)
+        ctrl_data += self.color.to_rgba8888_bytes()
         ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')
 

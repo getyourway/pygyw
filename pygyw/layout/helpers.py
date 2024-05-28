@@ -197,19 +197,6 @@ def justify(text: str, width: int):
     return lines
 
 
-def rgba8888_bytes_from_color_string(color: str | None) -> bytes:
-    """Transform an ARGB color string into an RGBA8888 byte array of length 4."""
-
-    if color is None:
-        return bytearray([0, 0, 0, 0])
-
-    alpha = int(color[0:2], 16).to_bytes(1, "little")
-    red = int(color[2:4], 16).to_bytes(1, "little")
-    green = int(color[4:6], 16).to_bytes(1, "little")
-    blue = int(color[6:8], 16).to_bytes(1, "little")
-    return red + green + blue + alpha
-
-
 def clamp(n, smallest, largest):
     """Clamp a value between two bounds."""
     return max(smallest, min(n, largest))
