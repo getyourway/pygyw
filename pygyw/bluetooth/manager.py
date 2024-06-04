@@ -75,7 +75,7 @@ class BTManager:
                     f.write("\n".join(device.address))
 
             if not self.devices:
-                logger.debug("No BLE device found found...")
+                logger.warning("No BLE device found found...")
         finally:
             self.is_scanning = False
 
@@ -88,7 +88,7 @@ class BTManager:
         device_local_storage = os.path.join(self.__get_device_local_storage(), "devices.txt")
 
         if not os.path.exists(device_local_storage):
-            logger.debug("Device local storage not setup")
+            logger.error("Device local storage not setup")
             return
 
         with open(device_local_storage, "r") as f:
