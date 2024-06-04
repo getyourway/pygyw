@@ -1,10 +1,13 @@
 from bleak import BleakScanner
+import logging
 import os
 import platform
 
 from .exceptions import BTException
 from .device import BTDevice
 from . import settings
+
+logger = logging.getLogger(__name__)
 
 
 class BTManager:
@@ -53,7 +56,7 @@ class BTManager:
             raise BTException("A scan is already in progress")
 
         self.is_scanning = True
-        print("Scanning for BLE devices...")
+        logger.debug("Scanning for BLE devices...")
 
         device_local_storage = self.__get_device_local_storage()
         try:
@@ -61,7 +64,7 @@ class BTManager:
             self.devices = []
             for device in devices:
                 if not filter or device.name in settings.device_names:
-                    print(f"BLE device {device.name} found! Address: {device.address}")
+                    logger.debug(f"BLE device {device.name} found! Address: {device.address}")
                     self.devices.append(BTDevice(device))
 
             if store:
@@ -72,24 +75,24 @@ class BTManager:
                     f.write("\n".join(device.address))
 
             if not self.devices:
-                print("No BLE device found found...")
+                logger.warning("No BLE device found found...")
         finally:
             self.is_scanning = False
 
     async def pull_devices(self):
         """Load previously saved device information from the local file system."""
 
-        print("Pulling devices...")
+        logger.debug("Pulling devices...")
         self.devices = []
 
         device_local_storage = os.path.join(self.__get_device_local_storage(), "devices.txt")
 
         if not os.path.exists(device_local_storage):
-            print("Device local storage not setup")
+            logger.error("Device local storage not setup")
             return
 
         with open(device_local_storage, "r") as f:
             devices = f.read().split("\n")
             for device in devices:
                 self.devices.append(BTDevice(device))
-                print(f"{device} pulled")
+                logger.debug(f"{device} pulled")
