@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import platform
 from typing import Optional
 
@@ -9,6 +10,8 @@ from bleak.exc import BleakError, BleakDeviceNotFoundError
 from . import commands, exceptions
 from ..layout import drawings
 from ..layout.color import Color
+
+logger = logging.getLogger(__name__)
 
 
 class BTDevice:
@@ -41,16 +44,16 @@ class BTDevice:
 
     async def start_notify(self, char_uuid_for_notifications, handler):
         if self.client is not None and self.client.is_connected:
-            print(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
+            logger.debug(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
             await self.client.start_notify(char_uuid_for_notifications, handler)
         else:
-            print("Client not connected or not available.")
+            logger.debug("Client not connected or not available.")
 
     async def stop_notify(self, char_uuid):
         if self.client is not None and self.client.is_connected:
             await self.client.stop_notify(char_uuid)
         else:
-            print("Client not connected or not available.")
+            logger.debug("Client not connected or not available.")
 
     async def connect(self, loop: asyncio.AbstractEventLoop = None) -> bool:
         """
@@ -64,7 +67,7 @@ class BTDevice:
 
         """
 
-        print(f"Connecting to {self.device}")
+        logger.debug(f"Connecting to {self.device}")
         client = BleakClient(self.device, timeout=5.0, loop=loop)
         try:
             await client.connect()
@@ -74,9 +77,9 @@ class BTDevice:
         connected = client.is_connected
         if connected:
             self.client = client
-            print(f"Connection to device {self.device} succeeded")
+            logger.debug(f"Connection to device {self.device} succeeded")
         else:
-            print(f"Connection to device {self.device} failed")
+            logger.debug(f"Connection to device {self.device} failed")
 
         return connected
 
@@ -89,10 +92,10 @@ class BTDevice:
 
         """
 
-        print(f"Disconnecting from {self.device} with address: {self.device}")
+        logger.debug(f"Disconnecting from {self.device} with address: {self.device}")
         if not self.client:
             # No connection
-            print("Already disconnected")
+            logger.debug("Already disconnected")
             return True
 
         await self.client.disconnect()
@@ -100,9 +103,9 @@ class BTDevice:
         disconnected = not self.client.is_connected
         if disconnected:
             self.client = None
-            print(f"Disconnection from device {self.device} succeeded")
+            logger.debug(f"Disconnection from device {self.device} succeeded")
         else:
-            print(f"Disconnection from device {self.device} failed")
+            logger.debug(f"Disconnection from device {self.device} failed")
 
         return disconnected
 
@@ -131,11 +134,11 @@ class BTDevice:
         try:
             await self.__execute_commands(commands)
         except BleakError as e:
-            print("Bluetooth Error while sending data: %s" % e)
+            logger.debug("Bluetooth Error while sending data: %s" % e)
             await self.disconnect()
             raise exceptions.BTException("BT Error: %s" % str(e))
         except OSError as e:
-            print("OS Error while sending data: %s" % e)
+            logger.debug("OS Error while sending data: %s" % e)
             await self.disconnect()
             raise exceptions.BTException("OS Error: %s" % str(e))
 
