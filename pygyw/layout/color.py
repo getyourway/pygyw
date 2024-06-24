@@ -17,7 +17,8 @@ class Color:
     @classmethod
     def from_hex(cls, color: str):
         """
-        Creates a new Color object from a hexadecimal string.
+        Create a new Color object from a hexadecimal string.
+
         The string must be in the format RGB, RGBA, RRGGBB, or RRGGBBAA.
         """
 
