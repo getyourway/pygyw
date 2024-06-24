@@ -1,14 +1,17 @@
 import asyncio
+import logging
 import platform
+from typing import Optional
 
 from bleak import BleakClient
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError, BleakDeviceNotFoundError
-from typing_extensions import deprecated
 
 from . import commands, exceptions
-from ..deprecated_param import deprecated_param
-from ..layout import drawings, fonts
+from ..layout import drawings
+from ..layout.color import Color
+
+logger = logging.getLogger(__name__)
 
 
 class BTDevice:
@@ -19,7 +22,6 @@ class BTDevice:
         device: The underlying BLE device object that is used to communicate with the device.
         client: The `BleakClient` used to connect to and interact with the device. This attribute
             is set to None by default and will be initialized when a connection to the device is established.
-        font: The font currently used for drawing texts in the device
     """
 
     def __init__(self, device: "BLEDevice | str"):
@@ -34,11 +36,6 @@ class BTDevice:
         self.device = device
         self.client: BleakClient = None
 
-        # Optimisation for not executing the set font command when it is not changed
-        self.font = None
-        # Whether the font optimisation should be used or not
-        self.font_optimized = True
-
     def __str__(self) -> str:
         return self.device
 
@@ -47,16 +44,16 @@ class BTDevice:
 
     async def start_notify(self, char_uuid_for_notifications, handler):
         if self.client is not None and self.client.is_connected:
-            print(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
+            logger.debug(f"Listening for notifications on UUID: {char_uuid_for_notifications}...")
             await self.client.start_notify(char_uuid_for_notifications, handler)
         else:
-            print("Client not connected or not available.")
+            logger.warning("Client not connected or not available.")
 
     async def stop_notify(self, char_uuid):
         if self.client is not None and self.client.is_connected:
             await self.client.stop_notify(char_uuid)
         else:
-            print("Client not connected or not available.")
+            logger.warning("Client not connected or not available.")
 
     async def connect(self, loop: asyncio.AbstractEventLoop = None) -> bool:
         """
@@ -70,7 +67,7 @@ class BTDevice:
 
         """
 
-        print(f"Connecting to {self.device}")
+        logger.debug(f"Connecting to {self.device}")
         client = BleakClient(self.device, timeout=5.0, loop=loop)
         try:
             await client.connect()
@@ -80,9 +77,9 @@ class BTDevice:
         connected = client.is_connected
         if connected:
             self.client = client
-            print(f"Connection to device {self.device} succeeded")
+            logger.info(f"Connection to device {self.device} succeeded")
         else:
-            print(f"Connection to device {self.device} failed")
+            logger.warning(f"Connection to device {self.device} failed")
 
         return connected
 
@@ -95,10 +92,10 @@ class BTDevice:
 
         """
 
-        print(f"Disconnecting from {self.device} with address: {self.device}")
+        logger.debug(f"Disconnecting from {self.device} with address: {self.device}")
         if not self.client:
             # No connection
-            print("Already disconnected")
+            logger.warning("Already disconnected")
             return True
 
         await self.client.disconnect()
@@ -106,9 +103,9 @@ class BTDevice:
         disconnected = not self.client.is_connected
         if disconnected:
             self.client = None
-            print(f"Disconnection from device {self.device} succeeded")
+            logger.info(f"Disconnection from device {self.device} succeeded")
         else:
-            print(f"Disconnection from device {self.device} failed")
+            logger.warning(f"Disconnection from device {self.device} failed")
 
         return disconnected
 
@@ -137,17 +134,13 @@ class BTDevice:
         try:
             await self.__execute_commands(commands)
         except BleakError as e:
-            print("Bluetooth Error while sending data: %s" % e)
+            logger.error(f"Bluetooth Error while sending data: {e}")
             await self.disconnect()
-            raise exceptions.BTException("BT Error: %s" % str(e))
+            raise exceptions.BTException(f"BT Error: {e}")
         except OSError as e:
-            print("OS Error while sending data: %s" % e)
+            logger.error(f"OS Error while sending data: {e}")
             await self.disconnect()
-            raise exceptions.BTException("OS Error: %s" % str(e))
-
-        # Save font
-        if isinstance(drawing, drawings.TextDrawing) and drawing.font is not None:
-            self.font = drawing.font
+            raise exceptions.BTException(f"OS Error: {e}")
 
     async def send_drawings(self, drawings: "list[drawings.GYWDrawing]"):
         """
@@ -161,15 +154,11 @@ class BTDevice:
         for drawing in drawings:
             await self.send_drawing(drawing)
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def start_display(self, sleep_time: float = 0.0):
+    async def start_display(self):
         """
         Turn the screen on.
 
         ..note It has no effect if the screen is already on.
-
-        :param sleep_time: Time to wait after having switched on the screen. Defaults to 0.0.
-        :type sleep_time: float
 
         """
 
@@ -179,18 +168,13 @@ class BTDevice:
                 bytearray([commands.ControlCodes.START_DISPLAY]),
             ),
         ])
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_contrast(self, value: float, sleep_time: float = 0.0):
+    async def set_contrast(self, value: float):
         """
         Set the screen contrast.
 
         :param value: The contrast value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the contrast. Defaults to 0.0.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -202,18 +186,12 @@ class BTDevice:
             ),
         ])
 
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_brightness(self, value: float, sleep_time: float = 0.0):
+    async def set_brightness(self, value: float):
         """
         Set the screen brightness.
 
         :param value: The brightness value (between 0 and 1).
         :type value: float
-        :param sleep_time: Time to wait after having set up the brightness. Defaults to 0.0.
-        :type sleep_time: float
 
         """
         assert 0 <= value <= 1
@@ -224,39 +202,6 @@ class BTDevice:
                 bytearray([commands.ControlCodes.SET_BRIGHTNESS, int(value * 255)]),
             ),
         ])
-
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-    @deprecated("Set the font when drawing text with `TextDrawing`")
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def set_font(self, font: fonts.GYWFont, sleep_time: float = 0.0):
-        """
-        Set the default font.
-
-        :param font: The font to use as default
-        :type font: `font.GYWFont`
-        :param sleep_time: Time to wait after having set up the font. Defaults to 0.0.
-        :type sleep_time: float
-
-        """
-
-        await self.__execute_commands([
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_DATA,
-                bytes(font.prefix, 'utf-8'),
-            ),
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.SET_FONT]),
-            ),
-        ])
-
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
-
-        # Save font
-        self.font = font
 
     async def auto_rotate_screen(self, enable: bool):
         """
@@ -274,13 +219,10 @@ class BTDevice:
             ),
         ])
 
-    @deprecated_param("sleep_time", "Delay is no longer needed")
-    async def enable_backlight(self, enable: bool, sleep_time: float = 0.0):
+    async def enable_backlight(self, enable: bool):
         """
         Enable or disable the display backlight.
 
-        :param sleep_time: Time to wait after having changed the backlight. Defaults to 0.0.
-        :type sleep_time: float
         :param enable: True to enable the backlight, False to disable it.
         :type enable: bool
 
@@ -292,5 +234,26 @@ class BTDevice:
                 bytearray([commands.ControlCodes.ENABLE_BACKLIGHT, enable]),
             ),
         ])
-        if sleep_time > 0:
-            await asyncio.sleep(sleep_time)
+
+    async def clear_screen(self, color: Optional[Color]):
+        """
+        Reset what is displayed.
+
+        If a color is provided, the screen will be filled with this color, otherwise the screen will be filled
+        with the last color used. If a color was never provided, if fills the screen with white.
+
+        :param color: The color to use to clear the screen.
+        :type color: Color or None
+
+        """
+
+        ctrl_bytes = bytearray([commands.ControlCodes.CLEAR])
+        if color:
+            ctrl_bytes += color.to_rgba8888_bytes()
+
+        await self.__execute_commands([
+            commands.BTCommand(
+                commands.GYWCharacteristics.DISPLAY_COMMAND,
+                ctrl_bytes,
+            ),
+        ])

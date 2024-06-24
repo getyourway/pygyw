@@ -1,3 +1,13 @@
+2.0.0:
+    - Remove deprecated functionality
+    - Encode positions on 2 bytes instead of 4
+    - Convert `BlankScreen` into the `clear_screen` method
+    - Update UUIDs of BLE characteristics
+    - Remove leftover font and font_optimized fields in BTDevice
+    - Remove font prefixes
+    - Add Flake8 as default linter
+    - Enable logging when the environment variable PYGYW_LOGGING is set
+
 1.3.2:
     - Write Mode Enhancement: Updated the device.py to utilize "Write Without Response" mode instead of "Write With Response" to improve communication efficiency.
     - Conditional Delay Implementation: Implemented a conditional delay when sending packets, specifically when operating on MacOS, to optimize transmission performance.
