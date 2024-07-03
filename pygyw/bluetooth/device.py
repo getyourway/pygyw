@@ -154,21 +154,6 @@ class BTDevice:
         for drawing in drawings:
             await self.send_drawing(drawing)
 
-    async def start_display(self):
-        """
-        Turn the screen on.
-
-        ..note It has no effect if the screen is already on.
-
-        """
-
-        await self.__execute_commands([
-            commands.BTCommand(
-                commands.GYWCharacteristics.DISPLAY_COMMAND,
-                bytearray([commands.ControlCodes.START_DISPLAY]),
-            ),
-        ])
-
     async def set_contrast(self, value: float):
         """
         Set the screen contrast.

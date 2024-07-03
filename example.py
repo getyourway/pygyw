@@ -17,7 +17,6 @@ async def main():
     # device = BTDevice("AA:BB:CC:DD:EE:FF")
 
     await device.connect()
-    await device.start_display()
 
     await device.clear_screen(Colors.WHITE)
 
