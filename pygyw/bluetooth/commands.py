@@ -18,7 +18,6 @@ class ControlCodes:
     A collection of control codes used by the GYW aRdent device to control the display.
 
     Attributes:
-        START_DISPLAY: Turn on the screen.
         DISPLAY_IMAGE: Send an image to the display.
         DISPLAY_TEXT: Send text to the display.
         CLEAR: Clear the screen.
@@ -30,7 +29,6 @@ class ControlCodes:
 
     """
 
-    START_DISPLAY = 0x01
     DISPLAY_IMAGE = 0x02
     DISPLAY_TEXT = 0x03
     CLEAR = 0x05

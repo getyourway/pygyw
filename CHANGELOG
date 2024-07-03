@@ -1,3 +1,6 @@
+2.0.1:
+    - Remove the start_display method
+
 2.0.0:
     - Remove deprecated functionality
     - Encode positions on 2 bytes instead of 4

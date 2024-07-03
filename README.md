@@ -60,8 +60,6 @@ await device.connect()
 
 After the connection is established, you can display elements on the screen.
 
-:note: :note: Before actually displaying information, you need to manually indicate to the glasses that the screen needs to be turned on with the `start_display` method.
-
 ## Display
 
 To display elements on the aRdent glasses' screen, you need to create a `GYWDrawing` object and pass it to the `send_drawing(drawing)` method of the connected `BTDevice` object. There are three types of `GYWDrawing` objects:
