@@ -1,3 +1,6 @@
+2.0.2:
+    - Remove dev methods (brightness, contrast, ...) & Improve documentation
+
 2.0.1:
     - Remove the start_display method
 
