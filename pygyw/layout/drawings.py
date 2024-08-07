@@ -42,7 +42,7 @@ class GYWDrawing:
         self.top = top
 
     def __str__(self) -> str:
-        return f"{self.drawing_type} - ({self.left}, {self.top})"
+        return f"{self.drawing_type.capitalize()} at ({self.left}, {self.top})"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -195,7 +195,7 @@ class TextDrawing(GYWDrawing):
 
         """
         # Generate control instruction
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_TEXT])
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_TEXT])
         ctrl_data += self.left.to_bytes(2, 'little', signed=True)
         ctrl_data += top.to_bytes(2, 'little', signed=True)
         ctrl_data += bytes(self.font.filename, 'utf-8')
@@ -280,7 +280,7 @@ class IconDrawing(GYWDrawing):
 
         left = self.left.to_bytes(2, 'little', signed=True)
         top = self.top.to_bytes(2, 'little', signed=True)
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_IMAGE]) + left + top
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_IMAGE]) + left + top
 
         ctrl_data += self.color.to_rgba8888_bytes() if self.color is not None else bytearray([0, 0, 0, 0])
         ctrl_data += byte_from_scale_float(self.scale)
@@ -410,7 +410,7 @@ class SpinnerDrawing(GYWDrawing):
 
         left = self.left.to_bytes(2, 'little', signed=True)
         top = self.top.to_bytes(2, 'little', signed=True)
-        ctrl_data = bytearray([commands.ControlCodes.DISPLAY_SPINNER]) + left + top
+        ctrl_data = bytearray([commands.ControlCodes.DRAW_SPINNER]) + left + top
         ctrl_data += self.color.to_rgba8888_bytes()
         ctrl_data += byte_from_scale_float(self.scale)
         ctrl_data += self.animation_timing_function.value.to_bytes(1, 'little')

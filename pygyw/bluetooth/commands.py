@@ -10,7 +10,6 @@ class GYWCharacteristics:
 
     DISPLAY_COMMAND = "9f3443f3-5149-4d53-9b92-35def7b82e52"
     DISPLAY_DATA = "9f3443f3-5149-4d53-9b92-35def7b82e53"
-    FIRMWARE_VERSION = "00002a26-0000-1000-8000-00805f9b34fb"
 
 
 class ControlCodes:
@@ -18,26 +17,19 @@ class ControlCodes:
     A collection of control codes used by the GYW aRdent device to control the display.
 
     Attributes:
-        DISPLAY_IMAGE: Send an image to the display.
-        DISPLAY_TEXT: Send text to the display.
+        DRAW_IMAGE: Send an image to the display.
+        DRAW_TEXT: Send text to the display.
         CLEAR: Clear the screen.
-        SET_CONTRAST: Set the screen contrast.
-        SET_BRIGHTNESS: Set the screen brightness.
-        AUTO_ROTATE_SCREEN: Enable or disable the screen autorotation.
-        ENABLE_BACKLIGHT: Enable or disable the display backlight.
         DRAW_RECTANGLE: Draw a colored rectangle.
+        DRAW_SPINNER: Draw a spinner.
 
     """
 
-    DISPLAY_IMAGE = 0x02
-    DISPLAY_TEXT = 0x03
+    DRAW_IMAGE = 0x02
+    DRAW_TEXT = 0x03
     CLEAR = 0x05
-    SET_CONTRAST = 0x06
-    SET_BRIGHTNESS = 0x07
-    AUTO_ROTATE_SCREEN = 0x0A
-    ENABLE_BACKLIGHT = 0x0B
     DRAW_RECTANGLE = 0x0C
-    DISPLAY_SPINNER = 0x0D
+    DRAW_SPINNER = 0x0D
 
 
 class BTCommand:
