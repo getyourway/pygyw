@@ -154,14 +154,14 @@ class BTDevice:
         for drawing in drawings:
             await self.send_drawing(drawing)
 
-    async def clear_screen(self, color: Optional[Color]):
+    async def clear_screen(self, color: Optional[Color] = None):
         """
         Reset what is displayed.
 
         If a color is provided, the screen will be filled with this color, otherwise the screen will be filled
         with the last color used. If a color was never provided, if fills the screen with white.
 
-        :param color: The color to use to clear the screen.
+        :param color: The color to use to clear the screen. Defaults to None.
         :type color: Color or None
 
         """
