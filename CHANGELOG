@@ -1,5 +1,6 @@
 2.0.3:
     - Make color parameter really optional in `clear_screen`
+    - Acquire the MTU size after connection
 
 2.0.2:
     - Remove dev methods (brightness, contrast, ...) & Improve documentation

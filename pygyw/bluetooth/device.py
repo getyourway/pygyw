@@ -77,6 +77,12 @@ class BTDevice:
         connected = client.is_connected
         if connected:
             self.client = client
+
+            # BlueZ doesn't have a proper way to get the MTU, so we have this hack.
+            # https://github.com/hbldh/bleak/blob/322346d/examples/mtu_size.py
+            if client._backend.__class__.__name__ == "BleakClientBlueZDBus":
+                await client._backend._acquire_mtu()
+
             logger.info(f"Connection to device {self.device} succeeded")
         else:
             logger.warning(f"Connection to device {self.device} failed")
