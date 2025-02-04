@@ -1,3 +1,6 @@
+2.0.4:
+    - Add arrow key icons
+
 2.0.3:
     - Make color parameter really optional in `clear_screen`
     - Acquire the MTU size after connection
