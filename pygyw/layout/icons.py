@@ -352,6 +352,20 @@ class GYWIcons:
             :alt: Key # icon
             :align: center
 
+        KEY_LEFT: An icon representing the left arrow key
+        .. image:: icons/key_left.svg
+            :width: 48px
+            :height: 48px
+            :alt: Key left icon
+            :align: center
+
+        KEY_RIGHT: An icon representing the right arrow key
+        .. image:: icons/key_right.svg
+            :width: 48px
+            :height: 48px
+            :alt: Key right icon
+            :align: center
+
         values (list[`GYWIcon`]): A list of every available icons.
 
     """
@@ -400,6 +414,8 @@ class GYWIcons:
     KEY_D = GYWIcon("key_D")
     KEY_STAR = GYWIcon("key_star")
     KEY_NUM = GYWIcon("key_#")
+    KEY_LEFT = GYWIcon("key_left")
+    KEY_RIGHT = GYWIcon("key_right")
 
     values = [
         BUILD,
@@ -446,4 +462,6 @@ class GYWIcons:
         KEY_D,
         KEY_STAR,
         KEY_NUM,
+        KEY_LEFT,
+        KEY_RIGHT,
     ]
